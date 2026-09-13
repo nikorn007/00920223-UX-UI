@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 1 — บทนำสู่ HCI และ UX/UI | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 1 : น้ำเงิน-คราม (Indigo Blue) ===== */
+  :root{
+    --ch:#2f53b3;          /* สีประจำบท */
+    --ch-dark:#1e3a82;
+    --ch-soft:#eaf0fb;
+    --ch-softer:#f5f8fe;
+    --accent:#e08a3c;      /* สีเสริม-ส้มอบอุ่น */
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --line:#dde5ee;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(31,55,89,.09);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{
+    font-family:var(--th);
+    font-size:1rem;
+    line-height:1.7;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  /* ===== TOC sticky ===== */
+  .toc{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
+    border-bottom:2px solid var(--ch);
+    box-shadow:0 2px 10px rgba(31,55,89,.07);
+  }
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{
+    font-size:.92rem;color:var(--muted);text-decoration:none;
+    padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap;
+  }
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:linear-gradient(135deg,var(--ch),var(--ch-dark));
+    color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden;
+  }
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.15rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.15rem;opacity:.9;font-weight:400}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  /* ===== Layout ===== */
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px;
+  }
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.45rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{
+    display:flex;align-items:center;gap:14px;margin:38px 0 22px;
+  }
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap}
+
+  /* ===== Objectives ===== */
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  /* ===== Boxes ===== */
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#f3f7ff;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+  .box-gt{background:linear-gradient(120deg,#fff6e9,#fffdf8);border:1px dashed var(--accent);border-left:5px solid var(--accent);border-radius:11px}
+  .box-gt .bh{color:#a8631d}
+
+  /* Golden thread bridges */
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  /* ===== Golden thread example callout ===== */
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  /* ===== Diagram wrap ===== */
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  /* ===== Tables ===== */
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  /* ===== Code ===== */
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  /* summary bullets */
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  /* review questions */
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content}
+
+  /* workshop steps */
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  /* assignment */
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  /* checklist */
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== Footer ===== */
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .next-link{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .next-link:hover{background:rgba(255,255,255,.15)}
+  .next-link .lbl{font-size:.82rem;opacity:.8}
+  .next-link .nm{font-size:1.15rem;font-weight:700}
+  .next-link .arrow{font-size:1.7rem}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  /* ===== Responsive ===== */
+  @media(max-width:640px){
+    body{font-size:16px}
+    .hero{padding:34px 18px 42px}
+    .hero h1{font-size:1.6rem}
+    section{padding:22px 18px}
+    .sec-head h2{font-size:1.2rem}
+    main{padding:20px 14px 40px}
+    .toc nav{display:none}
+  }
+
+  /* ===== Print ===== */
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}
+    .toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}
+    .next-link{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 1</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 1 · Chapter 1</span>
+    <h1>บทนำสู่ HCI และ UX/UI</h1>
+    <div class="en">Introduction to Human-Computer Interaction, UX and UI</div>
+    <p class="lead">ทำความเข้าใจรากฐานของการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง — ปฏิสัมพันธ์ระหว่างมนุษย์กับคอมพิวเตอร์ คืออะไร UX กับ UI ต่างกันอย่างไร และเหตุใดความเข้าใจนี้จึงเป็นจุดเริ่มต้นของทุกชิ้นงานในวิชานี้</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO1</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 1 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Remember · Understand</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO1</b> — อธิบายหลักการปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์ (HCI) และความแตกต่างระหว่าง UX กับ UI</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item">
+    <div class="obj-num">1</div>
+    <div class="obj-body">
+      <b>อธิบายความหมายและขอบเขตของ HCI</b> (Human-Computer Interaction) ในฐานะศาสตร์ที่ศึกษาปฏิสัมพันธ์ระหว่างมนุษย์กับระบบคอมพิวเตอร์
+      <div class="obj-meta"><span class="tagm tag-clo">CLO1</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Remember</span></div>
+    </div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-num">2</div>
+    <div class="obj-body">
+      <b>แยกแยะความแตกต่างระหว่าง UX และ UI</b> พร้อมยกตัวอย่างองค์ประกอบของแต่ละด้านได้อย่างถูกต้อง
+      <div class="obj-meta"><span class="tagm tag-clo">CLO1</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+    </div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-num">3</div>
+    <div class="obj-body">
+      <b>อธิบายแนวคิด Usability</b> และคุณลักษณะที่ทำให้ระบบ “ใช้งานได้ดี” ตามองค์ประกอบของ Jakob Nielsen
+      <div class="obj-meta"><span class="tagm tag-clo">CLO1</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+    </div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-num">4</div>
+    <div class="obj-body">
+      <b>อธิบายแนวคิดการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง</b> (User-Centered Design) และความสำคัญของ mental model ต่อการออกแบบ
+      <div class="obj-meta"><span class="tagm tag-clo">CLO1</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+    </div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-num">5</div>
+    <div class="obj-body">
+      <b>เชื่อมโยงหลักการ UX/UI กับกรณีศึกษาจริง</b> โดยระบุปัญหาเบื้องต้น (Problem Statement) ของ “เว็บแอปพลิเคชันค้นหาสัตว์เลี้ยงหาย” ได้
+      <div class="obj-meta"><span class="tagm tag-clo">CLO1</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ลองนึกถึงครั้งล่าสุดที่คุณกดปุ่มผิดบนแอป หรือหาปุ่มยกเลิกไม่เจอจนต้องปิดทั้งหน้า — ความหงุดหงิดนั้นเกิดจากความผิดของคุณ หรือเกิดจากการออกแบบที่ไม่ได้คำนึงถึงคุณ?”</p>
+
+  <p>ทุกวันนี้เราใช้ชีวิตอยู่ท่ามกลางหน้าจอ ตั้งแต่ตู้กดบัตรคิวในโรงพยาบาล แอปสั่งอาหาร ไปจนถึงระบบลงทะเบียนเรียน สิ่งเหล่านี้คือ “ระบบเชิงโต้ตอบ” (interactive system) ที่มนุษย์ต้องสื่อสารด้วยตลอดเวลา เมื่อระบบออกแบบมาดี เราจะใช้งานได้ลื่นไหลจนแทบไม่รู้ตัว แต่เมื่อออกแบบมาไม่ดี เราจะรู้สึกสับสน เสียเวลา หรือถึงขั้นทำงานผิดพลาด</p>
+
+  <p>วิชา <b>การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้</b> ศึกษาว่าจะทำอย่างไรให้ระบบที่เราสร้างขึ้น “เข้าใจง่ายและใช้งานได้จริง” สำหรับมนุษย์ บทแรกนี้จึงเป็นการวางรากฐานทางความคิด ก่อนที่บทต่อ ๆ ไปจะพาเราลงมือทำตั้งแต่การวิจัยผู้ใช้จนถึงการสร้างต้นแบบ</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    หากนักศึกษาต้องสร้าง “เว็บแอปช่วยตามหาสัตว์เลี้ยงที่หายไป” คนที่กำลังเครียดเพราะสุนัขหายตั้งแต่เมื่อคืน เขาต้องการอะไรจากแอปของเรามากที่สุดในวินาทีแรกที่เปิดเข้ามา? นี่คือคำถามที่ UX พยายามตอบ
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 HCI -->
+  <h3><span class="nm">2.1</span> HCI คืออะไร</h3>
+  <p><b>Human-Computer Interaction (HCI)</b> หรือ “ปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์” เป็นสาขาวิชาที่ศึกษาการออกแบบ การประเมิน และการนำไปใช้ของระบบคอมพิวเตอร์เชิงโต้ตอบ เพื่อให้มนุษย์ใช้งานได้อย่างมีประสิทธิภาพ HCI เป็นศาสตร์สหวิทยาการ (interdisciplinary) ที่ผสานความรู้จากวิทยาการคอมพิวเตอร์ จิตวิทยาการรับรู้ (cognitive psychology) การออกแบบ และการยศาสตร์ (ergonomics)</p>
+
+  <p>หัวใจของ HCI คือวงจรการสื่อสารระหว่างสามองค์ประกอบ ได้แก่ <b>มนุษย์ (Human)</b> ที่มีเป้าหมายในใจ <b>ส่วนติดต่อ (Interface)</b> ที่เป็นตัวกลาง และ <b>ระบบ/คอมพิวเตอร์ (Computer)</b> ที่ประมวลผล โดยมนุษย์ส่ง “คำสั่ง” (input) ผ่านส่วนติดต่อ และระบบตอบกลับด้วย “ผลลัพธ์” (feedback) เป็นวงจรต่อเนื่อง</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="วงจรปฏิสัมพันธ์ระหว่างมนุษย์ ส่วนติดต่อ และคอมพิวเตอร์">
+      <!-- nodes -->
+      <g font-family="'Sarabun',sans-serif">
+        <!-- Human -->
+        <circle cx="110" cy="140" r="62" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2.5"/>
+        <text x="110" y="120" text-anchor="middle" font-size="34">🧑</text>
+        <text x="110" y="158" text-anchor="middle" font-size="19" font-weight="700" fill="#1e3a82">มนุษย์</text>
+        <text x="110" y="180" text-anchor="middle" font-size="14" fill="#5e6b78">Human (เป้าหมาย)</text>
+        <!-- Interface -->
+        <rect x="258" y="78" width="124" height="124" rx="16" fill="#fff6e9" stroke="#e08a3c" stroke-width="2.5"/>
+        <text x="320" y="120" text-anchor="middle" font-size="32">🖥️</text>
+        <text x="320" y="156" text-anchor="middle" font-size="19" font-weight="700" fill="#a8631d">ส่วนติดต่อ</text>
+        <text x="320" y="178" text-anchor="middle" font-size="14" fill="#5e6b78">Interface (UI)</text>
+        <!-- Computer -->
+        <circle cx="530" cy="140" r="62" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2.5"/>
+        <text x="530" y="120" text-anchor="middle" font-size="32">⚙️</text>
+        <text x="530" y="158" text-anchor="middle" font-size="19" font-weight="700" fill="#1e3a82">ระบบ</text>
+        <text x="530" y="180" text-anchor="middle" font-size="14" fill="#5e6b78">Computer</text>
+        <!-- arrows top: input -->
+        <path d="M170 110 Q215 70 256 100" fill="none" stroke="#2f53b3" stroke-width="2.5" marker-end="url(#ar)"/>
+        <text x="212" y="68" text-anchor="middle" font-size="14" fill="#2f53b3" font-weight="600">คำสั่ง (Input)</text>
+        <path d="M384 110 Q450 72 478 105" fill="none" stroke="#2f53b3" stroke-width="2.5" marker-end="url(#ar)"/>
+        <!-- arrows bottom: feedback -->
+        <path d="M474 172 Q430 210 386 180" fill="none" stroke="#e08a3c" stroke-width="2.5" marker-end="url(#ar2)"/>
+        <path d="M256 180 Q210 212 168 172" fill="none" stroke="#e08a3c" stroke-width="2.5" marker-end="url(#ar2)"/>
+        <text x="320" y="228" text-anchor="middle" font-size="14" fill="#a8631d" font-weight="600">ผลตอบกลับ (Feedback)</text>
+      </g>
+      <defs>
+        <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2f53b3"/></marker>
+        <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#e08a3c"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>ภาพที่ 1.1</b> วงจรปฏิสัมพันธ์พื้นฐานของ HCI — มนุษย์ส่งคำสั่งผ่านส่วนติดต่อ และระบบตอบกลับเป็นวงจรต่อเนื่อง</figcaption>
+  </figure>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0">เมื่อเจ้าของกดปุ่ม “แจ้งสัตว์เลี้ยงหาย” (input) ส่วนติดต่อจะแสดงฟอร์มกรอกข้อมูล ระบบบันทึกข้อมูลและแสดงข้อความ “แจ้งสำเร็จ พร้อมกระจายประกาศไปยังพื้นที่ใกล้เคียง” (feedback) ถ้าไม่มี feedback นี้ ผู้ใช้จะไม่แน่ใจว่าระบบทำงานหรือไม่ และอาจกดซ้ำหลายครั้ง</p>
+  </div>
+
+  <!-- 2.2 UX -->
+  <h3><span class="nm">2.2</span> UX — ประสบการณ์ผู้ใช้ คืออะไร</h3>
+  <p><b>User Experience (UX)</b> คือ “ประสบการณ์โดยรวม” ที่ผู้ใช้รู้สึกและพบเจอตลอดการมีปฏิสัมพันธ์กับผลิตภัณฑ์หรือบริการ ไม่ใช่แค่ตอนกดหน้าจอ แต่รวมถึงความรู้สึกก่อนใช้ (ค้นเจอแอปได้ง่ายไหม) ระหว่างใช้ (ทำงานสำเร็จไหม เครียดไหม) และหลังใช้ (ประทับใจจนอยากกลับมาใช้อีกไหม) UX จึงครอบคลุมทั้งความมีประโยชน์ (useful) ความใช้งานง่าย (usable) และความน่าพึงพอใจ (desirable)</p>
+
+  <p>UX ไม่ได้เกิดจากหน้าจอเพียงอย่างเดียว แต่เป็นผลรวมของการวิจัยผู้ใช้ การจัดโครงสร้างข้อมูล การออกแบบการไหลของงาน และอารมณ์ความรู้สึก เปรียบได้กับ “ภูเขาน้ำแข็ง” ที่ UI เป็นส่วนที่มองเห็นเหนือผิวน้ำ ขณะที่งาน UX ส่วนใหญ่อยู่ใต้น้ำที่ผู้ใช้ไม่เห็นแต่สัมผัสได้</p>
+
+  <!-- 2.3 UX good vs bad example -->
+  <h3><span class="nm">2.3</span> ตัวอย่าง: แอปเดียวกัน “UX ดี” กับ “UX ไม่ดี” ต่างกันอย่างไร</h3>
+  <p>เพื่อให้เห็นภาพว่า UX ที่ดีคืออะไร ลองเทียบ “แอปค้นหาสัตว์เลี้ยงหาย” สองเวอร์ชันที่ <b>มีฟีเจอร์เหมือนกัน</b> แต่ออกแบบต่างกัน ในภารกิจเดียวกันคือ <b>“เจ้าของเพิ่งรู้ว่าน้องหมาหลุดออกจากบ้าน ต้องแจ้งหายให้เร็วที่สุด”</b></p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="เปรียบเทียบหน้าจอแจ้งสัตว์หายแบบ UX ไม่ดี และ UX ดี">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- LEFT : UX ไม่ดี -->
+        <text x="130" y="30" font-size="15" font-weight="700" fill="#c0492f">✗ UX ไม่ดี</text>
+        <rect x="40" y="42" width="180" height="326" rx="16" fill="#fff" stroke="#c0492f" stroke-width="2"/>
+        <rect x="54" y="56" width="152" height="22" rx="4" fill="#f2dede"/><text x="130" y="71" font-size="10.5" fill="#8a4a44">☰  เมนู · แบนเนอร์</text>
+        <rect x="54" y="84" width="152" height="30" rx="5" fill="#f6e0c8"/><text x="130" y="103" font-size="10.5" fill="#a8631d">โปรโมชัน! (รก)</text>
+        <g fill="#ececec">
+          <rect x="54" y="124" width="152" height="13" rx="3"/><rect x="54" y="142" width="152" height="13" rx="3"/>
+          <rect x="54" y="160" width="152" height="13" rx="3"/><rect x="54" y="178" width="152" height="13" rx="3"/>
+          <rect x="54" y="196" width="152" height="13" rx="3"/><rect x="54" y="214" width="152" height="13" rx="3"/>
+        </g>
+        <text x="130" y="248" font-size="10" fill="#5e6b78">ฟอร์ม 15 ช่อง · บังคับครบ</text>
+        <text x="130" y="278" font-size="11" fill="#c0492f">❌ กรอกผิด (ไม่บอกช่องไหน)</text>
+        <rect x="70" y="322" width="90" height="26" rx="6" fill="#c9a3a3"/><text x="115" y="339" font-size="10.5" fill="#fff">แจ้งหาย (ซ่อน)</text>
+        <!-- RIGHT : UX ดี -->
+        <text x="510" y="30" font-size="15" font-weight="700" fill="#2e8b57">✓ UX ดี</text>
+        <rect x="420" y="42" width="180" height="326" rx="16" fill="#fff" stroke="#2e8b57" stroke-width="2"/>
+        <rect x="434" y="56" width="152" height="20" rx="4" fill="#eef2f6"/><text x="510" y="70" font-size="10.5" fill="#41505c">🐾 แจ้งสัตว์เลี้ยงหาย</text>
+        <rect x="434" y="86" width="152" height="46" rx="9" fill="#e8743b"/><text x="510" y="114" font-size="14" font-weight="700" fill="#fff">＋ แจ้งสัตว์หาย</text>
+        <rect x="434" y="150" width="152" height="24" rx="6" fill="#eef2f6"/><text x="444" y="166" font-size="10.5" fill="#5e6b78" text-anchor="start">📷 รูปสัตว์</text>
+        <rect x="434" y="182" width="152" height="24" rx="6" fill="#eef2f6"/><text x="444" y="198" font-size="10.5" fill="#5e6b78" text-anchor="start">📍 จุดที่หาย</text>
+        <rect x="434" y="214" width="152" height="24" rx="6" fill="#eef2f6"/><text x="444" y="230" font-size="10.5" fill="#5e6b78" text-anchor="start">📞 เบอร์ติดต่อ</text>
+        <text x="510" y="262" font-size="10" fill="#5e6b78">กรอกแค่ 3 ช่องที่จำเป็น</text>
+        <rect x="446" y="318" width="128" height="34" rx="8" fill="#e6f4ec" stroke="#2e8b57"/><text x="510" y="340" font-size="11" font-weight="700" fill="#1f6e44">✓ แจ้งสำเร็จ · กระจายข่าวแล้ว</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 1.2</b> หน้าจอ “แจ้งสัตว์หาย” ของแอปเดียวกัน — ซ้าย (UX ไม่ดี) ปุ่มซ่อน ฟอร์มยาว ไม่มี feedback; ขวา (UX ดี) ปุ่มเด่น กรอกน้อย เตือนก่อนพลาด และยืนยันผลชัดเจน</figcaption>
+  </figure>
+
+  <p>แม้ทั้งสองแอปจะทำงาน “แจ้งหาย” ได้เหมือนกัน แต่ประสบการณ์ที่ผู้ใช้ได้รับต่างกันมาก ดังตารางเปรียบเทียบ</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ประเด็น</th><th>❌ แอปที่ UX ไม่ดี</th><th>✓ แอปที่ UX ดี</th></tr></thead>
+      <tbody>
+        <tr><td><b>ทำภารกิจสำเร็จ</b> (success rate)</td><td>หลายคนสับสนและล้มเลิกกลางคัน</td><td>เกือบทุกคนแจ้งหายสำเร็จ</td></tr>
+        <tr><td><b>เวลาที่ใช้</b></td><td>~8 นาที (หาปุ่ม + กรอก 15 ช่อง)</td><td>~45 วินาที (3 ช่อง)</td></tr>
+        <tr><td><b>ข้อผิดพลาด</b></td><td>กดผิด กรอกผิด ส่งซ้ำหลายอัน</td><td>ระบบเตือนก่อนพลาด แทบไม่ผิด</td></tr>
+        <tr><td><b>ความรู้สึก</b></td><td>เครียด/หงุดหงิดซ้ำบนความตกใจ</td><td>อุ่นใจ รู้ว่าระบบช่วยจริง</td></tr>
+        <tr><td><b>ผลต่อเป้าหมายจริง</b></td><td>ข่าวกระจายช้า โอกาสเจอน้องหมาลดลง</td><td>ข่าวถึงคนใกล้เคียงทันที โอกาสเจอสูงขึ้น</td></tr>
+        <tr><td><b>ผลต่อผลิตภัณฑ์</b></td><td>คนเลิกใช้ บอกต่อในแง่ลบ</td><td>คนกลับมาใช้ บอกต่อ แอปเติบโต</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    ทั้งสองแอปมีฟีเจอร์เหมือนกันและหน้าตาอาจสวยพอ ๆ กัน (นั่นคือเรื่อง <b>UI</b>) แต่ <b>UX</b> ต่างกันเพราะ “ผู้ใช้ทำงานสำเร็จตามเป้าหมายจริงได้ไหม และรู้สึกอย่างไรตลอดทาง” — UX ที่ดีไม่ได้ <i>มีของมากกว่า</i> แต่ <b>เข้าใจว่าผู้ใช้ต้องการอะไรในบริบทนั้น แล้วตัดสิ่งที่ไม่จำเป็นออก</b> ซึ่งเริ่มจากการวิจัยผู้ใช้ ไม่ใช่การเดาแล้วรีบออกแบบหน้าจอ
+  </div>
+
+  <!-- 2.4 UI -->
+  <h3><span class="nm">2.4</span> UI — ส่วนติดต่อผู้ใช้ คืออะไร</h3>
+  <p><b>User Interface (UI)</b> คือจุดที่มนุษย์ “สัมผัส” กับระบบโดยตรง ได้แก่สิ่งที่มองเห็นและโต้ตอบได้บนหน้าจอ เช่น ปุ่ม เมนู ฟอร์ม ไอคอน สี ตัวอักษร และการจัดวาง UI เป็นเรื่องของการสื่อสารด้วยภาพ (visual) และการโต้ตอบ (interaction) ที่ทำให้แนวคิด UX ที่ออกแบบไว้ กลายเป็นสิ่งที่ผู้ใช้จับต้องได้จริง</p>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    UI ที่สวยงามแต่สับสน ไม่นับเป็น UX ที่ดี และในทางกลับกัน UX ที่วางแผนดีแต่ UI ทำออกมาไม่ชัดเจน ผู้ใช้ก็จะไม่ได้รับประสบการณ์ตามที่ตั้งใจ ทั้งสองด้านต้องทำงานร่วมกัน
+  </div>
+
+  <!-- 2.4 UX vs UI -->
+  <h3><span class="nm">2.5</span> ความแตกต่างระหว่าง UX กับ UI</h3>
+  <p>นักศึกษาจำนวนมากสับสนระหว่างสองคำนี้ วิธีจำที่ง่ายที่สุดคือ <b>UX = “รู้สึกอย่างไร” (how it works / feels)</b> ส่วน <b>UI = “หน้าตาเป็นอย่างไร” (how it looks)</b> ภาพด้านล่างเปรียบเทียบทั้งสองในรูปแบบภูเขาน้ำแข็ง</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ภูเขาน้ำแข็งเปรียบเทียบ UI ส่วนที่มองเห็น และ UX ส่วนที่อยู่เบื้องหลัง">
+      <defs><linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbe7fb"/><stop offset="1" stop-color="#a9c4f0"/></linearGradient></defs>
+      <!-- water line -->
+      <rect x="0" y="120" width="620" height="210" fill="url(#sea)" opacity="0.55"/>
+      <line x1="0" y1="120" x2="620" y2="120" stroke="#2f53b3" stroke-width="2" stroke-dasharray="6 5"/>
+      <text x="610" y="113" text-anchor="end" font-family="'Sarabun',sans-serif" font-size="13" fill="#1e3a82">ระดับที่ผู้ใช้มองเห็น</text>
+      <!-- iceberg tip (UI) -->
+      <polygon points="310,20 250,120 370,120" fill="#fff6e9" stroke="#e08a3c" stroke-width="2.5"/>
+      <text x="310" y="70" text-anchor="middle" font-family="'Sarabun',sans-serif" font-size="22" font-weight="700" fill="#a8631d">UI</text>
+      <text x="310" y="95" text-anchor="middle" font-family="'Sarabun',sans-serif" font-size="13" fill="#a8631d">สี · ปุ่ม · ฟอนต์ · เลย์เอาต์</text>
+      <!-- iceberg base (UX) -->
+      <polygon points="250,120 370,120 470,310 150,310" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2.5"/>
+      <text x="310" y="170" text-anchor="middle" font-family="'Sarabun',sans-serif" font-size="22" font-weight="700" fill="#1e3a82">UX</text>
+      <g font-family="'Sarabun',sans-serif" font-size="14" fill="#1e3a82" text-anchor="middle">
+        <text x="310" y="200">การวิจัยผู้ใช้ · Persona</text>
+        <text x="310" y="224">Journey Map · Pain points</text>
+        <text x="310" y="248">สถาปัตยกรรมข้อมูล · User Flow</text>
+        <text x="310" y="272">ความง่าย · อารมณ์ · ความพึงพอใจ</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 1.3</b> UI คือยอดภูเขาน้ำแข็งที่ผู้ใช้มองเห็น ส่วน UX คือฐานขนาดใหญ่ใต้น้ำที่รองรับทั้งหมด</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ประเด็น</th><th>UX (User Experience)</th><th>UI (User Interface)</th></tr></thead>
+      <tbody>
+        <tr><td><b>คำถามหลัก</b></td><td>ใช้แล้วรู้สึก/ทำงานสำเร็จอย่างไร</td><td>หน้าตาและการโต้ตอบเป็นอย่างไร</td></tr>
+        <tr><td><b>เน้นเรื่อง</b></td><td>กระบวนการ การวิจัย โครงสร้าง อารมณ์</td><td>ภาพ สี ตัวอักษร การจัดวาง องค์ประกอบ</td></tr>
+        <tr><td><b>ผลงานตัวอย่าง</b></td><td>Persona, Journey Map, User Flow, Wireframe</td><td>Style guide, Mockup, Visual design, Prototype</td></tr>
+        <tr><td><b>คำถามวัดผล</b></td><td>ผู้ใช้บรรลุเป้าหมายได้ไหม</td><td>ผู้ใช้รู้ว่าต้องกดอะไรหรือไม่</td></tr>
+        <tr><td><b>เปรียบเทียบ</b></td><td>โครงสร้างและการวางผังของบ้าน</td><td>สีผนัง เฟอร์นิเจอร์ การตกแต่ง</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li>คิดว่า “UX = ทำให้สวย” — จริง ๆ แล้วความสวยเป็นส่วนหนึ่งของ UI ส่วน UX เน้นว่าผู้ใช้ทำงานสำเร็จและรู้สึกดีหรือไม่</li>
+      <li>เริ่มออกแบบหน้าจอ (UI) ทันทีโดยข้ามขั้นวิจัยผู้ใช้ (UX) ทำให้ได้แอปสวยที่ไม่มีใครอยากใช้</li>
+      <li>ใช้คำว่า UX/UI สลับกันโดยไม่แยกแยะ ทำให้สื่อสารกับทีมพัฒนาคลาดเคลื่อน</li>
+    </ul>
+  </div>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0"><b>งาน UX:</b> ค้นพบว่าเจ้าของที่กำลังตกใจต้องการ “แจ้งหายให้เร็วที่สุด” จึงออกแบบให้ปุ่มแจ้งหายอยู่หน้าแรก กรอกข้อมูลน้อยที่สุด &nbsp; <b>งาน UI:</b> ทำปุ่ม “แจ้งสัตว์เลี้ยงหาย” เป็นสีแดงส้มขนาดใหญ่ ตัวอักษรชัด มองเห็นทันทีที่เปิดแอป</p>
+  </div>
+
+  <!-- 2.5 Usability -->
+  <h3><span class="nm">2.6</span> Usability — ความสามารถในการใช้งานได้</h3>
+  <p><b>Usability</b> คือระดับที่ผู้ใช้สามารถใช้ระบบเพื่อบรรลุเป้าหมายได้อย่างมีประสิทธิผล (effective) มีประสิทธิภาพ (efficient) และพึงพอใจ (satisfying) Jakob Nielsen ผู้เชี่ยวชาญด้าน usability ได้แบ่งองค์ประกอบของ usability ออกเป็น 5 ด้าน</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="องค์ประกอบ 5 ด้านของ Usability ตาม Nielsen">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- 5 pillars -->
+        <g>
+          <rect x="20"  y="60" width="115" height="100" rx="12" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="77" y="92" font-size="30">🚀</text>
+          <text x="77" y="122" font-size="16" font-weight="700" fill="#1e3a82">Learnability</text>
+          <text x="77" y="143" font-size="13" fill="#5e6b78">เรียนรู้ง่าย</text>
+        </g>
+        <g>
+          <rect x="148" y="60" width="115" height="100" rx="12" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="205" y="92" font-size="30">⚡</text>
+          <text x="205" y="122" font-size="16" font-weight="700" fill="#1e3a82">Efficiency</text>
+          <text x="205" y="143" font-size="13" fill="#5e6b78">ใช้ได้รวดเร็ว</text>
+        </g>
+        <g>
+          <rect x="276" y="60" width="115" height="100" rx="12" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="333" y="92" font-size="30">🧠</text>
+          <text x="333" y="122" font-size="16" font-weight="700" fill="#1e3a82">Memorability</text>
+          <text x="333" y="143" font-size="13" fill="#5e6b78">จำวิธีใช้ได้</text>
+        </g>
+        <g>
+          <rect x="404" y="60" width="115" height="100" rx="12" fill="#fff6e9" stroke="#e08a3c" stroke-width="2"/>
+          <text x="461" y="92" font-size="30">🛡️</text>
+          <text x="461" y="122" font-size="16" font-weight="700" fill="#a8631d">Errors</text>
+          <text x="461" y="143" font-size="13" fill="#5e6b78">ลดข้อผิดพลาด</text>
+        </g>
+        <g>
+          <rect x="532" y="60" width="115" height="100" rx="12" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="589" y="92" font-size="30">😊</text>
+          <text x="589" y="122" font-size="16" font-weight="700" fill="#1e3a82">Satisfaction</text>
+          <text x="589" y="143" font-size="13" fill="#5e6b78">พึงพอใจ</text>
+        </g>
+        <text x="330" y="30" font-size="19" font-weight="700" fill="#1e3a82">5 องค์ประกอบของ Usability (Nielsen)</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 1.4</b> องค์ประกอบ 5 ด้านของ Usability ตามแนวคิดของ Jakob Nielsen</figcaption>
+  </figure>
+
+  <p>ทั้ง 5 องค์ประกอบมีความหมายดังนี้</p>
+  <ul>
+    <li><b>Learnability (ความง่ายในการเรียนรู้):</b> ผู้ใช้ใหม่ที่ไม่เคยใช้ระบบมาก่อน สามารถเรียนรู้วิธีทำงานพื้นฐานได้ง่ายและรวดเร็วเพียงใดในการใช้งานครั้งแรก</li>
+    <li><b>Efficiency (ประสิทธิภาพในการใช้งาน):</b> เมื่อผู้ใช้เรียนรู้ระบบแล้ว สามารถทำงานให้สำเร็จได้รวดเร็วเพียงใดในการใช้งานครั้งถัด ๆ ไป</li>
+    <li><b>Memorability (ความน่าจดจำ):</b> เมื่อผู้ใช้กลับมาใช้ระบบอีกครั้งหลังจากไม่ได้ใช้งานเป็นระยะเวลาหนึ่ง สามารถจำวิธีใช้งานเดิมได้ง่ายเพียงใด โดยไม่ต้องเรียนรู้ใหม่ตั้งแต่ต้น</li>
+    <li><b>Errors (ข้อผิดพลาด):</b> ระบบช่วยป้องกันไม่ให้ผู้ใช้เกิดข้อผิดพลาดได้มากน้อยเพียงใด และเมื่อเกิดข้อผิดพลาดขึ้นแล้ว ผู้ใช้สามารถแก้ไขหรือกู้คืนสู่สถานะปกติได้ง่ายเพียงใด</li>
+    <li><b>Satisfaction (ความพึงพอใจ):</b> ผู้ใช้รู้สึกพึงพอใจ สบายใจ และเพลิดเพลินกับการใช้งานระบบมากน้อยเพียงใด</li>
+  </ul>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <ul style="margin:0">
+      <li><b>Learnability:</b> ผู้ใช้ครั้งแรกแจ้งสัตว์หายได้สำเร็จโดยไม่ต้องอ่านคู่มือ</li>
+      <li><b>Efficiency:</b> แจ้งหายเสร็จภายใน 3 ขั้นตอน</li>
+      <li><b>Memorability:</b> เจ้าของที่เคยแจ้งหายไว้เมื่อหลายเดือนก่อน กลับมาเปิดแอปอีกครั้งเมื่อสัตว์เลี้ยงอีกตัวหาย ก็ยังกดปุ่ม “🐾 แจ้งสัตว์หาย” ได้ถูกต้องทันทีโดยไม่ต้องนึกหรือค้นหาเมนู</li>
+      <li><b>Errors:</b> ถ้ากรอกเบอร์ติดต่อผิดรูปแบบ ระบบเตือนทันทีก่อนส่ง</li>
+      <li><b>Satisfaction:</b> หลังกดแจ้งหายสำเร็จ ระบบแสดงข้อความ “✓ แจ้งสำเร็จ · กระจายข่าวแล้ว” พร้อมโทนสีเขียวที่ให้ความรู้สึกอุ่นใจ ทำให้เจ้าของรู้สึกว่ามีคนช่วยตามหาจริง ๆ ในยามที่กำลังกังวล</li>
+    </ul>
+  </div>
+
+  <!-- 2.6 UCD & mental model -->
+  <h3><span class="nm">2.7</span> การออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง และ Mental Model</h3>
+  <p><b>User-Centered Design (UCD)</b> คือปรัชญาการออกแบบที่ให้ความต้องการและข้อจำกัดของผู้ใช้เป็นตัวตั้งในทุกขั้นตอนการตัดสินใจ แทนที่จะออกแบบตามความชอบของนักออกแบบหรือความสะดวกของระบบ UCD เป็นกระบวนการวนซ้ำ (iterative) ที่ประกอบด้วยการเข้าใจบริบทผู้ใช้ → ระบุความต้องการ → ออกแบบทางแก้ → ประเมินกับผู้ใช้จริง แล้ววนกลับไปปรับปรุง</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="วงจรการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง 4 ขั้นตอน">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <circle cx="280" cy="125" r="42" fill="#fff6e9" stroke="#e08a3c" stroke-width="2.5"/>
+        <text x="280" y="118" font-size="15" font-weight="700" fill="#a8631d">ผู้ใช้</text>
+        <text x="280" y="138" font-size="13" fill="#a8631d">เป็นศูนย์กลาง</text>
+        <!-- 4 nodes -->
+        <g>
+          <rect x="200" y="12" width="160" height="46" rx="10" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="280" y="33" font-size="15" font-weight="700" fill="#1e3a82">1. เข้าใจบริบท</text>
+          <text x="280" y="51" font-size="12" fill="#5e6b78">Understand context</text>
+        </g>
+        <g>
+          <rect x="392" y="100" width="156" height="46" rx="10" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="470" y="121" font-size="15" font-weight="700" fill="#1e3a82">2. ระบุความต้องการ</text>
+          <text x="470" y="139" font-size="12" fill="#5e6b78">Specify needs</text>
+        </g>
+        <g>
+          <rect x="200" y="192" width="160" height="46" rx="10" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="280" y="213" font-size="15" font-weight="700" fill="#1e3a82">3. ออกแบบทางแก้</text>
+          <text x="280" y="231" font-size="12" fill="#5e6b78">Design solutions</text>
+        </g>
+        <g>
+          <rect x="12" y="100" width="156" height="46" rx="10" fill="#eaf0fb" stroke="#2f53b3" stroke-width="2"/>
+          <text x="90" y="121" font-size="15" font-weight="700" fill="#1e3a82">4. ประเมินผล</text>
+          <text x="90" y="139" font-size="12" fill="#5e6b78">Evaluate</text>
+        </g>
+        <!-- circular arrows -->
+        <path d="M362 40 Q430 55 452 98" fill="none" stroke="#2f53b3" stroke-width="2.2" marker-end="url(#a3)"/>
+        <path d="M468 148 Q430 200 362 212" fill="none" stroke="#2f53b3" stroke-width="2.2" marker-end="url(#a3)"/>
+        <path d="M198 212 Q120 200 92 148" fill="none" stroke="#2f53b3" stroke-width="2.2" marker-end="url(#a3)"/>
+        <path d="M88 98 Q120 55 198 40" fill="none" stroke="#2f53b3" stroke-width="2.2" marker-end="url(#a3)"/>
+      </g>
+      <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2f53b3"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 1.5</b> วงจรการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง (UCD) เป็นกระบวนการวนซ้ำเพื่อปรับปรุงต่อเนื่อง</figcaption>
+  </figure>
+
+  <p><b>Mental Model (แบบจำลองทางความคิด)</b> คือความเข้าใจที่ผู้ใช้มีอยู่ในหัวว่าระบบ “น่าจะทำงานอย่างไร” จากประสบการณ์เดิม เช่น ผู้ใช้คาดว่ารูปไอคอนถังขยะคือการลบ หรือไอคอนแว่นขยายคือการค้นหา การออกแบบที่ดีควรสอดคล้องกับ mental model ของผู้ใช้ เพื่อให้ใช้งานได้ทันทีโดยไม่ต้องเรียนรู้ใหม่</p>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    ออกแบบไอคอนหรือคำที่ “สร้างสรรค์เกินไป” จนขัดกับ mental model ของผู้ใช้ เช่น ใช้รูปดอกไม้แทนปุ่มค้นหา ผู้ใช้จะหาไม่เจอและสับสน — ความแปลกใหม่ที่ดีต้องไม่แลกกับความเข้าใจง่าย
+  </div>
+
+  <!-- 2.8 Problem Statement -->
+  <h3><span class="nm">2.8</span> Problem Statement คืออะไร</h3>
+  <p><b>Problem Statement (ประโยคระบุปัญหา)</b> คือประโยคสั้น ๆ ที่สรุปปัญหาของผู้ใช้อย่างชัดเจนและยึดผู้ใช้เป็นศูนย์กลาง เป็นผลลัพธ์ชิ้นแรกของกระบวนการออกแบบที่ดี เพราะช่วยให้ทีมงานทั้งหมด — ทั้งนักออกแบบและนักพัฒนา — โฟกัสไปที่ <b>“ปัญหาที่แท้จริงของผู้ใช้”</b> ก่อนที่จะรีบกระโดดไปคิดฟีเจอร์หรือลงมือออกแบบหน้าจอ ซึ่งเป็นความเสี่ยงที่กล่าวถึงในหัวข้อ 2.5</p>
+
+  <p>โครงสร้างของ Problem Statement ที่นิยมใช้ในกระบวนการ UX มีรูปแบบดังนี้</p>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">📝</span> รูปแบบ Problem Statement</div>
+    “<b>[ผู้ใช้]</b> ต้องการ <b>[เป้าหมาย]</b> แต่ <b>[อุปสรรค]</b> ทำให้ <b>[ผลกระทบ]</b>”
+  </div>
+
+  <p>แต่ละส่วนของประโยคมีความหมายดังนี้</p>
+  <ul>
+    <li><b>[ผู้ใช้]</b> — ระบุกลุ่มผู้ใช้ให้เจาะจง ไม่ใช้คำกว้าง ๆ เช่น “ผู้ใช้ทุกคน” แต่ควรระบุบริบทหรือลักษณะเฉพาะ เช่น “เจ้าของสัตว์เลี้ยงที่เพิ่งพบว่าสัตว์หาย”</li>
+    <li><b>[เป้าหมาย]</b> — สิ่งที่ผู้ใช้ต้องการบรรลุ ต้องเป็น <i>เป้าหมาย</i> ไม่ใช่ <i>ทางแก้ปัญหา (solution)</i> เช่น “แจ้งเตือนคนใกล้เคียงให้เร็วที่สุด” ไม่ใช่ “อยากได้ปุ่มสีแดง”</li>
+    <li><b>[อุปสรรค]</b> — สิ่งที่ขัดขวางไม่ให้ผู้ใช้บรรลุเป้าหมายได้ในปัจจุบัน ควรมาจากข้อมูลจริงหรือการสังเกต ไม่ใช่การคาดเดา</li>
+    <li><b>[ผลกระทบ]</b> — ผลลัพธ์เชิงลบที่เกิดขึ้นจากอุปสรรคนั้น ยิ่งระบุให้วัดผลได้ (เช่น เวลาที่เสียไป โอกาสที่พลาด) ยิ่งช่วยให้ประเมินความสำเร็จของการออกแบบในภายหลังได้ง่าย</li>
+  </ul>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อยในการเขียน Problem Statement</div>
+    <ul style="margin-bottom:0">
+      <li>เขียนเป็น <b>solution/feature</b> แทนที่จะเป็นปัญหา เช่น “ผู้ใช้ต้องการปุ่มสั่งซื้อด่วนสีแดง” — นี่คือทางแก้ ไม่ใช่ปัญหา</li>
+      <li>ระบุผู้ใช้กว้างเกินไปจนไม่มีบริบท เช่น “ผู้ใช้ทุกคนต้องการแอปที่ดี”</li>
+      <li>ไม่มีอุปสรรคหรือผลกระทบที่ชัดเจน ทำให้ไม่รู้ว่าจะออกแบบเพื่อแก้อะไร และวัดผลความสำเร็จไม่ได้</li>
+    </ul>
+  </div>
+
+  <p>ตารางต่อไปนี้เปรียบเทียบตัวอย่าง Problem Statement ที่ <b>เขียนถูกต้อง</b> กับที่ <b>เขียนไม่ถูกต้อง</b> จากแอปพลิเคชัน 5 ประเภทที่พบได้ทั่วไป</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>แอปพลิเคชัน</th><th>✓ ตัวอย่างที่ถูกต้อง</th><th>✗ ตัวอย่างที่ไม่ถูกต้อง</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>1. แอปสั่งอาหารเดลิเวอรี</b></td>
+          <td>พนักงานออฟฟิศที่มีเวลาพักเที่ยงจำกัด ต้องการสั่งอาหารให้มาถึงทันภายในเวลาพัก แต่ขั้นตอนเลือกเมนูในแอปซับซ้อนและใช้เวลานาน ทำให้พลาดเวลาพักหรือต้องรีบกินอาหารอย่างเร่งรีบ</td>
+          <td>“ผู้ใช้ต้องการปุ่มสั่งซื้อด่วนสีแดงตรงกลางหน้าจอ” — ระบุ <i>ทางแก้ (solution)</i> ไม่ใช่ปัญหาของผู้ใช้</td>
+        </tr>
+        <tr>
+          <td><b>2. แอปธนาคารบนมือถือ</b></td>
+          <td>ผู้สูงอายุที่ไม่ถนัดเทคโนโลยี ต้องการโอนเงินให้ลูกหลานได้ด้วยตนเอง แต่ขั้นตอนยืนยันตัวตนมีศัพท์เทคนิคและหลายขั้นตอนเกินไป ทำให้ต้องพึ่งพาคนอื่นทำแทนอยู่เสมอและรู้สึกไม่มั่นใจในตัวเอง</td>
+          <td>“ผู้ใช้ทุกคนต้องการแอปธนาคารที่ทันสมัยและสวยงาม” — ไม่ระบุกลุ่มผู้ใช้ที่ชัดเจน และไม่มีอุปสรรค/ผลกระทบที่วัดผลได้</td>
+        </tr>
+        <tr>
+          <td><b>3. แพลตฟอร์มเรียนออนไลน์</b></td>
+          <td>นักศึกษาที่เรียนออนไลน์นอกเวลางาน ต้องการติดตามบทเรียนที่เรียนค้างไว้ให้ต่อได้ทันที แต่ระบบไม่บันทึกจุดที่หยุดดูวิดีโอไว้ ทำให้ต้องเสียเวลาไล่หาบทเรียนเดิมทุกครั้งจนหมดกำลังใจเรียนต่อ</td>
+          <td>“ระบบควรมี Dashboard แสดงกราฟความคืบหน้าที่สวยงาม” — เป็นข้อเสนอฟีเจอร์ ไม่ใช่การนิยามปัญหา</td>
+        </tr>
+        <tr>
+          <td><b>4. แอปจองคิวโรงพยาบาล</b></td>
+          <td>ผู้ป่วยโรคเรื้อรังที่ต้องมาพบแพทย์เป็นประจำ ต้องการทราบเวลาที่ต้องรอคิวจริงล่วงหน้า แต่แอปแสดงเพียงหมายเลขคิวโดยไม่ระบุเวลาโดยประมาณ ทำให้ต้องนั่งรอที่โรงพยาบาลนานเกินความจำเป็น</td>
+          <td>“ผู้ป่วยรู้สึกหงุดหงิดกับโรงพยาบาล” — คลุมเครือเกินไป ไม่ระบุเป้าหมาย อุปสรรค หรือผลกระทบที่ชัดเจน</td>
+        </tr>
+        <tr>
+          <td><b>5. แอปค้นหาสัตว์เลี้ยงหาย</b> <span style="color:var(--accent);font-weight:700">(กรณีศึกษาหลัก)</span></td>
+          <td>เจ้าของสัตว์เลี้ยงที่เพิ่งพบว่าสัตว์เลี้ยงหายไปจากบ้าน ต้องการแจ้งเตือนคนในพื้นที่ใกล้เคียงให้เร็วที่สุด แต่แอปที่มีอยู่ต้องกรอกฟอร์มยาวและหาปุ่มแจ้งหายยาก ทำให้แจ้งข่าวได้ช้าและโอกาสตามหาสัตว์เลี้ยงเจอลดลง</td>
+          <td>“อยากให้มีแอปค้นหาสัตว์เลี้ยงหายที่ใช้ AI จดจำใบหน้าสัตว์” — เป็นการเสนอฟีเจอร์/เทคโนโลยี ไม่ใช่การนิยามปัญหาของผู้ใช้</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    Problem Statement ที่ดีไม่ได้บอกว่า “จะสร้างอะไร” แต่บอกว่า <b>“ใครมีปัญหาอะไร และปัญหานั้นส่งผลอย่างไร”</b> ยิ่งเขียนได้เจาะจงและวัดผลได้มากเท่าไร ก็ยิ่งช่วยนำทางการออกแบบในบทถัดไป (Design Thinking, Persona, Journey Map) ให้ตรงจุดมากขึ้นเท่านั้น ในกิจกรรม Workshop ท้ายบทนี้ นักศึกษาจะได้ฝึกเขียน Problem Statement ของแอปค้นหาสัตว์เลี้ยงหายด้วยตนเอง โดยใช้รูปแบบและตัวอย่างข้างต้นเป็นแนวทาง
+  </div>
+
+  <!-- ตัวอย่างโค้ดประกอบ: semantic UI -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: UI ที่ดีเริ่มจากโครงสร้างที่สื่อความหมาย</h4>
+  <p>แม้บทนี้จะเน้นแนวคิด แต่หลักการ UX/UI ส่งผลถึงการเขียนโค้ดโดยตรง ตัวอย่างปุ่ม “แจ้งสัตว์เลี้ยงหาย” ควรเขียนด้วย HTML ที่สื่อความหมาย (semantic) เพื่อให้ทั้งผู้ใช้ทั่วไปและผู้ใช้ screen reader เข้าใจตรงกัน — เป็นการเชื่อมโยงกับวิชาการพัฒนาเว็บแอปพลิเคชัน</p>
+  <pre><span class="cm">&lt;!-- ❌ ไม่สื่อความหมาย: ผู้ใช้ที่ใช้ screen reader ไม่รู้ว่าคือปุ่ม --&gt;</span>
+<span class="ky">&lt;div</span> <span class="st">class=</span><span class="st">"btn"</span> <span class="st">onclick=</span><span class="st">"report()"</span><span class="ky">&gt;</span>แจ้งสัตว์เลี้ยงหาย<span class="ky">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- ✅ สื่อความหมาย เข้าถึงได้ และสอดคล้อง mental model --&gt;</span>
+<span class="ky">&lt;button</span> <span class="st">type=</span><span class="st">"button"</span> <span class="st">aria-label=</span><span class="st">"แจ้งสัตว์เลี้ยงหาย"</span><span class="ky">&gt;</span>
+  🐾 แจ้งสัตว์เลี้ยงหาย
+<span class="ky">&lt;/button&gt;</span></pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">บทนี้เป็น <b>จุดเริ่มต้นของกรณีศึกษาหลัก</b> (Golden Thread) จึงยังไม่มีชิ้นงานเดิมให้อ้างอิง แต่ในคาบนี้นักศึกษาจะสร้าง “ชิ้นงานชิ้นแรก” ของ Design Portfolio คือ <b>Problem Statement ของแอปค้นหาสัตว์เลี้ยงหาย</b> ซึ่งจะเป็นรากฐานให้ทุกบทถัดไปต่อยอด</p>
+    </div>
+  </div>
+
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">Problem Statement ที่ได้ในบทนี้จะถูกนำไปใช้ใน <b>บทที่ 2: กระบวนการคิดเชิงออกแบบ (Design Thinking)</b> เพื่อวางแผนกระบวนการทำงานทั้งโปรเจกต์ และกำหนดว่าเราจะ “เข้าใจผู้ใช้” อย่างไรในขั้นต่อไป</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li><b>HCI</b> คือศาสตร์สหวิทยาการที่ศึกษาปฏิสัมพันธ์ระหว่างมนุษย์ ส่วนติดต่อ และระบบ ผ่านวงจร input–feedback</li>
+    <li><b>UX</b> คือประสบการณ์โดยรวมของผู้ใช้ (รู้สึก/ทำงานสำเร็จอย่างไร) ส่วน <b>UI</b> คือส่วนที่ผู้ใช้สัมผัสและมองเห็น (หน้าตาเป็นอย่างไร) ทั้งสองต้องทำงานร่วมกัน</li>
+    <li><b>Usability</b> ประกอบด้วย 5 ด้าน: Learnability, Efficiency, Memorability, Errors, Satisfaction</li>
+    <li><b>User-Centered Design (UCD)</b> เป็นกระบวนการวนซ้ำที่ยึดผู้ใช้เป็นศูนย์กลางในทุกการตัดสินใจ</li>
+    <li><b>Mental Model</b> คือความคาดหวังของผู้ใช้ที่นักออกแบบควรออกแบบให้สอดคล้อง เพื่อให้ใช้งานได้ง่ายโดยไม่ต้องเรียนรู้ใหม่</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">จงอธิบายความหมายของ HCI ด้วยภาษาของตนเอง พร้อมระบุองค์ประกอบสามส่วนในวงจรปฏิสัมพันธ์</div>
+    <div class="rq">UX กับ UI ต่างกันอย่างไร? ยกตัวอย่างองค์ประกอบของแต่ละด้านมาอย่างละ 2 รายการจากแอปที่นักศึกษาใช้ประจำ</div>
+    <div class="rq">องค์ประกอบ 5 ด้านของ Usability ตาม Nielsen มีอะไรบ้าง และด้านใดที่นักศึกษาคิดว่าสำคัญที่สุดสำหรับแอปฉุกเฉิน เพราะเหตุใด</div>
+    <div class="rq">“Mental Model” มีผลต่อการเลือกใช้ไอคอนและคำในส่วนติดต่ออย่างไร ยกตัวอย่างไอคอนที่สอดคล้องและขัดแย้งกับ mental model</div>
+    <div class="rq">เหตุใดการเริ่มออกแบบ UI ทันทีโดยข้ามงาน UX จึงเป็นความเสี่ยง? อธิบายโดยเชื่อมโยงกับกรณีแอปค้นหาสัตว์เลี้ยงหาย</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มย่อย 3–4 คน โดยใช้กระดาษ/ไวต์บอร์ดหรือ FigJam/Miro ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “แอปที่ฉันเกลียด”</span> <span class="min">(10 นาที)</span><br>แต่ละคนเล่าประสบการณ์ใช้แอป/เว็บที่ใช้งานยาก 1 ตัว แล้วระบุว่าเป็นปัญหาด้าน UX หรือ UI</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวนแนวคิด HCI, UX vs UI, Usability และ mental model จดประเด็นสำคัญที่จะใช้ในกิจกรรม และซักถามข้อสงสัย</li>
+    <li><span class="t">ทำความรู้จักกรณีศึกษา</span> <span class="min">(15 นาที)</span><br>ทำความเข้าใจโจทย์ “เว็บแอปค้นหาสัตว์เลี้ยงหาย” แล้วอภิปรายในกลุ่มว่าใครคือผู้ใช้ และเขาเจอปัญหาอะไร</li>
+    <li><span class="t">ระดมสมองปัญหาของผู้ใช้</span> <span class="min">(25 นาที)</span><br>เขียน sticky note ปัญหาที่เจ้าของสัตว์เลี้ยงและผู้พบเห็นน่าจะเจอ แล้วจัดกลุ่มปัญหาที่คล้ายกัน</li>
+    <li><span class="t">ร่าง Problem Statement</span> <span class="min">(25 นาที)</span><br>เขียนประโยคปัญหาในรูปแบบ: “[ผู้ใช้] ต้องการ [เป้าหมาย] แต่ [อุปสรรค] ทำให้ [ผลกระทบ]” — ทบทวนความหมายและตัวอย่างที่ถูก/ไม่ถูกต้องได้ที่หัวข้อ <a href="#content">2.8 Problem Statement คืออะไร</a> ก่อนเริ่มเขียน</li>
+    <li><span class="t">Peer Review</span> <span class="min">(20 นาที)</span><br>สลับผลงานกับอีกกลุ่ม ให้ข้อเสนอแนะตามเกณฑ์: ปัญหาชัดเจนไหม / ยึดผู้ใช้เป็นศูนย์กลางไหม / วัดผลได้ไหม</li>
+    <li><span class="t">นำเสนอและสรุป</span> <span class="min">(10 นาที)</span><br>แต่ละกลุ่มนำเสนอ Problem Statement 1 ประโยค ร่วมกันสรุปบทเรียน และทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 1)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 2</span>
+    <h4 style="margin-top:0">ชิ้นงาน: เอกสาร “Problem Statement &amp; การวิเคราะห์ UX/UI เบื้องต้น”</h4>
+    <p>เป็นชิ้นงานชิ้นแรกของ Design Portfolio สะสมตลอดวิชา ส่งเป็นไฟล์ PDF 1–2 หน้า ประกอบด้วย:</p>
+    <ol>
+      <li><b>Problem Statement</b> ของแอปค้นหาสัตว์เลี้ยงหาย (ปรับปรุงจากที่ร่างในคาบ) เขียนตามรูปแบบ “ผู้ใช้–เป้าหมาย–อุปสรรค–ผลกระทบ”</li>
+      <li><b>ระบุกลุ่มผู้ใช้หลัก</b> อย่างน้อย 2 กลุ่ม (เช่น เจ้าของที่ทำสัตว์เลี้ยงหาย / ผู้พบเห็นสัตว์จร) พร้อมเป้าหมายของแต่ละกลุ่ม</li>
+      <li><b>ตารางแยกประเด็น UX และ UI</b> ของแอปนี้อย่างละ 3 ข้อ (เช่น UX: ต้องแจ้งหายได้เร็ว / UI: ปุ่มแจ้งหายต้องเด่น)</li>
+      <li><b>วิเคราะห์ Usability</b> โดยเลือก 2 จาก 5 ด้านของ Nielsen ที่สำคัญที่สุดสำหรับแอปนี้ พร้อมเหตุผล</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: บทเรียนสำคัญที่ได้จากบทนี้</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความชัดเจนของปัญหา (30%) · การยึดผู้ใช้เป็นศูนย์กลาง (25%) · ความถูกต้องของการแยก UX/UI (25%) · การวิเคราะห์ usability (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">เขียน Problem Statement ครบรูปแบบ “ผู้ใช้–เป้าหมาย–อุปสรรค–ผลกระทบ”</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">ระบุกลุ่มผู้ใช้หลักอย่างน้อย 2 กลุ่ม พร้อมเป้าหมายของแต่ละกลุ่ม</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">มีตารางแยกประเด็น UX และ UI อย่างละ 3 ข้อ</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">วิเคราะห์ Usability 2 ด้าน พร้อมเหตุผลประกอบ</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">เขียนส่วนสะท้อนคิด (Reflection) 3–5 บรรทัด</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">ตรวจการสะกดคำ และจัดรูปแบบเอกสารให้อ่านง่าย</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อไฟล์ตามรูปแบบ <code class="inl">A1_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 2</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <a class="next-link" href="บทที่2_กระบวนการคิดเชิงออกแบบ.html">
+      <div>
+        <div class="lbl">บทถัดไป →</div>
+        <div class="nm">บทที่ 2 · กระบวนการคิดเชิงออกแบบ (Design Thinking)</div>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  // บันทึกสถานะ checklist ไว้ในเครื่อง (ทำงานเมื่อเปิดไฟล์ในเบราว์เซอร์)
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch1_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){
+          localStorage.setItem(key, b.checked ? '1':'0');
+        });
+      });
+    }catch(e){/* ถ้าเบราว์เซอร์ไม่อนุญาต localStorage ก็ยังติ๊กได้ปกติ */}
+  })();
+</script>
+
+</body>
+</html>

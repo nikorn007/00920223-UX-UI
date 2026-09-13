@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 5 — User Journey Map | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 5 : ฟ้าคราม (Cyan Blue) ===== */
+  :root{
+    --ch:#0e7fa6;
+    --ch-dark:#0a5b78;
+    --ch-soft:#e0f1f7;
+    --ch-softer:#f1f9fb;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f5fafc;
+    --card:#ffffff;
+    --line:#cfe6ef;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(10,91,120,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(10,91,120,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.15rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.15rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.45rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#e6f3f8;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+  tbody th{background:var(--ch-soft);color:var(--ch-dark);text-align:left;padding:11px 14px;border-top:1px solid var(--line);font-family:var(--head);font-weight:600;white-space:nowrap;vertical-align:top}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* journey example highlights */
+  .emo{font-size:1.3rem}
+  .opp{background:#fff6e9;color:#a8631d}
+  .pain-cell{color:var(--warn)}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.08rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.6rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.2rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 5</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 5 · Chapter 5</span>
+    <h1>แผนผังการเดินทางของผู้ใช้</h1>
+    <div class="en">User Journey Map</div>
+    <p class="lead">กางประสบการณ์ของผู้ใช้ออกตามแกนเวลา — ติดตามว่า Persona ทำอะไร คิดอะไร และรู้สึกอย่างไรในแต่ละช่วง เพื่อค้นหา pain points และโอกาสในการออกแบบ โดยต่อยอดจาก Empathy Map ในบทที่ 4</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO4</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 5 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Analyze</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO4</b> — วิเคราะห์เส้นทางผู้ใช้ (User Journey Map) เพื่อระบุ pain points และโอกาสในการออกแบบ</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายความหมายและประโยชน์ของ User Journey Map</b> ในการมองประสบการณ์ผู้ใช้แบบ end-to-end
+    <div class="obj-meta"><span class="tagm tag-clo">CLO4</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>ระบุองค์ประกอบของ Journey Map</b> ได้แก่ ช่วงเวลา การกระทำ ความคิด touchpoints เส้นกราฟอารมณ์ pain points และโอกาส
+    <div class="obj-meta"><span class="tagm tag-clo">CLO4</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>ต่อยอด Empathy Map สู่ Journey Map</b> โดยแปลงมิติ Feels และ Pains ให้เป็นเส้นกราฟอารมณ์และจุดเจ็บปวดตามแต่ละช่วง
+    <div class="obj-meta"><span class="tagm tag-clo">CLO4</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>วิเคราะห์เส้นทางผู้ใช้เพื่อค้นหา pain points และโอกาสในการออกแบบ</b> ที่มีลำดับความสำคัญ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO4</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>สร้าง Journey Map ของกรณีศึกษา</b> โดยใช้ Persona “พิม” เป็นตัวเอกในเส้นทางตามหาสัตว์เลี้ยงหาย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO4</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ปัญหาที่แย่ที่สุดของผู้ใช้ มักไม่ได้อยู่ที่หน้าจอใดหน้าจอหนึ่ง แต่อยู่ที่ ‘รอยต่อ’ ระหว่างขั้นตอน” — เราจะมองเห็นรอยต่อที่มองไม่เห็นเหล่านั้นได้อย่างไร?</p>
+
+  <p>ในบทที่ 4 เราสร้าง Persona และ Empathy Map ซึ่งเป็นภาพ “โลกภายในของผู้ใช้ในภาพรวม” แต่ภาพนั้นยังเป็นภาพนิ่ง บทนี้จะนำภาพนั้นมา “กางออกตามแกนเวลา” ด้วย <b>User Journey Map</b> เพื่อดูว่าอารมณ์และอุปสรรคของผู้ใช้เกิดขึ้นตรงจุดไหนของเส้นทาง ตั้งแต่ต้นจนจบ</p>
+
+  <p>Journey Map ช่วยให้ทีมเห็นประสบการณ์แบบ end-to-end ไม่ใช่แค่ทีละหน้าจอ ทำให้ค้นพบว่าควรลงมือออกแบบแก้ที่จุดใดก่อน ซึ่งเป็นทักษะการวิเคราะห์ (Analyze) ที่เป็นหัวใจของบทนี้</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    เส้นทางของ “พิม” ตั้งแต่รู้ว่าน้องหมาหายจนได้กลับคืน น่าจะมีกี่ช่วง? และในช่วงไหนที่เธอน่าจะรู้สึกแย่ที่สุด — จุดนั้นแหละคือโอกาสที่แอปของเราจะสร้างคุณค่าได้มากที่สุด
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 -->
+  <h3><span class="nm">2.1</span> User Journey Map คืออะไร</h3>
+  <p><b>User Journey Map</b> (แผนผังการเดินทางของผู้ใช้) คือภาพที่แสดงลำดับขั้นตอนและประสบการณ์ของผู้ใช้ขณะพยายามบรรลุเป้าหมายหนึ่ง ๆ ตั้งแต่ต้นจนจบ โดยแสดงทั้งสิ่งที่ผู้ใช้ทำ คิด รู้สึก และจุดที่มีปฏิสัมพันธ์กับระบบ (touchpoints) จุดเด่นคือทำให้ทีมเห็น “ภาพรวมของประสบการณ์” และค้นพบ pain points ที่ซ่อนอยู่ตามรอยต่อระหว่างขั้นตอน</p>
+
+  <!-- 2.2 anatomy -->
+  <h3><span class="nm">2.2</span> องค์ประกอบของ Journey Map</h3>
+  <p>Journey map ส่วนใหญ่จัดเป็นตาราง โดยให้ <b>คอลัมน์</b> เป็นช่วงเวลา (stages) และ <b>แถว</b> เป็นมิติต่าง ๆ ที่เราติดตาม ได้แก่ การกระทำ (Actions), ความคิด/คำพูด (Thoughts), จุดสัมผัส (Touchpoints), <b>เส้นกราฟอารมณ์ (Emotion curve)</b>, จุดเจ็บปวด (Pain points) และ โอกาส (Opportunities)</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="โครงสร้างของ Journey Map พร้อมเส้นกราฟอารมณ์">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- stage headers -->
+        <g text-anchor="middle" font-size="13" font-weight="700" fill="#0a5b78">
+          <rect x="120" y="20" width="100" height="30" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="170" y="40">ช่วงที่ 1</text>
+          <rect x="230" y="20" width="100" height="30" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="280" y="40">ช่วงที่ 2</text>
+          <rect x="340" y="20" width="100" height="30" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="390" y="40">ช่วงที่ 3</text>
+          <rect x="450" y="20" width="100" height="30" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="500" y="40">ช่วงที่ 4</text>
+        </g>
+        <!-- row labels -->
+        <g font-size="12.5" fill="#0a5b78" font-weight="600">
+          <text x="20" y="78">การกระทำ</text>
+          <text x="20" y="108">touchpoints</text>
+          <text x="20" y="190">อารมณ์</text>
+          <text x="20" y="252">pain / โอกาส</text>
+        </g>
+        <!-- grid lines -->
+        <g stroke="#cfe6ef" stroke-width="1">
+          <line x1="120" y1="60" x2="550" y2="60"/><line x1="120" y1="90" x2="550" y2="90"/><line x1="120" y1="120" x2="550" y2="120"/><line x1="120" y1="230" x2="550" y2="230"/>
+          <line x1="120" y1="60" x2="120" y2="270"/><line x1="230" y1="60" x2="230" y2="270"/><line x1="340" y1="60" x2="340" y2="270"/><line x1="450" y1="60" x2="450" y2="270"/><line x1="550" y1="60" x2="550" y2="270"/>
+        </g>
+        <!-- emotion curve -->
+        <polyline points="170,150 280,205 390,195 500,135" fill="none" stroke="#e08a3c" stroke-width="3"/>
+        <g fill="#e08a3c"><circle cx="170" cy="150" r="6"/><circle cx="280" cy="205" r="6"/><circle cx="390" cy="195" r="6"/><circle cx="500" cy="135" r="6"/></g>
+        <text x="500" y="124" text-anchor="middle" font-size="15">🙂</text>
+        <text x="280" y="224" text-anchor="middle" font-size="15">☹️</text>
+        <text x="600" y="155" font-size="12" fill="#a8631d">เส้นกราฟ</text>
+        <text x="600" y="172" font-size="12" fill="#a8631d">อารมณ์</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 5.1</b> โครงสร้างทั่วไปของ Journey Map — คอลัมน์คือช่วงเวลา แถวคือมิติที่ติดตาม และเส้นกราฟอารมณ์แสดงความรู้สึกขึ้นลงตลอดเส้นทาง</figcaption>
+  </figure>
+
+  <!-- 2.3 from empathy map -->
+  <h3><span class="nm">2.3</span> ต่อยอดจาก Empathy Map สู่ Journey Map</h3>
+  <p>นี่คือหัวใจของบทนี้ — Empathy Map จากบทที่ 4 ไม่ได้ถูกทิ้งไป แต่ถูกนำมา “แปลง” เป็นวัตถุดิบของ Journey Map โดยตรง มิติ <b>Feels</b> กลายเป็นเส้นกราฟอารมณ์ มิติ <b>Pains</b> กลายเป็น pain points ตามช่วง ส่วน <b>Does</b> และ <b>Says</b> ช่วยกำหนด actions และ touchpoints</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="การแปลง Empathy Map สู่ Journey Map">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- empathy side -->
+        <rect x="20" y="40" width="190" height="170" rx="12" fill="#fce4ef" stroke="#c0397b" stroke-width="2"/>
+        <text x="115" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#962152">Empathy Map (บทที่ 4)</text>
+        <g font-size="13.5" fill="#962152" font-weight="600">
+          <text x="40" y="78">🗣️ Says</text><text x="40" y="110">💭 Thinks</text><text x="40" y="142">🤚 Does</text><text x="40" y="174">❤️ Feels</text><text x="40" y="200" fill="#c0492f">⛔ Pains</text>
+        </g>
+        <!-- journey side -->
+        <rect x="410" y="40" width="190" height="170" rx="12" fill="#e0f1f7" stroke="#0e7fa6" stroke-width="2"/>
+        <text x="505" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#0a5b78">Journey Map (บทที่ 5)</text>
+        <g font-size="13.5" fill="#0a5b78" font-weight="600">
+          <text x="430" y="78">การกระทำ</text><text x="430" y="110">touchpoints</text><text x="430" y="150">เส้นกราฟอารมณ์</text><text x="430" y="190" fill="#c0492f">pain points</text>
+        </g>
+        <!-- arrows -->
+        <g stroke="#5e6b78" stroke-width="2" fill="none">
+          <path d="M212 142 C300 142 320 70 408 70" marker-end="url(#a)"/>
+          <path d="M212 70 C300 70 330 104 408 104" marker-end="url(#a)"/>
+          <path d="M212 174 C300 174 330 146 408 146" marker-end="url(#a)" stroke="#e08a3c"/>
+          <path d="M212 200 C300 200 330 188 408 188" marker-end="url(#a)" stroke="#c0492f"/>
+        </g>
+      </g>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#5e6b78"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 5.2</b> Empathy Map เป็นวัตถุดิบของ Journey Map — Feels→เส้นอารมณ์, Pains→pain points, Does→การกระทำ, Says→touchpoints</figcaption>
+  </figure>
+
+  <h4>ตาราง: Feels/Pains ของ “พิม” ไปปรากฏที่ช่วงใดของเส้นทาง</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ข้อมูลจาก Empathy Map (บทที่ 4)</th><th>ประเภท</th><th>ไปปรากฏที่ช่วงของ Journey Map</th></tr></thead>
+      <tbody>
+        <tr><td>ตื่นตระหนก ใจหายวาบ</td><td>Feels</td><td>ช่วงที่ 1: รู้ว่าสัตว์หาย (อารมณ์ดิ่งลง)</td></tr>
+        <tr><td>ไม่รู้จะเริ่มตรงไหน</td><td class="pain-cell">Pains</td><td>ช่วงที่ 2: เริ่มตามหาเอง</td></tr>
+        <tr><td>เดินหารอบหมู่บ้าน ถ่ายรูปไปด้วย</td><td>Does</td><td>ช่วงที่ 2: เป็น Actions</td></tr>
+        <tr><td>“ขอแชร์ด่วน ๆ นะคะ”</td><td>Says</td><td>ช่วงที่ 3: กระจายข่าว (touchpoint โซเชียล)</td></tr>
+        <tr><td>ข่าวกระจายช้า กระจัดกระจาย</td><td class="pain-cell">Pains</td><td>ช่วงที่ 3–4: กระจายข่าว/รอเบาะแส</td></tr>
+        <tr><td>ท้อเมื่อไม่มีคนตอบ</td><td>Feels</td><td>ช่วงที่ 4: รอเบาะแส (อารมณ์ต่ำสุด)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.4 example journey -->
+  <h3><span class="nm">2.4</span> ตัวอย่าง Journey Map ของ “พิม” (กรณีศึกษา)</h3>
+  <div class="gt-ex" style="margin-bottom:10px"><span class="tag">Persona: พิม · สถานการณ์: ตามหาสุนัขที่หลุดออกจากบ้าน</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>มิติ</th><th>1. รู้ว่าสัตว์หาย</th><th>2. เริ่มตามหาเอง</th><th>3. กระจายข่าว</th><th>4. รอเบาะแส</th><th>5. พบ &amp; ได้คืน</th></tr></thead>
+      <tbody>
+        <tr><th>การกระทำ</th><td>พบว่าประตูเปิด น้องหมาหายไป</td><td>เดินหารอบบ้าน เรียกชื่อ ถ่ายรูปล่าสุด</td><td>โพสต์ลงหลายกลุ่ม ติดป้าย</td><td>คอยเช็กคอมเมนต์ ตอบข้อความ</td><td>มีคนพบและติดต่อกลับ ไปรับน้องหมา</td></tr>
+        <tr><th>ความคิด/คำพูด</th><td>“หายได้ไง!”</td><td>“ต้องรีบ เดี๋ยวไปไกล”</td><td>“โพสต์ตรงไหนคนเห็นเยอะ”</td><td>“ทำไมไม่มีใครเห็นเลย”</td><td>“ขอบคุณจริง ๆ ค่ะ”</td></tr>
+        <tr><th>touchpoints</th><td>—</td><td>มือถือ (กล้อง)</td><td>โซเชียลมีเดีย, ป้ายประกาศ</td><td>การแจ้งเตือนโซเชียล</td><td>โทรศัพท์, แผนที่</td></tr>
+        <tr><th>อารมณ์</th><td><span class="emo">😱</span></td><td><span class="emo">😟</span></td><td><span class="emo">😣</span></td><td><span class="emo">😞</span></td><td><span class="emo">😄</span></td></tr>
+        <tr><th>Pain points</th><td class="pain-cell">ตกใจ คิดไม่เป็นระบบ</td><td class="pain-cell">ไม่รู้จะเริ่มตรงไหน</td><td class="pain-cell">ต้องโพสต์ซ้ำหลายที่</td><td class="pain-cell">ข่าวกระจายช้า เบาะแสกระจัดกระจาย</td><td>—</td></tr>
+        <tr><th>โอกาสออกแบบ</th><td class="opp">มีคู่มือ/checklist สิ่งที่ต้องทำทันที</td><td class="opp">ปุ่มแจ้งหายเด่นชัด ฟอร์มสั้น</td><td class="opp">กระจายข่าวอัตโนมัติไปหลายช่องทาง</td><td class="opp">รวมเบาะแสไว้ที่เดียว + แจ้งเตือนคนใกล้เคียง</td><td class="opp">ปิดเคส + ขอบคุณผู้ช่วยเหลือ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="fig">
+    <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Journey Map ของพิม แบบแผนภาพพร้อมเส้นกราฟอารมณ์">
+      <g font-family="'Sarabun',sans-serif">
+        <text x="350" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#0a5b78">Journey Map ของ “พิม” — ตามหาสุนัขที่หาย</text>
+        <!-- stage headers -->
+        <g text-anchor="middle" font-size="12.5" font-weight="700" fill="#0a5b78">
+          <rect x="85" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="140" y="59">รู้ว่าสัตว์หาย</text>
+          <rect x="205" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="260" y="59">เริ่มตามหาเอง</text>
+          <rect x="325" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="380" y="59">กระจายข่าว</text>
+          <rect x="445" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="500" y="59">รอเบาะแส</text>
+          <rect x="565" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="620" y="59">พบ &amp; ได้คืน</text>
+        </g>
+        <!-- row labels -->
+        <g font-size="11.5" font-weight="600" fill="#0a5b78">
+          <text x="10" y="100">การกระทำ</text>
+          <text x="10" y="205">อารมณ์</text>
+          <text x="10" y="330" fill="#c0492f">pain points</text>
+        </g>
+        <!-- actions -->
+        <g text-anchor="middle" font-size="11" fill="#5e6b78">
+          <text x="140" y="100">พบประตูเปิด</text>
+          <text x="260" y="100">เดินหา/ถ่ายรูป</text>
+          <text x="380" y="100">โพสต์/ติดป้าย</text>
+          <text x="500" y="100">เช็กคอมเมนต์</text>
+          <text x="620" y="100">ไปรับน้องหมา</text>
+        </g>
+        <!-- grid dividers -->
+        <g stroke="#cfe6ef" stroke-width="1">
+          <line x1="80" y1="80" x2="80" y2="345"/><line x1="200" y1="80" x2="200" y2="345"/><line x1="320" y1="80" x2="320" y2="345"/>
+          <line x1="440" y1="80" x2="440" y2="345"/><line x1="560" y1="80" x2="560" y2="345"/><line x1="680" y1="80" x2="680" y2="345"/>
+          <line x1="80" y1="120" x2="680" y2="120"/><line x1="80" y1="290" x2="680" y2="290"/>
+        </g>
+        <!-- neutral baseline -->
+        <line x1="80" y1="200" x2="680" y2="200" stroke="#9cc3d4" stroke-width="1" stroke-dasharray="5 4"/>
+        <text x="686" y="203" font-size="10" fill="#9cb0bb"> </text>
+        <!-- emotion curve -->
+        <polyline points="140,208 260,224 380,236 500,250 620,152" fill="none" stroke="#e08a3c" stroke-width="3"/>
+        <g fill="#e08a3c"><circle cx="140" cy="208" r="6"/><circle cx="260" cy="224" r="6"/><circle cx="380" cy="236" r="6"/><circle cx="500" cy="250" r="6"/><circle cx="620" cy="152" r="6"/></g>
+        <!-- emoji -->
+        <g text-anchor="middle" font-size="18">
+          <text x="140" y="192">😱</text><text x="260" y="210">😟</text><text x="380" y="222">😣</text><text x="500" y="238">😞</text><text x="620" y="138">😄</text>
+        </g>
+        <!-- lowest marker -->
+        <text x="500" y="276" text-anchor="middle" font-size="10.5" fill="#c0492f" font-weight="600">↑ ต่ำสุด</text>
+        <!-- pain points -->
+        <g text-anchor="middle" font-size="11" fill="#c0492f">
+          <text x="140" y="320">ตกใจ</text>
+          <text x="260" y="320">ไม่รู้เริ่มตรงไหน</text>
+          <text x="380" y="320">ต้องโพสต์ซ้ำ</text>
+          <text x="500" y="320">ข่าวกระจายช้า</text>
+          <text x="620" y="320" fill="#2e8b57">—</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 5.3</b> Journey Map ของ “พิม” ในรูปแบบแผนภาพ — เส้นกราฟอารมณ์ดิ่งต่ำสุดช่วง “รอเบาะแส” แล้วพุ่งขึ้นเมื่อได้สัตว์เลี้ยงคืน</figcaption>
+  </figure>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    ช่วงที่อารมณ์ดิ่งต่ำสุด (ช่วง 3–4) คือจุดที่ผู้ใช้ทุกข์ที่สุด จึงเป็น “โอกาสทอง” ที่การออกแบบของเราจะสร้างคุณค่าได้สูงสุด — โอกาสเหล่านี้จะกลายเป็นฟีเจอร์หลักของแอปในบทต่อไป
+  </div>
+
+  <!-- 2.5 steps -->
+  <h3><span class="nm">2.5</span> ขั้นตอนการสร้าง Journey Map</h3>
+  <p>เริ่มจาก (1) เลือก Persona และสถานการณ์ (scenario) ที่ชัดเจน (2) แบ่งช่วงเวลา (stages) ของเส้นทาง (3) เติม Actions, Thoughts, Touchpoints จาก Does/Says ใน Empathy Map (4) วาดเส้นกราฟอารมณ์จาก Feels (5) ระบุ pain points จาก Pains และ (6) แปลง pain points เป็นโอกาสในการออกแบบ</p>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>ทำ journey map โดยไม่อิงข้อมูลจริง</b> — กลายเป็นเส้นทางในจินตนาการของทีม ไม่ใช่ของผู้ใช้</li>
+      <li><b>ใส่แต่ขั้นตอนบนหน้าจอ</b> ลืมช่วง “ก่อน” และ “หลัง” ใช้แอป ทั้งที่ pain points มักอยู่ตรงนั้น</li>
+      <li><b>ลืมเส้นกราฟอารมณ์</b> ทำให้มองไม่เห็นว่าจุดไหนที่ผู้ใช้ทุกข์ที่สุดและควรแก้ก่อน</li>
+    </ul>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: จากช่วงเวลาในเส้นทางสู่ลำดับฟีเจอร์</h4>
+  <p>โอกาสในการออกแบบที่พบในแต่ละช่วง สามารถจัดเก็บอย่างมีโครงสร้างเพื่อแปลงเป็น backlog ของฟีเจอร์ที่จัดลำดับความสำคัญตามความรุนแรงของ pain point ซึ่งเชื่อมโดยตรงกับการวางแผนพัฒนาเว็บแอป</p>
+  <pre><span class="cm">// แต่ละช่วงของ journey map → โอกาสที่จัดลำดับเป็น backlog</span>
+<span class="ky">const</span> journeyStages = [
+  { stage: <span class="st">"กระจายข่าว"</span>,   emotion: <span class="ky">-2</span>, pain: <span class="st">"ต้องโพสต์ซ้ำหลายที่"</span>,
+    opportunity: <span class="st">"กระจายข่าวอัตโนมัติหลายช่องทาง"</span>, priority: <span class="st">"high"</span> },
+  { stage: <span class="st">"รอเบาะแส"</span>,    emotion: <span class="ky">-3</span>, pain: <span class="st">"เบาะแสกระจัดกระจาย"</span>,
+    opportunity: <span class="st">"รวมเบาะแส + แจ้งเตือนคนใกล้เคียง"</span>, priority: <span class="st">"high"</span> }
+];</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">บทนี้ต่อยอด <b>Empathy Map ของ “พิม”</b> จาก <b>บทที่ 4</b> โดยตรง — มิติ <b>Feels</b> (ตื่นตระหนก, ท้อ) กลายเป็นเส้นกราฟอารมณ์ และ <b>Pains</b> (ไม่รู้จะเริ่มตรงไหน, ข่าวกระจายช้า) กลายเป็น pain points ตามช่วงเวลา ดังที่แสดงในตารางหัวข้อ 2.3 ทำให้ข้อมูลผู้ใช้ไหลต่อเนื่องโดยไม่ขาดตอน</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0"><b>โอกาสในการออกแบบ</b> ที่ค้นพบในแถวสุดท้ายของ journey map (เช่น “ฟอร์มแจ้งหายสั้น”, “รวมเบาะแสไว้ที่เดียว”) จะกลายเป็นรายการฟังก์ชัน/เนื้อหา ที่นำไปจัดโครงสร้างใน <b>บทที่ 6: สถาปัตยกรรมข้อมูลและการไหลของหน้าจอ</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li><b>User Journey Map</b> แสดงประสบการณ์ผู้ใช้แบบ end-to-end ตามแกนเวลา ช่วยค้นพบ pain points ตามรอยต่อระหว่างขั้นตอน</li>
+    <li>องค์ประกอบหลัก: ช่วงเวลา, การกระทำ, ความคิด, touchpoints, <b>เส้นกราฟอารมณ์</b>, pain points และโอกาส</li>
+    <li><b>Empathy Map ต่อยอดเป็น Journey Map</b> — Feels→เส้นอารมณ์, Pains→pain points, Does→actions, Says→touchpoints</li>
+    <li>ช่วงที่ <b>อารมณ์ต่ำสุด</b> คือโอกาสที่การออกแบบจะสร้างคุณค่าได้มากที่สุด</li>
+    <li>Journey Map ต้องอิงข้อมูลจริง และครอบคลุมทั้งช่วง “ก่อน–ระหว่าง–หลัง” การใช้งาน</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">User Journey Map ต่างจาก Empathy Map อย่างไร และทั้งสองเชื่อมโยงกันอย่างไร</div>
+    <div class="rq">องค์ประกอบของ Journey Map มีอะไรบ้าง และเหตุใด “เส้นกราฟอารมณ์” จึงสำคัญต่อการจัดลำดับความสำคัญ</div>
+    <div class="rq">จากกรณีศึกษา มิติ Feels และ Pains ของพิมไปปรากฏที่ช่วงใดของเส้นทางบ้าง</div>
+    <div class="rq">เหตุใดช่วงที่อารมณ์ผู้ใช้ต่ำที่สุดจึงถือเป็น “โอกาสทอง” ในการออกแบบ</div>
+    <div class="rq">ลองร่าง journey map ของ “ผู้พบเห็นสัตว์จร” ว่าจะมีกี่ช่วง และ pain point หลักอยู่ตรงไหน</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มเดิม โดยใช้กระดาษแผ่นใหญ่/sticky note หรือ FigJam/Miro ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “เส้นทางกาแฟแก้วโปรด”</span> <span class="min">(10 นาที)</span><br>แต่ละคนวาด journey สั้น ๆ ของการซื้อกาแฟ 1 แก้ว พร้อมเส้นอารมณ์ เพื่อเข้าใจโครงสร้าง</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวนองค์ประกอบ journey map และวิธีต่อยอดจาก Empathy Map แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">ทบทวน Empathy Map (บทที่ 4)</span> <span class="min">(15 นาที)</span><br>นำ Feels/Pains/Does/Says ของ Persona มาแปะ เตรียมแปลงเป็นวัตถุดิบ journey</li>
+    <li><span class="t">แบ่งช่วงเวลา (Stages)</span> <span class="min">(15 นาที)</span><br>กำหนดช่วงเวลาของเส้นทางผู้ใช้ตั้งแต่ต้นจนจบ (รวมช่วงก่อน–หลังใช้แอป)</li>
+    <li><span class="t">เติมตารางและวาดเส้นอารมณ์</span> <span class="min">(30 นาที)</span><br>เติม Actions, Thoughts, Touchpoints, Pain points แต่ละช่วง แล้ววาดเส้นกราฟอารมณ์จาก Feels</li>
+    <li><span class="t">ระบุโอกาสในการออกแบบ</span> <span class="min">(20 นาที)</span><br>แปลง pain points เป็นโอกาส และทำเครื่องหมายช่วงที่อารมณ์ต่ำสุดเป็นจุดสำคัญ</li>
+    <li><span class="t">Peer Review &amp; สรุป</span> <span class="min">(15 นาที)</span><br>สลับผลงานกับอีกกลุ่ม ตรวจว่าทุกข้อมูลอิงจาก Empathy Map จริงหรือไม่ แล้วร่วมสรุปบทเรียน</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 5)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 6</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “User Journey Map ของ Persona หลัก”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 5 ของ Design Portfolio ต่อยอดจากบทที่ 4 ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>Journey Map สมบูรณ์ 1 ชุด</b> ของ Persona หลัก ครบทุกมิติ (Actions, Thoughts, Touchpoints, Emotion curve, Pain points, Opportunities) อย่างน้อย 4–5 ช่วง</li>
+      <li><b>ตารางเชื่อมโยง Empathy Map → Journey Map</b> ระบุว่า Feels/Pains แต่ละข้อไปปรากฏที่ช่วงใด</li>
+      <li><b>เส้นกราฟอารมณ์</b> ที่วาดชัดเจน และทำเครื่องหมายจุดที่อารมณ์ต่ำสุด</li>
+      <li><b>โอกาสในการออกแบบ 3–5 ข้อ</b> ที่จัดลำดับความสำคัญตามความรุนแรงของ pain point</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: การมองเส้นทางแบบ end-to-end เปลี่ยนมุมมองของกลุ่มอย่างไร</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความต่อเนื่องจาก Empathy Map (30%) · ความครบถ้วนของมิติ (25%) · คุณภาพการวิเคราะห์ pain/โอกาส (25%) · การสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">Journey Map มีอย่างน้อย 4–5 ช่วง ครอบคลุมก่อน–ระหว่าง–หลังใช้แอป</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">มีครบทุกมิติ: Actions, Thoughts, Touchpoints, Emotion, Pain points, Opportunities</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">มีตารางเชื่อมโยง Empathy Map → Journey Map (Feels/Pains ไปช่วงใด)</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">วาดเส้นกราฟอารมณ์ และทำเครื่องหมายจุดที่อารมณ์ต่ำสุด</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">ระบุโอกาสในการออกแบบ 3–5 ข้อ พร้อมจัดลำดับความสำคัญ</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">เขียนส่วนสะท้อนคิด (Reflection) 3–5 บรรทัด</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อตามรูปแบบ <code class="inl">A5_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 6</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่4_PersonaและEmpathyMap.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 4 · Persona และ Empathy Map</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 6 · สถาปัตยกรรมข้อมูลและ User Flow</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch5_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

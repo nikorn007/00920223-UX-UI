@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 2 — กระบวนการคิดเชิงออกแบบ (Design Thinking) | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 2 : เขียวมรกต (Emerald Teal) ===== */
+  :root{
+    --ch:#0f8a7e;          /* สีประจำบท */
+    --ch-dark:#0a6358;
+    --ch-soft:#e1f3f0;
+    --ch-softer:#f1faf8;
+    --accent:#e08a3c;      /* สีเสริม-ส้มอบอุ่น */
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f5faf9;
+    --card:#ffffff;
+    --line:#d6e7e3;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(15,89,80,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{
+    font-family:var(--th);
+    font-size:1rem;
+    line-height:1.7;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  /* ===== TOC sticky ===== */
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(15,89,80,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  /* ===== Hero ===== */
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.15rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.15rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  /* ===== Layout ===== */
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.45rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  /* ===== Objectives ===== */
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  /* ===== Boxes ===== */
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#eef8f6;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  /* Golden thread bridges */
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  /* ===== Golden thread example callout ===== */
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  /* ===== Diagram wrap ===== */
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  /* ===== Tables ===== */
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  /* ===== Code ===== */
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== Footer ===== */
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.08rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.prev{flex-direction:row}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}
+    .hero h1{font-size:1.6rem}
+    section{padding:22px 18px}
+    .sec-head h2{font-size:1.2rem}
+    main{padding:20px 14px 40px}
+    .toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}
+    .nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 2</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 2 · Chapter 2</span>
+    <h1>กระบวนการคิดเชิงออกแบบ</h1>
+    <div class="en">Design Thinking Process</div>
+    <p class="lead">เรียนรู้กรอบความคิดที่ยึดมนุษย์เป็นศูนย์กลางสำหรับแก้ปัญหาอย่างเป็นระบบ — ตั้งแต่การเข้าใจผู้ใช้ การนิยามปัญหา ไปจนถึงการสร้างและทดสอบทางแก้ พร้อมวางแผนกระบวนการทำงานของทั้งโปรเจกต์</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO2</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 2 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Understand</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO2</b> — อธิบายกระบวนการคิดเชิงออกแบบ (Design Thinking / Double Diamond) และนำมาวางแผนการทำงาน</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายความหมายและหลักการของ Design Thinking</b> ในฐานะกระบวนการแก้ปัญหาที่ยึดมนุษย์เป็นศูนย์กลาง
+    <div class="obj-meta"><span class="tagm tag-clo">CLO2</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>อธิบาย Design Thinking 5 ขั้นตอน</b> (Empathize, Define, Ideate, Prototype, Test) และความสัมพันธ์ระหว่างขั้นตอน
+    <div class="obj-meta"><span class="tagm tag-clo">CLO2</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>อธิบายกรอบ Double Diamond</b> และแนวคิดการคิดแบบกระจาย (Divergent) และรวบยอด (Convergent)
+    <div class="obj-meta"><span class="tagm tag-clo">CLO2</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>เขียนคำถาม “How Might We” (HMW)</b> จากปัญหาของผู้ใช้ เพื่อเปลี่ยนปัญหาให้เป็นโอกาสในการออกแบบ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO2</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>วางแผนกระบวนการออกแบบของโปรเจกต์</b> โดยนำกรอบ Design Thinking มาประยุกต์กับ “เว็บแอปค้นหาสัตว์เลี้ยงหาย”
+    <div class="obj-meta"><span class="tagm tag-clo">CLO2</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ถ้าเรามีเวลาแก้ปัญหา 1 ชั่วโมง ควรใช้เวลา 55 นาทีไปกับการทำความเข้าใจปัญหา และ 5 นาทีกับการหาทางแก้” — แนวคิดที่มักถูกอ้างถึงในงานออกแบบ คำถามคือ ทำไมการ ‘เข้าใจปัญหา’ จึงสำคัญกว่าการรีบหา ‘คำตอบ’?</p>
+
+  <p>ในบทที่ 1 เราเข้าใจแล้วว่า UX ที่ดีเริ่มจากการยึดผู้ใช้เป็นศูนย์กลาง แต่ “จะยึดผู้ใช้เป็นศูนย์กลางอย่างเป็นระบบได้อย่างไร?” คำตอบคือการมี <b>กระบวนการ (process)</b> ที่ชัดเจน บทนี้จะแนะนำ <b>Design Thinking</b> ซึ่งเป็นกรอบความคิดที่นักออกแบบทั่วโลกใช้เปลี่ยนปัญหาที่คลุมเครือให้กลายเป็นทางแก้ที่จับต้องได้ ผ่านการทำซ้ำและการทดสอบกับผู้ใช้จริง</p>
+
+  <p>Design Thinking ไม่ใช่สูตรตายตัว แต่เป็น “วิธีคิด” ที่ให้ความสำคัญกับการเข้าอกเข้าใจ (empathy) การทดลอง และการเรียนรู้จากความล้มเหลวอย่างรวดเร็ว ซึ่งสอดคล้องกับธรรมชาติของงานพัฒนาซอฟต์แวร์สมัยใหม่</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    สำหรับ “แอปค้นหาสัตว์เลี้ยงหาย” ถ้าทีมรีบกระโดดไปออกแบบหน้าจอทันที โดยไม่เข้าใจว่าเจ้าของสัตว์รู้สึกและทำอะไรในชั่วโมงแรกที่สัตว์หาย เราอาจสร้างฟีเจอร์ที่ดูดีแต่ไม่ตรงกับสิ่งที่เขาต้องการจริง — Design Thinking ช่วยป้องกันความผิดพลาดนี้
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 -->
+  <h3><span class="nm">2.1</span> Design Thinking คืออะไร</h3>
+  <p><b>Design Thinking</b> คือกระบวนการแก้ปัญหาที่ยึดมนุษย์เป็นศูนย์กลาง (human-centered) โดยเน้นการทำความเข้าใจความต้องการที่แท้จริงของผู้ใช้ ก่อนจะคิดค้นและทดสอบทางแก้ มีคุณลักษณะสำคัญ 3 ประการ คือ <b>เน้นมนุษย์</b> (เริ่มจากผู้ใช้เสมอ) <b>ทำซ้ำได้</b> (iterative — วนกลับไปปรับปรุงได้) และ <b>ลงมือทดลอง</b> (สร้างต้นแบบเร็ว ทดสอบเร็ว เรียนรู้เร็ว)</p>
+  <p>โมเดลที่นิยมที่สุดคือโมเดล 5 ขั้นตอนของ Hasso Plattner Institute of Design แห่งมหาวิทยาลัย Stanford (d.school) ซึ่งจะอธิบายต่อไป</p>
+
+  <!-- 2.2 five stages -->
+  <h3><span class="nm">2.2</span> Design Thinking 5 ขั้นตอน</h3>
+
+  <figure class="fig">
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Design Thinking 5 ขั้นตอน">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- stages -->
+        <g>
+          <rect x="10" y="60" width="120" height="92" rx="13" fill="#e1f3f0" stroke="#0f8a7e" stroke-width="2"/>
+          <text x="70" y="92" font-size="28">❤️</text>
+          <text x="70" y="120" font-size="15" font-weight="700" fill="#0a6358">Empathize</text>
+          <text x="70" y="140" font-size="13" fill="#5e6b78">เข้าใจผู้ใช้</text>
+        </g>
+        <g>
+          <rect x="148" y="60" width="120" height="92" rx="13" fill="#e1f3f0" stroke="#0f8a7e" stroke-width="2"/>
+          <text x="208" y="92" font-size="28">🎯</text>
+          <text x="208" y="120" font-size="15" font-weight="700" fill="#0a6358">Define</text>
+          <text x="208" y="140" font-size="13" fill="#5e6b78">นิยามปัญหา</text>
+        </g>
+        <g>
+          <rect x="286" y="60" width="120" height="92" rx="13" fill="#fff6e9" stroke="#e08a3c" stroke-width="2"/>
+          <text x="346" y="92" font-size="28">💡</text>
+          <text x="346" y="120" font-size="15" font-weight="700" fill="#a8631d">Ideate</text>
+          <text x="346" y="140" font-size="13" fill="#5e6b78">ระดมไอเดีย</text>
+        </g>
+        <g>
+          <rect x="424" y="60" width="120" height="92" rx="13" fill="#e1f3f0" stroke="#0f8a7e" stroke-width="2"/>
+          <text x="484" y="92" font-size="28">🛠️</text>
+          <text x="484" y="120" font-size="15" font-weight="700" fill="#0a6358">Prototype</text>
+          <text x="484" y="140" font-size="13" fill="#5e6b78">สร้างต้นแบบ</text>
+        </g>
+        <g>
+          <rect x="562" y="60" width="120" height="92" rx="13" fill="#e1f3f0" stroke="#0f8a7e" stroke-width="2"/>
+          <text x="622" y="92" font-size="28">🧪</text>
+          <text x="622" y="120" font-size="15" font-weight="700" fill="#0a6358">Test</text>
+          <text x="622" y="140" font-size="13" fill="#5e6b78">ทดสอบ</text>
+        </g>
+        <!-- forward arrows -->
+        <g stroke="#0f8a7e" stroke-width="2.4" fill="none">
+          <path d="M130 106 L146 106" marker-end="url(#a)"/>
+          <path d="M268 106 L284 106" marker-end="url(#a)"/>
+          <path d="M406 106 L422 106" marker-end="url(#a)"/>
+          <path d="M544 106 L560 106" marker-end="url(#a)"/>
+        </g>
+        <!-- iteration loop -->
+        <path d="M622 152 Q622 200 346 200 Q70 200 70 154" fill="none" stroke="#e08a3c" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#a2)"/>
+        <text x="346" y="195" font-size="13" fill="#a8631d" font-weight="600">วนกลับไปปรับปรุง (Iterative)</text>
+        <text x="350" y="32" font-size="18" font-weight="700" fill="#0a6358">กระบวนการ Design Thinking 5 ขั้นตอน</text>
+      </g>
+      <defs>
+        <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#0f8a7e"/></marker>
+        <marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#e08a3c"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>ภาพที่ 2.1</b> Design Thinking 5 ขั้นตอน ตามโมเดล Stanford d.school — เป็นกระบวนการวนซ้ำ ไม่ใช่เส้นตรง</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ขั้นตอน</th><th>เป้าหมาย</th><th>กิจกรรม/เครื่องมือหลัก</th></tr></thead>
+      <tbody>
+        <tr><td><b>1.Empathize</b><br>เข้าใจผู้ใช้</td><td>ทำความเข้าใจความต้องการ ความรู้สึก และบริบทของผู้ใช้อย่างลึกซึ้ง</td><td>สัมภาษณ์, สังเกตการณ์, Empathy Map</td></tr>
+        <tr><td><b>2.Define</b><br>นิยามปัญหา</td><td>สังเคราะห์ข้อมูลเป็นปัญหาที่ชัดเจน ยึดผู้ใช้เป็นศูนย์กลาง</td><td>Point of View (POV), Problem Statement</td></tr>
+        <tr><td><b>3.Ideate</b><br>ระดมไอเดีย</td><td>คิดทางแก้ให้ได้มากและหลากหลายที่สุดโดยยังไม่ตัดสิน</td><td>Brainstorming, How Might We, Crazy 8s</td></tr>
+        <tr><td><b>4.Prototype</b><br>สร้างต้นแบบ</td><td>เปลี่ยนไอเดียเป็นต้นแบบที่จับต้องได้ด้วยต้นทุนต่ำ</td><td>Paper prototype, Wireframe</td></tr>
+        <tr><td><b>5.Test</b><br>ทดสอบ</td><td>นำต้นแบบไปทดสอบกับผู้ใช้จริงเพื่อเรียนรู้และปรับปรุง</td><td>Usability testing, สัมภาษณ์ผู้ใช้</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    5 ขั้นตอนนี้ <b>ไม่ใช่เส้นตรง</b> เราสามารถย้อนกลับได้เสมอ เช่น เมื่อ Test แล้วพบว่าเข้าใจผู้ใช้ผิด ก็กลับไป Empathize ใหม่ การวนซ้ำคือหัวใจของกระบวนการ
+  </div>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <ul style="margin:0">
+      <li><b>Empathize:</b> สัมภาษณ์เจ้าของที่เคยทำสัตว์เลี้ยงหาย ว่าเขาทำอะไรบ้างในวันแรก</li>
+      <li><b>Define:</b> สรุปได้ว่า “เจ้าของต้องการกระจายข่าวให้คนในละแวกเห็นเร็วที่สุด แต่ไม่รู้จะเริ่มที่ไหน”</li>
+      <li><b>Ideate:</b> คิดทางแก้ เช่น แจ้งเตือนคนในรัศมี 3 กม., โพสต์อัตโนมัติลงโซเชียล, แผนที่จุดพบเห็น</li>
+      <li><b>Prototype:</b> ร่างหน้าจอแจ้งหายบนกระดาษ</li>
+      <li><b>Test:</b> ให้เจ้าของสัตว์ลองใช้ร่างนั้นและสังเกตจุดที่สับสน</li>
+    </ul>
+  </div>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">📍</span> เครื่องมือแต่ละขั้นอธิบายไว้ที่บทใดบ้าง</div>
+    เครื่องมือ/กิจกรรมหลักของ 5 ขั้นตอนในตารางข้างต้น ถูกอธิบายอย่างละเอียดกระจายอยู่ในหลายบทของหนังสือเล่มนี้ ตามตารางด้านล่าง เพื่อให้นักศึกษาย้อนกลับไปทบทวนได้ง่ายเมื่อต้องใช้งานจริง
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ขั้นตอน</th><th>เครื่องมือ/กิจกรรม</th><th>อธิบายละเอียดที่</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2"><b>1. Empathize</b></td><td>สัมภาษณ์, สังเกตการณ์</td><td>บทที่ 3 · การวิจัยผู้ใช้ (หัวข้อ 2.3)</td></tr>
+        <tr><td>Empathy Map</td><td>บทที่ 4 · Persona และ Empathy Map (หัวข้อ 2.3)</td></tr>
+        <tr><td rowspan="2"><b>2. Define</b></td><td>Point of View (POV)</td><td><b>บทนี้ </b>หัวข้อ 2.6</td></tr>
+        <tr><td>Problem Statement</td><td>บทที่ 1 · บทนำสู่ HCI และ UX/UI (หัวข้อ 2.8)</td></tr>
+        <tr><td rowspan="2"><b>3. Ideate</b></td><td>Brainstorming, Crazy 8s</td><td><b>บทนี้ </b>หัวข้อ 2.7</td></tr>
+        <tr><td>How Might We</td><td><b>บทนี้ </b>หัวข้อ 2.5</td></tr>
+        <tr><td rowspan="2"><b>4. Prototype</b></td><td>Paper prototype</td><td><b>บทนี้ </b>หัวข้อ 2.8</td></tr>
+        <tr><td>Wireframe</td><td>บทที่ 9 · Wireframe และ Prototype (หัวข้อ 2.2)</td></tr>
+        <tr><td rowspan="2"><b>5. Test</b></td><td>Usability testing</td><td>บทที่ 10 · Usability Evaluation (หัวข้อ 2.3)</td></tr>
+        <tr><td>สัมภาษณ์ผู้ใช้</td><td>บทที่ 3 (ทักษะสัมภาษณ์) และบทที่ 10 (การใช้สัมภาษณ์ระหว่างทดสอบ)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.3 Double Diamond -->
+  <h3><span class="nm">2.3</span> กรอบ Double Diamond</h3>
+  <p><b>Double Diamond</b> เป็นแบบจำลองกระบวนการออกแบบที่พัฒนาโดย British Design Council แบ่งงานออกเป็น 2 “เพชร” คือ <b>เพชรของปัญหา</b> (ทำความเข้าใจและนิยามปัญหาให้ถูก) และ <b>เพชรของทางแก้</b> (พัฒนาและส่งมอบทางแก้ที่ถูก) แต่ละเพชรประกอบด้วยช่วงคิดแบบกระจายแล้วตามด้วยช่วงคิดแบบรวบยอด</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="กรอบ Double Diamond">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- space labels -->
+        <text x="170" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#0a6358">พื้นที่ของปัญหา (Problem)</text>
+        <text x="470" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#a8631d">พื้นที่ของทางแก้ (Solution)</text>
+        <!-- diamond 1 -->
+        <polygon points="40,150 170,70 300,150 170,230" fill="#e1f3f0" stroke="#0f8a7e" stroke-width="2.5"/>
+        <!-- diamond 2 -->
+        <polygon points="300,150 430,70 560,150 430,230" fill="#fff6e9" stroke="#e08a3c" stroke-width="2.5"/>
+        <!-- center divider -->
+        <line x1="300" y1="60" x2="300" y2="240" stroke="#9fb4af" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <!-- stage labels -->
+        <text x="120" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#0a6358">Discover</text>
+        <text x="120" y="174" text-anchor="middle" font-size="12.5" fill="#5e6b78">ค้นหา (กระจาย)</text>
+        <text x="240" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#0a6358">Define</text>
+        <text x="240" y="174" text-anchor="middle" font-size="12.5" fill="#5e6b78">นิยาม (รวบยอด)</text>
+        <text x="370" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#a8631d">Develop</text>
+        <text x="370" y="174" text-anchor="middle" font-size="12.5" fill="#5e6b78">พัฒนา (กระจาย)</text>
+        <text x="500" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#a8631d">Deliver</text>
+        <text x="500" y="174" text-anchor="middle" font-size="12.5" fill="#5e6b78">ส่งมอบ (รวบยอด)</text>
+        <!-- bottom bracket -->
+        <text x="170" y="262" text-anchor="middle" font-size="13" fill="#0a6358">“แก้ปัญหาให้ถูกข้อ”</text>
+        <text x="470" y="262" text-anchor="middle" font-size="13" fill="#a8631d">“แก้ปัญหาด้วยวิธีที่ถูก”</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 2.2</b> Double Diamond — เพชรซ้ายมุ่ง “หาปัญหาที่ถูกต้อง” เพชรขวามุ่ง “หาทางแก้ที่ถูกต้อง”</figcaption>
+  </figure>
+
+  <p>ลองไล่ทั้ง 4 ช่วงของ Double Diamond กับกรณีศึกษาของเรา จะเห็นว่าแต่ละช่วงสลับระหว่างการ “เปิดกว้าง” และ “คัดเลือก” อย่างชัดเจน</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ช่วง (โหมดการคิด)</th><th>สิ่งที่ทีมทำกับ “แอปค้นหาสัตว์เลี้ยงหาย”</th></tr></thead>
+      <tbody>
+        <tr><td><b>Discover </b>ค้นหา<br><span style="color:#0a6358">(กระจาย)</span></td><td>สัมภาษณ์เจ้าของที่เคยทำสัตว์เลี้ยงหาย 8 คน และสังเกตวิธีที่คนโพสต์ตามหาในกลุ่มชุมชนออนไลน์ — เก็บปัญหา/พฤติกรรมให้ได้มากที่สุดโดยยังไม่ด่วนสรุป</td></tr>
+        <tr><td><b>Define </b>นิยาม<br><span style="color:#0a6358">(รวบยอด)</span></td><td>สังเคราะห์ข้อมูลทั้งหมดแล้ว “เลือกปัญหาหลักหนึ่งข้อ”: <i>เจ้าของต้องการกระจายข่าวให้คนในละแวกเห็นเร็วที่สุด แต่ไม่รู้จะเริ่มตรงไหน</i></td></tr>
+        <tr><td><b>Develop </b>พัฒนา<br><span style="color:#a8631d">(กระจาย)</span></td><td>ระดมทางแก้หลากหลาย: แจ้งเตือนคนในรัศมีใกล้เคียง, โพสต์อัตโนมัติหลายช่องทาง, แผนที่จุดพบเห็น, ฟอร์มแจ้งหายแบบ 3 ขั้น ฯลฯ แล้วลองร่าง wireframe หลายเวอร์ชัน</td></tr>
+        <tr><td><b>Deliver </b>ส่งมอบ<br><span style="color:#a8631d">(รวบยอด)</span></td><td>คัดเลือกและทดสอบต้นแบบที่ดีที่สุด แล้วส่งมอบฟีเจอร์หลัก: “แจ้งหาย 3 ขั้นตอน + แจ้งเตือนผู้ใช้ในละแวกทันที”</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    เพชรซ้าย (Discover→Define) ตอบว่า “เราแก้ปัญหาที่ถูกข้อหรือยัง” ส่วนเพชรขวา (Develop→Deliver) ตอบว่า “เราแก้ด้วยวิธีที่ถูกหรือยัง” — ถ้าข้ามเพชรซ้ายไปเลย มักจบด้วยการสร้างของที่ทำได้ดีแต่แก้ผิดปัญหา
+  </div>
+
+  <!-- 2.4 divergent/convergent -->
+  <h3><span class="nm">2.4</span> การคิดแบบกระจายและแบบรวบยอด</h3>
+  <p>หัวใจของแต่ละเพชรคือการสลับระหว่างโหมดการคิด 2 แบบ <b>การคิดแบบกระจาย (Divergent thinking)</b> คือการเปิดกว้าง สร้างทางเลือกให้มากที่สุดโดยยังไม่ตัดสิน ส่วน <b>การคิดแบบรวบยอด (Convergent thinking)</b> คือการคัดกรอง วิเคราะห์ และเลือกทางเลือกที่ดีที่สุด การออกแบบที่ดีต้องใช้ทั้งสองโหมดอย่างถูกจังหวะ</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="การคิดแบบกระจายและแบบรวบยอด">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- divergent -->
+        <circle cx="60" cy="90" r="6" fill="#0f8a7e"/>
+        <g stroke="#0f8a7e" stroke-width="2" fill="none">
+          <path d="M64 88 L200 30"/><path d="M64 89 L200 60"/><path d="M64 90 L200 90"/><path d="M64 91 L200 120"/><path d="M64 92 L200 150"/>
+        </g>
+        <text x="130" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#0a6358">กระจาย (Divergent)</text>
+        <text x="130" y="18" text-anchor="middle" font-size="12.5" fill="#5e6b78">สร้างทางเลือกให้มากที่สุด</text>
+        <!-- convergent -->
+        <g stroke="#e08a3c" stroke-width="2" fill="none">
+          <path d="M360 30 L496 90"/><path d="M360 60 L496 90"/><path d="M360 90 L496 90"/><path d="M360 120 L496 90"/><path d="M360 150 L496 90"/>
+        </g>
+        <circle cx="500" cy="90" r="6" fill="#e08a3c"/>
+        <text x="430" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#a8631d">รวบยอด (Convergent)</text>
+        <text x="430" y="18" text-anchor="middle" font-size="12.5" fill="#5e6b78">คัดเลือกทางเลือกที่ดีที่สุด</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 2.3</b> สองโหมดการคิดที่สลับกันในทุกช่วงของกระบวนการออกแบบ</figcaption>
+  </figure>
+
+  <div class="gt-ex">
+    <span class="tag">ตัวอย่าง: สองโหมดการคิดในขั้น Develop ของแอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0 0 6px"><b>ช่วงกระจาย (Divergent) — เปิดกว้าง ไม่ตัดสิน:</b> ทีมทำ Crazy 8s ระดมไอเดียได้จำนวนมาก เช่น แจ้งเตือนผู้ใช้ในรัศมี 3 กม., โพสต์อัตโนมัติลงหลายโซเชียล, แผนที่จุดพบเห็นล่าสุด, สแกน QR บนปลอกคอ, เครือข่ายอาสาสมัครในพื้นที่, ระบบให้รางวัลผู้แจ้งเบาะแส</p>
+    <p style="margin:0"><b>ช่วงรวบยอด (Convergent) — คัดเลือก ตัดสินใจ:</b> นำไอเดียทั้งหมดมาให้คะแนนตาม “ผลกระทบต่อผู้ใช้ × ความเป็นไปได้” แล้วเลือก 2 ไอเดียหลักไปทำต้นแบบก่อน คือ <b>แจ้งเตือนคนใกล้เคียง</b> และ <b>ฟอร์มแจ้งหายแบบสั้น 3 ขั้น</b></p>
+  </div>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    อย่าใช้สองโหมดพร้อมกัน — เพิ่งเสนอไอเดียก็รีบวิจารณ์ทันที จะทำให้ไอเดียใหม่ ๆ ถูกปิดกั้น ควร “กระจายให้สุดก่อน แล้วค่อยรวบยอด” แยกจังหวะให้ชัด
+  </div>
+
+  <!-- 2.5 HMW -->
+  <h3><span class="nm">2.5</span> การเปลี่ยนปัญหาเป็นโอกาส: คำถาม “How Might We”</h3>
+  <p>เครื่องมือสำคัญที่เชื่อมขั้น Define กับ Ideate คือคำถาม <b>“How Might We…” (HMW)</b> หรือ “เราจะ…ได้อย่างไร” เป็นการแปลงปัญหาให้กลายเป็นคำถามเชิงบวกที่เปิดทางให้ระดมไอเดีย โดยไม่กว้างเกินไปจนไร้ทิศทาง และไม่แคบเกินไปจนล็อกคำตอบไว้แล้ว</p>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0 0 6px"><b>ปัญหา:</b> เจ้าของที่เพิ่งทำสัตว์เลี้ยงหายรู้สึกตื่นตระหนกและไม่รู้จะเริ่มต้นตามหาอย่างไร</p>
+    <p style="margin:0"><b>HMW:</b> “เราจะช่วยให้เจ้าของแจ้งข่าวสัตว์เลี้ยงหายไปยังคนในละแวกได้อย่างรวดเร็วและไม่สับสนได้อย่างไร?”</p>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>ข้ามขั้น Empathize/Define</b> แล้วรีบ Ideate ทำให้แก้ปัญหาผิดข้อตั้งแต่ต้น</li>
+      <li><b>คิดแบบกระจายและรวบยอดพร้อมกัน</b> เช่น เพิ่งเสนอไอเดียก็รีบวิจารณ์ ทำให้ไอเดียใหม่ ๆ ถูกปิดกั้น</li>
+      <li><b>เขียน HMW เป็นทางแก้สำเร็จรูป</b> เช่น “เราจะทำปุ่มสีแดงได้อย่างไร” ซึ่งล็อกคำตอบไว้แล้ว แทนที่จะเปิดให้คิดหลายทาง</li>
+    </ul>
+  </div>
+
+  <!-- 2.6 POV -->
+  <h3><span class="nm">2.6</span> เครื่องมือขั้น Define: Point of View (POV) Statement</h3>
+  <p><b>Point of View (POV) Statement</b> เป็นรูปแบบการเขียนสรุปผลขั้น Define ตามแนวทางของ Stanford d.school ใช้สังเคราะห์สิ่งที่เรียนรู้จากขั้น Empathize ให้กลายเป็นประโยคเดียวที่ผูก <b>ผู้ใช้</b> เข้ากับ <b>ความต้องการ</b> และ <b>เหตุผลเชิงลึก (insight)</b> ที่มาจากการสังเกตหรือสัมภาษณ์จริง ไม่ใช่การคาดเดา</p>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">📝</span> รูปแบบ POV Statement</div>
+    “<b>[ผู้ใช้]</b> ต้องการ <b>[ความต้องการ]</b> เพราะ <b>[insight]</b>”
+  </div>
+
+  <ul>
+    <li><b>[ผู้ใช้]</b> — บรรยายผู้ใช้อย่างเจาะจง ไม่ใช่ชื่อบทบาททั่วไป เช่น “เจ้าของสัตว์เลี้ยงที่เพิ่งพบว่าสัตว์หายไปเมื่อไม่กี่ชั่วโมงที่ผ่านมา”</li>
+    <li><b>[ความต้องการ]</b> — เขียนเป็นกริยา/การกระทำที่ผู้ใช้ต้องการบรรลุ ไม่ใช่ฟีเจอร์ (หลักการเดียวกับ Problem Statement ในบทที่ 1)</li>
+    <li><b>[insight]</b> — ส่วนที่ทำให้ POV ต่างจาก Problem Statement ทั่วไป คือต้องเป็น <i>ข้อค้นพบเชิงลึกที่คาดไม่ถึง</i> จากการทำ Empathize เช่น เหตุผลทางอารมณ์หรือพฤติกรรมที่แท้จริงเบื้องหลังความต้องการ ไม่ใช่แค่คำอธิบายผิวเผิน</li>
+  </ul>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0">“<b>เจ้าของสัตว์เลี้ยงที่เพิ่งพบว่าสัตว์หายไปจากบ้าน</b> ต้องการ<b>กระจายข่าวให้คนในละแวกเห็นภายในไม่กี่นาที</b> เพราะ<b>จากการสัมภาษณ์พบว่ายิ่งเวลาผ่านไปนาน สัตว์เลี้ยงยิ่งเคลื่อนที่ไกลจากจุดที่หาย และความตื่นตระหนกทำให้เจ้าของไม่มีสมาธิพอจะกรอกแบบฟอร์มที่ซับซ้อน</b>”</p>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    POV และ Problem Statement (บทที่ 1) ทำหน้าที่คล้ายกันคือสรุปปัญหาให้ยึดผู้ใช้เป็นศูนย์กลาง ต่างกันที่ POV เน้นให้ระบุ <b>insight</b> จากงานวิจัยอย่างชัดเจนเป็นส่วนหนึ่งของประโยคเสมอ ในทางปฏิบัติ ทีมสามารถเลือกใช้รูปแบบใดรูปแบบหนึ่งที่ทีมถนัด หรือใช้ทั้งสองแบบประกอบกันก็ได้ ขอเพียงมีองค์ประกอบครบ: ใครมีปัญหา ต้องการอะไร และเพราะเหตุใด
+  </div>
+
+  <!-- 2.7 Brainstorming & Crazy 8s -->
+  <h3><span class="nm">2.7</span> เครื่องมือขั้น Ideate: Brainstorming และ Crazy 8s</h3>
+  <p><b>Brainstorming (การระดมสมอง)</b> เป็นเทคนิคพื้นฐานที่สุดของขั้น Ideate ริเริ่มโดย Alex Osborn มีกติกาสำคัญที่ทำให้ได้ไอเดียจำนวนมากและหลากหลาย ดังนี้</p>
+  <ul>
+    <li><b>เลื่อนการตัดสิน (Defer judgment)</b> — ห้ามวิจารณ์หรือตัดไอเดียทิ้งระหว่างระดมสมอง เก็บการประเมินไว้ทำทีหลัง (โหมดรวบยอด)</li>
+    <li><b>กล้าคิดนอกกรอบ (Encourage wild ideas)</b> — ไอเดียที่ดูเป็นไปไม่ได้อาจจุดประกายไอเดียที่ใช้งานได้จริง</li>
+    <li><b>ต่อยอดไอเดียผู้อื่น (Build on others' ideas)</b> — ใช้แนวคิด “ใช่ และ...” แทนการปฏิเสธ</li>
+    <li><b>เน้นปริมาณ (Go for quantity)</b> — ยิ่งมีไอเดียมาก ยิ่งมีโอกาสเจอไอเดียที่ดี</li>
+    <li><b>โฟกัสหัวข้อเดียว</b> และ <b>พูดทีละคน</b> เพื่อไม่ให้ความคิดกระจัดกระจาย</li>
+  </ul>
+
+  <p><b>Crazy 8s</b> เป็นเทคนิคระดมไอเดียแบบมีโครงสร้าง ที่นำกติกาของ Brainstorming มาบังคับให้ทุกคนคิดเร็วและหลากหลายภายในเวลาจำกัด วิธีทำคือ</p>
+  <ol>
+    <li>พับกระดาษ 1 แผ่นให้ได้ 8 ช่อง</li>
+    <li>ตั้งเวลา 8 นาที (1 นาทีต่อ 1 ช่อง)</li>
+    <li>แต่ละคนร่างไอเดียคนละ 1 แบบต่อช่อง โดยห้ามหยุดคิดนานเกินไปในไอเดียเดียว</li>
+    <li>เมื่อครบ 8 ช่อง นำไอเดียทั้งหมดมาแปะรวมกันในทีม แล้วโหวตเลือกไอเดียที่น่าสนใจที่สุดไปทำต้นแบบต่อ</li>
+  </ol>
+  <p>ข้อดีของ Crazy 8s คือบังคับให้ผ่านพ้น “ไอเดียแรกที่คิดออก” (ซึ่งมักเป็นไอเดียธรรมดาที่สุด) ไปสู่ไอเดียที่แปลกใหม่กว่าในช่องหลัง ๆ</p>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0">จากคำถาม HMW “เราจะช่วยให้เจ้าของแจ้งข่าวสัตว์เลี้ยงหายไปยังคนในละแวกได้อย่างรวดเร็วและไม่สับสนได้อย่างไร” ทีมทำ Crazy 8s ได้ไอเดีย 8 แบบ เช่น แจ้งเตือนคนในรัศมี 3 กม., โพสต์อัตโนมัติลงหลายโซเชียล, แผนที่จุดพบเห็นล่าสุด, สแกน QR บนปลอกคอ, เครือข่ายอาสาสมัครในพื้นที่ ฯลฯ แล้วโหวตเลือก 2 ไอเดียที่ดีที่สุดไปทำ Paper Prototype ต่อ</p>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    วิจารณ์หรือหัวเราะเยาะไอเดียระหว่างทำ Brainstorming/Crazy 8s ทำให้สมาชิกกลัวเสนอไอเดียแปลกใหม่ในรอบต่อไป — กติกา “เลื่อนการตัดสิน” ต้องถูกรักษาอย่างเคร่งครัดจนกว่าจะถึงโหมดรวบยอด
+  </div>
+
+  <h4>ขอบเขตการใช้งาน: Crazy 8s ไม่ได้จำกัดอยู่แค่การออกแบบหน้าจอ</h4>
+  <p>ในงานพัฒนาแอปพลิเคชันจริง หลายคนเข้าใจว่า Crazy 8s ใช้ได้เฉพาะการร่างหน้าตาหน้าจอ (UI) เท่านั้น แต่แท้จริงแล้วแก่นของเทคนิคนี้คือ <b>“การบังคับความเร็วในการคิดเพื่อระดมทางเลือกให้หลากหลาย”</b> (8 ไอเดียใน 8 นาที) ซึ่งนำไปใช้ได้กับโจทย์แทบทุกประเภทในขั้น Ideate ตราบใดที่โจทย์นั้นต้องการทางเลือกก่อนตัดสินใจ ไม่ว่าผลลัพธ์ที่ร่างออกมาจะเป็นภาพหน้าจอ ผังขั้นตอน ข้อความ หรือแนวคิดเชิงกลยุทธ์ก็ตาม ดังตัวอย่างต่อไปนี้ (ต่อยอดจากกรณีศึกษาแอปค้นหาสัตว์เลี้ยงหาย)</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>การนำไปใช้</th><th>โจทย์ตั้งต้น (8 นาที)</th><th>ตัวอย่างไอเดียที่ได้</th></tr></thead>
+      <tbody>
+        <tr><td><b>ออกแบบหน้าจอ (UI)</b><br><span style="color:var(--muted);font-size:.85rem">การใช้งานดั้งเดิม</span></td><td>ปุ่ม “แจ้งสัตว์เลี้ยงหาย” ควรวางตรงไหน หน้าตาแบบไหน</td><td>ปุ่มลอยมุมขวาล่าง, แบนเนอร์เต็มความกว้างด้านบน, การ์ดเด่นกลางหน้าแรก</td></tr>
+        <tr><td><b>ฟีเจอร์ / ทางแก้ปัญหา</b></td><td>เราจะช่วยให้เจ้าของแจ้งข่าวได้เร็วที่สุดได้อย่างไร</td><td>แจ้งเตือนคนในรัศมี 3 กม., โพสต์อัตโนมัติหลายโซเชียล, สแกน QR บนปลอกคอ, เครือข่ายอาสาสมัคร</td></tr>
+        <tr><td><b>User Flow / ลำดับขั้นตอน</b></td><td>ขั้นตอนแจ้งหายควรมีกี่ขั้น เรียงลำดับอย่างไร</td><td>กรอกทีเดียวจบหน้าเดียว, แยกเป็น 3 ขั้นทีละน้อย, ให้ระบบช่วยกรอกอัตโนมัติจากรูปถ่าย</td></tr>
+        <tr><td><b>Onboarding</b></td><td>จะสอนผู้ใช้ใหม่ให้เข้าใจวิธีใช้แอปเร็วที่สุดได้อย่างไร</td><td>ทัวร์แนะนำ 3 สไลด์, ให้ลองแจ้งหายจำลองทันทีที่เปิดแอปครั้งแรก, วิดีโอสาธิต 15 วินาที</td></tr>
+        <tr><td><b>Microcopy / ข้อความในระบบ</b></td><td>ข้อความยืนยันหลังแจ้งหายสำเร็จควรพูดว่าอย่างไร</td><td>“แจ้งสำเร็จ! กระจายข่าวแล้ว”, “เราช่วยคุณแล้ว น้องจะกลับมา”, “ข่าวถึงคนใกล้บ้านคุณแล้ว 120 คน”</td></tr>
+        <tr><td><b>กลยุทธ์การแจ้งเตือน (Notification)</b></td><td>จะดึงผู้ใช้ที่หายไปนานให้กลับมาเปิดแอปอย่างไร</td><td>แจ้งเตือนเมื่อมีคนพบสัตว์ลักษณะใกล้เคียงในพื้นที่, สรุปประกาศสัตว์หายรอบสัปดาห์ในละแวกบ้าน</td></tr>
+        <tr><td><b>โมเดลธุรกิจ / แหล่งรายได้</b></td><td>แอปจะสร้างรายได้อย่างไรโดยไม่กระทบผู้ใช้ที่กำลังเดือดร้อน</td><td>ค่าธรรมเนียมจากร้าน/คลินิกสัตว์เลี้ยงที่ลงโฆษณา, บริการแจ้งเตือนแบบเรียลไทม์แบบพรีเมียม</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    สิ่งที่ “คงที่” เสมอคือกติกา 8 ไอเดียใน 8 นาที ส่วนที่ “เปลี่ยนไป” ตามการนำไปใช้คือรูปแบบของสิ่งที่ร่าง — อาจเป็นภาพสเก็ตช์หน้าจอ ผังขั้นตอน (flow) ข้อความสั้น ๆ หรือแม้แต่แนวคิดเชิงกลยุทธ์ที่เขียนเป็นประโยค ทีมงานทุกตำแหน่ง (Designer, Developer, Content, Product) จึงยืมเทคนิคนี้ไปใช้ได้ ไม่ใช่เฉพาะนักออกแบบ UI เท่านั้น
+  </div>
+
+  <!-- 2.8 Paper Prototype -->
+  <h3><span class="nm">2.8</span> เครื่องมือขั้น Prototype: Paper Prototype</h3>
+  <p><b>Paper Prototype</b> คือต้นแบบที่ทำจากกระดาษ ไม่ว่าจะเป็นภาพร่างด้วยมือหรือชิ้นส่วนกระดาษที่ตัดแปะแทนปุ่มและองค์ประกอบต่าง ๆ นับเป็นต้นแบบระดับ <b>Lo-fi</b> ที่หยาบและถูกที่สุด (ดูสเปกตรัมความละเอียดของต้นแบบเพิ่มเติมได้ในบทที่ 9) มีจุดเด่นคือสร้างได้ในไม่กี่นาที แก้ไขได้ทันทีด้วยปากกาและยางลบ จึงเหมาะที่สุดสำหรับทดสอบ <b>โครงสร้างและลำดับการใช้งาน (flow)</b> ตั้งแต่ช่วงต้นของกระบวนการ ก่อนจะลงทุนเวลาสร้างต้นแบบดิจิทัลที่ละเอียดขึ้น</p>
+
+  <p>เมื่อนำ Paper Prototype ไปทดสอบกับผู้ใช้ ผู้ดำเนินการมักทำหน้าที่เป็น <b>“คอมพิวเตอร์มนุษย์”</b> (แนวคิดแบบ Wizard of Oz) คือคอยสลับ/ขยับกระดาษแผ่นต่อไปด้วยมือ ตามที่ผู้ใช้ชี้หรือ “กด” บนกระดาษ เพื่อจำลองการเปลี่ยนหน้าจอโดยยังไม่ต้องเขียนโค้ดหรือใช้เครื่องมือดิจิทัลใด ๆ</p>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0">ทีมร่างหน้าจอ “แจ้งสัตว์เลี้ยงหาย” บนกระดาษ 3 แผ่น (หน้าแรก → ฟอร์มแจ้งหาย → หน้ายืนยันสำเร็จ) แล้วให้เพื่อนในกลุ่มสวมบทบาทเป็นเจ้าของที่สัตว์เลี้ยงเพิ่งหาย ลองชี้ตำแหน่งที่จะกด ขณะที่อีกคนสลับกระดาษแผ่นถัดไปให้ตามจังหวะ วิธีนี้ทำให้ทีมพบว่าผู้ใช้คาดหวังปุ่ม “แจ้งหาย” อยู่หน้าแรกทันที ไม่ต้องกดเมนูก่อน — ค้นพบได้ตั้งแต่ต้นโดยไม่ต้องเสียเวลาสร้างต้นแบบดิจิทัล</p>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    Paper Prototype กับ Wireframe (บทที่ 9) เป็นแนวคิดที่ใกล้เคียงกันมาก — ทั้งคู่คือต้นแบบ Lo-fi ที่ตัดสีและรายละเอียดออกเพื่อเน้นโครงสร้าง ต่างกันที่ Paper Prototype ทำด้วยมือบนกระดาษจริงเพื่อทดสอบเร็วที่สุด ส่วน Wireframe มักหมายถึงโครงร่างที่จัดทำในโปรแกรม (เช่น Figma) ซึ่งขยับไปสู่ Interactive Prototype ได้ง่ายกว่าในขั้นต่อไป
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: จากกระบวนการสู่ความต้องการของระบบ</h4>
+  <p>ผลลัพธ์ของ Design Thinking ในขั้น Define และ Ideate จะถูกแปลงเป็น “ความต้องการ” (requirements) ที่ทีมพัฒนานำไปสร้างจริง การจดบันทึกอย่างมีโครงสร้างช่วยให้ส่งต่อระหว่างทีมออกแบบและทีมพัฒนาเว็บได้ชัดเจน</p>
+  <pre><span class="cm">// บันทึกผลขั้น Define/Ideate ในรูปแบบที่ส่งต่อให้ทีมพัฒนาได้</span>
+<span class="ky">const</span> designBrief = {
+  hmw: <span class="st">"เราจะช่วยให้เจ้าของแจ้งสัตว์เลี้ยงหายได้เร็วและไม่สับสนได้อย่างไร"</span>,
+  primaryUser: <span class="st">"เจ้าของที่เพิ่งทำสัตว์เลี้ยงหาย"</span>,
+  topIdeas: [
+    <span class="st">"แจ้งเตือนผู้ใช้ในรัศมีใกล้เคียง"</span>,
+    <span class="st">"ฟอร์มแจ้งหายแบบ 3 ขั้นตอน"</span>,
+    <span class="st">"แผนที่จุดพบเห็นล่าสุด"</span>
+  ],
+  successMetric: <span class="st">"แจ้งหายสำเร็จภายใน 2 นาที"</span>
+};</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">ใน <b>บทที่ 1</b> นักศึกษาได้สร้าง <b>Problem Statement</b> ของแอปค้นหาสัตว์เลี้ยงหาย บทนี้จะนำ Problem Statement นั้นมาเป็นจุดตั้งต้น เพื่อวางแผนว่าจะเดินผ่านกระบวนการ Design Thinking ทั้ง 5 ขั้นอย่างไร และจะเปลี่ยนปัญหาให้เป็นคำถาม HMW ได้อย่างไร</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">แผนกระบวนการและคำถาม HMW ที่ได้ในบทนี้ จะนำไปลงมือทำจริงในขั้น <b>Empathize</b> ที่ <b>บทที่ 3: การวิจัยผู้ใช้</b> ซึ่งนักศึกษาจะออกแบบเครื่องมือเก็บข้อมูลและสัมภาษณ์ผู้ใช้จริง</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li><b>Design Thinking</b> คือกระบวนการแก้ปัญหาที่ยึดมนุษย์เป็นศูนย์กลาง มีลักษณะวนซ้ำและเน้นการทดลอง</li>
+    <li><b>5 ขั้นตอน</b> ได้แก่ Empathize → Define → Ideate → Prototype → Test ซึ่งย้อนกลับไปปรับปรุงได้เสมอ</li>
+    <li><b>Double Diamond</b> แบ่งงานเป็นพื้นที่ของปัญหา (Discover, Define) และพื้นที่ของทางแก้ (Develop, Deliver)</li>
+    <li>ทุกช่วงสลับระหว่าง <b>การคิดแบบกระจาย</b> (สร้างทางเลือก) และ <b>การคิดแบบรวบยอด</b> (คัดเลือก)</li>
+    <li>คำถาม <b>How Might We</b> ช่วยเปลี่ยนปัญหาให้เป็นโอกาสในการออกแบบที่เปิดกว้างแต่มีทิศทาง</li>
+    <li><b>Point of View (POV)</b> สรุปขั้น Define ในรูปแบบ “ผู้ใช้–ความต้องการ–insight” เน้นข้อค้นพบเชิงลึกจากการวิจัยเสมอ</li>
+    <li><b>Brainstorming</b> วางกติกาการระดมไอเดีย ส่วน <b>Crazy 8s</b> คือเทคนิคที่บังคับให้ร่างไอเดีย 8 แบบใน 8 นาที เพื่อผ่านพ้นไอเดียแรกที่คิดง่ายที่สุด</li>
+    <li><b>Paper Prototype</b> คือต้นแบบ Lo-fi ที่ทำจากกระดาษ ใช้ทดสอบโครงสร้างและ flow ได้เร็วและถูกที่สุดก่อนลงมือสร้างต้นแบบดิจิทัล</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">Design Thinking มีคุณลักษณะสำคัญ 3 ประการอะไรบ้าง และเหตุใดจึงเรียกว่ากระบวนการ “วนซ้ำ”</div>
+    <div class="rq">จงเรียงลำดับและอธิบายเป้าหมายของ 5 ขั้นตอน Design Thinking ด้วยภาษาของตนเอง</div>
+    <div class="rq">Double Diamond ต่างจากโมเดล 5 ขั้นตอนอย่างไร และ “พื้นที่ของปัญหา” กับ “พื้นที่ของทางแก้” หมายถึงอะไร</div>
+    <div class="rq">ยกตัวอย่างกิจกรรมที่เป็น “การคิดแบบกระจาย” และ “การคิดแบบรวบยอด” อย่างละ 1 กิจกรรม</div>
+    <div class="rq">จงเขียนคำถาม How Might We สำหรับปัญหาของ “ผู้พบเห็นสัตว์จร” ที่อยากช่วยส่งสัตว์กลับเจ้าของ</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มเดิมจากบทที่ 1 โดยใช้กระดาษ/ไวต์บอร์ดหรือ FigJam/Miro ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “Marshmallow Challenge ฉบับย่อ”</span> <span class="min">(10 นาที)</span><br>ลงมือสร้างสิ่งของจากวัสดุจำกัดเป็นกลุ่มในเวลาสั้น ๆ เพื่อสัมผัสแนวคิด “สร้างเร็ว–ทดสอบเร็ว”</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวน 5 ขั้นตอน, Double Diamond และโหมดการคิด 2 แบบ แล้วจดประเด็นที่จะนำไปใช้ในกิจกรรม</li>
+    <li><span class="t">ทบทวน Problem Statement (บทที่ 1)</span> <span class="min">(15 นาที)</span><br>แต่ละกลุ่มนำ Problem Statement เดิมมาตรวจสอบและปรับให้คมขึ้นด้วยมุมมองผู้ใช้</li>
+    <li><span class="t">เขียนคำถาม How Might We</span> <span class="min">(25 นาที)</span><br>แปลง Problem Statement เป็นคำถาม HMW อย่างน้อย 3 ข้อ แล้วเลือกข้อที่ดีที่สุด 1 ข้อ</li>
+    <li><span class="t">ระดมไอเดียแบบกระจาย (Crazy 8s)</span> <span class="min">(25 นาที)</span><br>แต่ละคนร่างไอเดีย 8 แบบใน 8 นาที จากคำถาม HMW โดยยังไม่วิจารณ์</li>
+    <li><span class="t">วางแผนกระบวนการของโปรเจกต์</span> <span class="min">(20 นาที)</span><br>ร่างแผนว่าทีมจะเดินผ่าน 5 ขั้นตอนตลอดทั้งวิชาอย่างไร (ขั้นไหนทำสัปดาห์ใด)</li>
+    <li><span class="t">Peer Review &amp; สรุป</span> <span class="min">(10 นาที)</span><br>สลับผลงานกับอีกกลุ่ม ให้ข้อเสนอแนะต่อคำถาม HMW และแผนกระบวนการ แล้วร่วมสรุปและทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 2)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 3</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “แผนกระบวนการออกแบบ &amp; คำถาม How Might We”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 2 ของ Design Portfolio ต่อยอดจากบทที่ 1 ส่งเป็นไฟล์ PDF 2–3 หน้า ประกอบด้วย:</p>
+    <ol>
+      <li><b>Problem Statement ฉบับปรับปรุง</b> จากบทที่ 1 (ระบุสิ่งที่แก้ไขและเหตุผล)</li>
+      <li><b>คำถาม How Might We อย่างน้อย 3 ข้อ</b> พร้อมเลือกข้อหลัก 1 ข้อ และอธิบายเหตุผลที่เลือก</li>
+      <li><b>ผลการระดมไอเดีย (Crazy 8s)</b> ภาพถ่าย/สแกนสเก็ตช์ไอเดียอย่างน้อย 8 แบบ</li>
+      <li><b>แผนกระบวนการของโปรเจกต์</b> ในรูปแบบตาราง: ระบุว่าแต่ละขั้น (Empathize → Test) จะทำในสัปดาห์ใด และได้ผลลัพธ์อะไร</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: Design Thinking เปลี่ยนวิธีมองปัญหาของกลุ่มอย่างไร</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> คุณภาพของคำถาม HMW (30%) · ความหลากหลายของไอเดีย (20%) · ความสมเหตุสมผลของแผนกระบวนการ (30%) · การสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">ปรับปรุง Problem Statement จากบทที่ 1 พร้อมระบุสิ่งที่แก้ไข</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">เขียนคำถาม How Might We อย่างน้อย 3 ข้อ และเลือกข้อหลัก 1 ข้อ</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">คำถาม HMW ไม่กว้างเกินไปและไม่ล็อกทางแก้ไว้ล่วงหน้า</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">แนบผลระดมไอเดีย Crazy 8s อย่างน้อย 8 แบบ</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">ทำตารางแผนกระบวนการครบทั้ง 5 ขั้น พร้อมสัปดาห์และผลลัพธ์</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">เขียนส่วนสะท้อนคิด (Reflection) 3–5 บรรทัด</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อตามรูปแบบ <code class="inl">A2_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 3</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่1_บทนำสู่HCIและUXUI.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 1 · บทนำสู่ HCI และ UX/UI</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่3_การวิจัยผู้ใช้.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 3 · การวิจัยผู้ใช้</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch2_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แผนการสอน — 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1f5673;      /* deep teal-blue */
+    --primary-dark:#143b50;
+    --accent:#e07a5f;       /* warm coral */
+    --accent-soft:#f2cc8f;
+    --bg:#f4f7f9;
+    --card:#ffffff;
+    --ink:#22303a;
+    --muted:#5f7079;
+    --line:#dde6eb;
+    --remember:#6c8ebf;
+    --understand:#37915f;
+    --apply:#d98324;
+    --analyze:#b5446e;
+    --shadow:0 2px 14px rgba(20,59,80,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Sarabun',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.65;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Prompt',sans-serif;}
+
+  /* ---------- Header ---------- */
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    padding:48px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";position:absolute;right:-60px;top:-60px;
+    width:260px;height:260px;border-radius:50%;
+    background:rgba(242,204,143,.14);
+  }
+  .head-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+  .inst{font-size:.95rem;opacity:.9;letter-spacing:.3px;margin-bottom:6px}
+  .code-badge{
+    display:inline-block;background:var(--accent);color:#fff;
+    font-family:'Prompt';font-weight:600;font-size:.85rem;
+    padding:5px 14px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px;
+  }
+  header h1{font-size:1.9rem;font-weight:700;line-height:1.3;margin-bottom:6px}
+  header .en{font-size:1.05rem;font-weight:400;opacity:.88;font-family:'Sarabun'}
+  .head-meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+    padding:6px 14px;border-radius:8px;font-size:.9rem;backdrop-filter:blur(4px);
+  }
+  .chip b{font-weight:600}
+
+  /* ---------- Layout ---------- */
+  main{max-width:1080px;margin:-28px auto 60px;padding:0 24px;position:relative;z-index:2}
+  section{
+    background:var(--card);border-radius:14px;box-shadow:var(--shadow);
+    padding:30px 32px;margin-bottom:26px;border:1px solid var(--line);
+  }
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .sec-num{
+    background:var(--primary);color:#fff;font-family:'Prompt';font-weight:600;
+    width:36px;height:36px;border-radius:9px;display:grid;place-items:center;
+    font-size:1.05rem;flex-shrink:0;
+  }
+  .sec-head h2{font-size:1.3rem;color:var(--primary-dark)}
+
+  /* ---------- Course info grid ---------- */
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+  .info-item{background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--line)}
+  .info-item .label{font-size:.8rem;color:var(--muted);margin-bottom:3px;font-weight:500}
+  .info-item .value{font-weight:600;color:var(--ink)}
+  .desc-box{
+    margin-top:16px;background:#fbf7f0;border-left:4px solid var(--accent-soft);
+    padding:14px 18px;border-radius:0 10px 10px 0;font-size:.97rem;color:#4a5a63;
+  }
+  .golden{
+    margin-top:14px;background:linear-gradient(90deg,#fff6e9,#fffdf8);
+    border:1px dashed var(--accent);border-radius:10px;padding:14px 18px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .golden .ic{font-size:1.5rem;line-height:1}
+  .golden b{color:var(--accent);font-family:'Prompt'}
+
+  /* ---------- PLO list ---------- */
+  .plo-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+  .plo{display:flex;gap:12px;align-items:flex-start;background:var(--bg);
+    border-radius:10px;padding:12px 14px;border:1px solid var(--line)}
+  .plo .tag{background:var(--primary);color:#fff;font-family:'Prompt';font-weight:600;
+    font-size:.78rem;padding:3px 9px;border-radius:6px;flex-shrink:0;margin-top:2px}
+  .plo.focus{border-color:var(--accent);background:#fff6f2}
+  .plo.focus .tag{background:var(--accent)}
+  .plo .star{color:var(--accent);font-weight:700;margin-left:4px}
+
+  /* ---------- Tables ---------- */
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:680px}
+  thead th{
+    background:var(--primary-dark);color:#fff;font-family:'Prompt';font-weight:500;
+    padding:12px 14px;text-align:left;font-size:.88rem;white-space:nowrap;
+  }
+  tbody td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:#fafcfd}
+  tbody tr:hover{background:#eef5f8}
+  .clo-id{font-family:'Prompt';font-weight:600;color:var(--primary);white-space:nowrap}
+  .wk{font-family:'Prompt';font-weight:600;color:var(--primary);text-align:center;white-space:nowrap}
+
+  /* Bloom badges */
+  .bloom{display:inline-block;font-size:.74rem;font-weight:600;padding:2px 8px;
+    border-radius:5px;margin:2px 3px 2px 0;color:#fff;white-space:nowrap;font-family:'Sarabun'}
+  .b-rem{background:var(--remember)} .b-und{background:var(--understand)}
+  .b-app{background:var(--apply)} .b-ana{background:var(--analyze)}
+  .plo-pill{display:inline-block;background:#eaf1f5;color:var(--primary-dark);
+    font-family:'Prompt';font-weight:600;font-size:.78rem;padding:2px 8px;border-radius:5px}
+
+  /* exam rows */
+  tr.exam td{background:#fdf3ee !important;font-weight:500}
+  tr.exam .wk{color:var(--accent)}
+  .exam-tag{display:inline-block;background:var(--accent);color:#fff;font-family:'Prompt';
+    font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;margin-left:6px}
+
+  /* ---------- Chapter cards ---------- */
+  .chap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  td a.tlink{color:var(--ch);font-weight:600;text-decoration:none;border-bottom:1.5px dotted var(--ch)}
+  td a.tlink:hover{background:var(--ch-soft);border-radius:4px}
+  a.chap{text-decoration:none;color:inherit;display:block}
+  a.chap::after{content:"↗";position:absolute;top:12px;right:14px;color:var(--accent);font-weight:700;opacity:.55}
+  .chap{background:var(--bg);border:1px solid var(--line);border-radius:12px;
+    padding:16px;position:relative;transition:.18s;overflow:hidden}
+  .chap:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--primary)}
+  .chap::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--primary)}
+  .chap .cn{font-family:'Prompt';font-size:.8rem;color:var(--accent);font-weight:600;margin-bottom:4px}
+  .chap .ct{font-family:'Prompt';font-weight:600;color:var(--primary-dark);font-size:1rem;line-height:1.35;margin-bottom:10px;min-height:42px}
+  .chap .cmeta{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted)}
+  .chap .cweek{background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-weight:600}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;font-size:.82rem;align-items:center}
+  .legend .lab{color:var(--muted);font-weight:600}
+
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px 24px 40px}
+
+  @media (max-width:640px){
+    header{padding:36px 18px 48px}
+    header h1{font-size:1.45rem}
+    main{padding:0 14px}
+    section{padding:22px 18px}
+  }
+  @media print{
+    body{background:#fff}
+    header::after{display:none}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .chap:hover,tbody tr:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="inst">มหาวิทยาลัยอีสเทิร์นเอเชีย &nbsp;·&nbsp; คณะเทคโนโลยีสารสนเทศ</div>
+    <span class="code-badge">รหัสวิชา 00921502</span>
+    <h1>การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้</h1>
+    <div class="en">User Experience and User Interface Design</div>
+    <div class="head-meta">
+      <span class="chip"><b>หลักสูตร:</b> เทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</span>
+      <span class="chip"><b>ปีการศึกษา:</b> 2569</span>
+      <span class="chip"><b>หน่วยกิต:</b> 3(2-2-5)</span>
+      <span class="chip"><b>ชั้นปีที่:</b> 2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ข้อมูลรายวิชา -->
+  <section>
+    <div class="sec-head"><div class="sec-num">i</div><h2>ข้อมูลรายวิชา</h2></div>
+    <div class="info-grid">
+      <div class="info-item"><div class="label">หน่วยกิต / ชั่วโมง</div><div class="value">3(2-2-5)</div></div>
+      <div class="info-item"><div class="label">ชั้นปีที่เรียน</div><div class="value">ปีที่ 2</div></div>
+      <div class="info-item"><div class="label">PLO ที่รับผิดชอบ</div><div class="value">PLO2</div></div>
+      <div class="info-item"><div class="label">Bloom เป้าหมาย</div><div class="value">Remember · Understand · Apply · Analyze</div></div>
+      <div class="info-item"><div class="label">ภาษา</div><div class="value">ไทย (คงคำศัพท์เทคนิค EN)</div></div>
+      <div class="info-item"><div class="label">แนวทางการสอน</div><div class="value">ชิ้นงานสะสม · Workshop &amp; Peer Review ทุกคาบ · ไม่ใช้ AI เป็นเครื่องมือ</div></div>
+    </div>
+    <div class="desc-box">
+      <b>คำอธิบายรายวิชา:</b> หลักการปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์ กระบวนการคิดเชิงออกแบบ เทคนิคการวิจัยผู้ใช้ การสร้างตัวแทนกลุ่มเป้าหมาย แผนผังการเดินทางของผู้ใช้ สถาปัตยกรรมข้อมูล การไหลของหน้าจอ หลักการออกแบบส่วนติดต่อผู้ใช้ ทฤษฎีสี การจัดวางองค์ประกอบ การใช้ตัวอักษร โครงร่างหน้าจอ การสร้างต้นแบบที่โต้ตอบได้
+    </div>
+    <div class="golden">
+      <div class="ic">🐾</div>
+      <div><b>กรณีศึกษาหลัก (Golden Thread):</b> &nbsp;“เว็บแอปพลิเคชันค้นหาสัตว์เลี้ยงหาย” — ใช้เป็นโจทย์ต่อเนื่องทุกบท ชิ้นงานสะสมเป็น Design Portfolio ชิ้นเดียวตั้งแต่การวิจัยผู้ใช้จนถึงต้นแบบที่ประเมินผลแล้ว</div>
+    </div>
+  </section>
+
+  <!-- PLO -->
+  <section>
+    <div class="sec-head"><div class="sec-num">P</div><h2>ผลลัพธ์การเรียนรู้ของหลักสูตร (PLOs)</h2></div>
+    <div class="plo-list">
+      <div class="plo"><span class="tag">PLO1</span><span>อธิบายหลักการพื้นฐานทางเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</span></div>
+      <div class="plo focus"><span class="tag">PLO2</span><span>วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์ <span class="star">★ วิชานี้รับผิดชอบ</span></span></div>
+      <div class="plo"><span class="tag">PLO3</span><span>พัฒนาซอฟต์แวร์ประยุกต์โดยใช้ความรู้ด้านเทคโนโลยีสารสนเทศ</span></div>
+      <div class="plo"><span class="tag">PLO4</span><span>ประยุกต์ใช้เครื่องมือปัญญาประดิษฐ์ในการทำงานด้านเทคโนโลยีสารสนเทศ</span></div>
+      <div class="plo"><span class="tag">PLO5</span><span>แสดงออกถึงความมีวินัย ความรับผิดชอบ ความซื่อสัตย์</span></div>
+      <div class="plo"><span class="tag">PLO6</span><span>แสวงหาความรู้ด้วยตนเองให้ทันต่อการเปลี่ยนแปลงทางเทคโนโลยี</span></div>
+    </div>
+  </section>
+
+  <!-- CLO -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>ผลลัพธ์การเรียนรู้ของรายวิชา (CLOs)</h2></div>
+    <div class="legend">
+      <span class="lab">Bloom:</span>
+      <span class="bloom b-rem">Remember</span>
+      <span class="bloom b-und">Understand</span>
+      <span class="bloom b-app">Apply</span>
+      <span class="bloom b-ana">Analyze</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>CLO</th><th>คำอธิบายผลลัพธ์การเรียนรู้</th><th>Bloom Level</th><th>PLO</th></tr></thead>
+        <tbody>
+          <tr><td class="clo-id">CLO1</td><td>อธิบายหลักการปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์ (HCI) และความแตกต่างระหว่าง UX กับ UI</td><td><span class="bloom b-rem">Remember</span><span class="bloom b-und">Understand</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO2</td><td>อธิบายกระบวนการคิดเชิงออกแบบ (Design Thinking / Double Diamond) และนำมาวางแผนการทำงาน</td><td><span class="bloom b-und">Understand</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO3</td><td>ดำเนินการวิจัยผู้ใช้ และวิเคราะห์ข้อมูลเพื่อสร้าง Persona และ Empathy Map</td><td><span class="bloom b-app">Apply</span><span class="bloom b-ana">Analyze</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO4</td><td>วิเคราะห์เส้นทางผู้ใช้ (User Journey Map) เพื่อระบุ pain points และโอกาสในการออกแบบ</td><td><span class="bloom b-ana">Analyze</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO5</td><td>ออกแบบสถาปัตยกรรมข้อมูล (Information Architecture) และการไหลของหน้าจอ (User Flow)</td><td><span class="bloom b-app">Apply</span><span class="bloom b-ana">Analyze</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO6</td><td>ประยุกต์หลักการออกแบบส่วนติดต่อผู้ใช้ — ทฤษฎีสี การจัดวางองค์ประกอบ และการใช้ตัวอักษร</td><td><span class="bloom b-app">Apply</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO7</td><td>สร้างโครงร่างหน้าจอ (Wireframe) และต้นแบบที่โต้ตอบได้ (Interactive Prototype)</td><td><span class="bloom b-app">Apply</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+          <tr><td class="clo-id">CLO8</td><td>วิเคราะห์และประเมินการใช้งานได้ (Usability) ด้วย Heuristic Evaluation และ Usability Testing</td><td><span class="bloom b-ana">Analyze</span><span class="bloom b-app">Apply</span></td><td><span class="plo-pill">PLO2</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- แผน 15 สัปดาห์ -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>แผนการสอน 15 สัปดาห์</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>สัปดาห์</th><th>หัวข้อ</th><th>เนื้อหาย่อย</th><th>วิธีสอน</th><th>เครื่องมือ</th><th>ชิ้นงานส่ง (สะสม)</th><th>CLO</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="wk">1</td><td><a class="tlink" href="บทที่1_บทนำสู่HCIและUXUI.html">บทนำ HCI &amp; UX/UI</a></td><td>ความหมาย, UX≠UI, mental model, usability</td><td>บรรยาย + อภิปราย + Workshop</td><td>กระดาษ, FigJam/Miro</td><td>Problem statement ของแอปค้นหาสัตว์เลี้ยงหาย</td><td><span class="plo-pill">CLO1</span></td></tr>
+          <tr><td class="wk">2</td><td><a class="tlink" href="บทที่2_กระบวนการคิดเชิงออกแบบ.html">กระบวนการคิดเชิงออกแบบ</a></td><td>Design Thinking 5 ขั้น, Double Diamond</td><td>บรรยาย + กิจกรรมกลุ่ม</td><td>FigJam/Miro</td><td>แผนกระบวนการออกแบบของโปรเจกต์</td><td><span class="plo-pill">CLO2</span></td></tr>
+          <tr><td class="wk">3</td><td><a class="tlink" href="บทที่3_การวิจัยผู้ใช้.html">การวิจัยผู้ใช้</a></td><td>สัมภาษณ์, แบบสอบถาม, การสังเกต, จริยธรรม</td><td>Workshop ออกแบบเครื่องมือ + เก็บข้อมูลย่อย</td><td>Google Form, แบบสัมภาษณ์</td><td>Interview guide + ผลสัมภาษณ์เบื้องต้น</td><td><span class="plo-pill">CLO3</span></td></tr>
+          <tr><td class="wk">4</td><td><a class="tlink" href="บทที่4_PersonaและEmpathyMap.html">Persona &amp; Empathy Map</a></td><td>สังเคราะห์ข้อมูลผู้ใช้, สร้างตัวแทนกลุ่มเป้าหมาย</td><td>Workshop + Peer Review</td><td>Figma/Canva template</td><td>2 Personas + Empathy Map</td><td><span class="plo-pill">CLO3</span></td></tr>
+          <tr><td class="wk">5</td><td><a class="tlink" href="บทที่5_UserJourneyMap.html">User Journey Map</a></td><td>ขั้นตอน, อารมณ์, touchpoints, pain points</td><td>Workshop วาด journey</td><td>FigJam/Miro</td><td>Journey Map ระบุ pain points</td><td><span class="plo-pill">CLO4</span></td></tr>
+          <tr><td class="wk">6</td><td><a class="tlink" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html">Information Architecture</a></td><td>Card sorting, sitemap, การจัดกลุ่มเนื้อหา</td><td>Workshop card sorting</td><td>กระดาษ/OptimalSort, Figma</td><td>Sitemap + ผล card sorting</td><td><span class="plo-pill">CLO5</span></td></tr>
+          <tr><td class="wk">7</td><td><a class="tlink" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html">User Flow &amp; Task Flow</a></td><td>flow chart, decision point, screen flow</td><td>Workshop เขียน flow</td><td>FigJam/diagrams</td><td>User Flow ของงานหลัก (แจ้ง/ค้นหาสัตว์หาย)</td><td><span class="plo-pill">CLO5</span></td></tr>
+          <tr class="exam"><td class="wk">8</td><td><a class="tlink" href="สัปดาห์8_สอบกลางภาคและเกณฑ์ประเมิน.html">สอบกลางภาค</a> <span class="exam-tag">Midterm</span></td><td>นำเสนอชุด Research + IA (สัปดาห์ 1–7)</td><td>นำเสนอ + ประเมินตาม rubric</td><td>—</td><td>Portfolio ส่วนที่ 1: Research &amp; Structure</td><td><span class="plo-pill">CLO1–5</span></td></tr>
+          <tr><td class="wk">9</td><td><a class="tlink" href="บทที่7_หลักการออกแบบUIและการจัดวาง.html">หลักการออกแบบ UI &amp; Layout</a></td><td>Gestalt, grid, visual hierarchy, spacing</td><td>บรรยาย + Workshop</td><td>Figma</td><td>สำรวจ layout หน้าจอหลัก</td><td><span class="plo-pill">CLO6</span></td></tr>
+          <tr><td class="wk">10</td><td><a class="tlink" href="บทที่8_ทฤษฎีสีและการใช้ตัวอักษร.html">ทฤษฎีสี</a></td><td>color wheel, contrast, accessibility (WCAG)</td><td>Workshop สร้าง palette</td><td>Figma, Coolors</td><td>Color palette + ตรวจ contrast</td><td><span class="plo-pill">CLO6</span></td></tr>
+          <tr><td class="wk">11</td><td><a class="tlink" href="บทที่8_ทฤษฎีสีและการใช้ตัวอักษร.html">การใช้ตัวอักษร (Typography)</a></td><td>typeface, scale, readability, hierarchy</td><td>Workshop สร้าง type system</td><td>Figma</td><td>Typography system</td><td><span class="plo-pill">CLO6</span></td></tr>
+          <tr><td class="wk">12</td><td><a class="tlink" href="บทที่9_WireframeและPrototype.html">Wireframe (Low-fidelity)</a></td><td>โครงร่างหน้าจอ, content priority</td><td>Workshop + Peer Review</td><td>กระดาษ → Figma</td><td>Wireframe หน้าจอหลัก 4–6 หน้า</td><td><span class="plo-pill">CLO7</span></td></tr>
+          <tr><td class="wk">13</td><td><a class="tlink" href="บทที่9_WireframeและPrototype.html">Prototype (High-fidelity)</a></td><td>UI ความละเอียดสูง, การเชื่อมต่อแบบโต้ตอบ</td><td>Workshop สร้าง prototype</td><td>Figma (interactive)</td><td>Interactive Prototype</td><td><span class="plo-pill">CLO7</span></td></tr>
+          <tr><td class="wk">14</td><td><a class="tlink" href="บทที่10_UsabilityEvaluation.html">การประเมิน Usability</a></td><td>Nielsen's heuristics, usability testing</td><td>Workshop ทดสอบ + Peer Review</td><td>Figma, Maze, แบบบันทึก</td><td>รายงานผลประเมิน + แผนปรับปรุง</td><td><span class="plo-pill">CLO8</span></td></tr>
+          <tr class="exam"><td class="wk">15</td><td><a class="tlink" href="สัปดาห์15_นำเสนอPortfolioและเกณฑ์ประเมิน.html">สอบปลายภาค</a> <span class="exam-tag">Final</span></td><td>นำเสนอ Design Portfolio เต็ม + Prototype</td><td>นำเสนอ + ประเมินตาม rubric</td><td>—</td><td>Portfolio สมบูรณ์: Research → Prototype → Evaluation</td><td><span class="plo-pill">CLO1–8</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- การจัดบท -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>การจัดกลุ่มเนื้อหาเป็น 10 บท</h2></div>
+    <p style="color:var(--muted);margin-bottom:18px;font-size:.95rem">สัปดาห์ที่ 8 และ 15 เป็นการสอบ/นำเสนอ จึงไม่นับเป็นบทเนื้อหา</p>
+    <div class="chap-grid">
+      <a class="chap" href="บทที่1_บทนำสู่HCIและUXUI.html"><div class="cn">บทที่ 1</div><div class="ct">บทนำสู่ HCI และ UX/UI</div><div class="cmeta"><span class="cweek">สัปดาห์ 1</span><span>CLO1</span></div></a>
+      <a class="chap" href="บทที่2_กระบวนการคิดเชิงออกแบบ.html"><div class="cn">บทที่ 2</div><div class="ct">กระบวนการคิดเชิงออกแบบ</div><div class="cmeta"><span class="cweek">สัปดาห์ 2</span><span>CLO2</span></div></a>
+      <a class="chap" href="บทที่3_การวิจัยผู้ใช้.html"><div class="cn">บทที่ 3</div><div class="ct">การวิจัยผู้ใช้</div><div class="cmeta"><span class="cweek">สัปดาห์ 3</span><span>CLO3</span></div></a>
+      <a class="chap" href="บทที่4_PersonaและEmpathyMap.html"><div class="cn">บทที่ 4</div><div class="ct">Persona และ Empathy Map</div><div class="cmeta"><span class="cweek">สัปดาห์ 4</span><span>CLO3</span></div></a>
+      <a class="chap" href="บทที่5_UserJourneyMap.html"><div class="cn">บทที่ 5</div><div class="ct">แผนผังการเดินทางของผู้ใช้</div><div class="cmeta"><span class="cweek">สัปดาห์ 5</span><span>CLO4</span></div></a>
+      <a class="chap" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html"><div class="cn">บทที่ 6</div><div class="ct">สถาปัตยกรรมข้อมูลและการไหลของหน้าจอ</div><div class="cmeta"><span class="cweek">สัปดาห์ 6–7</span><span>CLO5</span></div></a>
+      <a class="chap" href="บทที่7_หลักการออกแบบUIและการจัดวาง.html"><div class="cn">บทที่ 7</div><div class="ct">หลักการออกแบบ UI และการจัดวาง</div><div class="cmeta"><span class="cweek">สัปดาห์ 9</span><span>CLO6</span></div></a>
+      <a class="chap" href="บทที่8_ทฤษฎีสีและการใช้ตัวอักษร.html"><div class="cn">บทที่ 8</div><div class="ct">ทฤษฎีสีและการใช้ตัวอักษร</div><div class="cmeta"><span class="cweek">สัปดาห์ 10–11</span><span>CLO6</span></div></a>
+      <a class="chap" href="บทที่9_WireframeและPrototype.html"><div class="cn">บทที่ 9</div><div class="ct">Wireframe และ Interactive Prototype</div><div class="cmeta"><span class="cweek">สัปดาห์ 12–13</span><span>CLO7</span></div></a>
+      <a class="chap" href="บทที่10_UsabilityEvaluation.html"><div class="cn">บทที่ 10</div><div class="ct">การประเมินการใช้งานได้ (Usability)</div><div class="cmeta"><span class="cweek">สัปดาห์ 14</span><span>CLO8</span></div></a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  เอกสารประกอบการเรียน · 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้ · คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+</footer>
+
+</body>
+</html>

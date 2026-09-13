@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 4 — Persona และ Empathy Map | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 4 : ชมพูบานเย็น (Rose) ===== */
+  :root{
+    --ch:#c0397b;
+    --ch-dark:#962152;
+    --ch-soft:#fce4ef;
+    --ch-softer:#fdf3f8;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#fdf7fa;
+    --card:#ffffff;
+    --line:#f2d6e3;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(150,33,82,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(150,33,82,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.15rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.15rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.45rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#fbeaf2;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== persona card ===== */
+  .persona{border:1.5px solid var(--ch);border-radius:14px;overflow:hidden;margin:18px 0;background:#fff}
+  .persona .p-head{display:flex;gap:16px;align-items:center;background:linear-gradient(120deg,var(--ch),var(--ch-dark));color:#fff;padding:16px 20px}
+  .persona .avatar{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:2rem;flex-shrink:0}
+  .persona .p-head .nm{font-family:var(--head);font-weight:700;font-size:1.25rem}
+  .persona .p-head .tl{font-size:.92rem;opacity:.9}
+  .persona .p-quote{background:var(--ch-soft);color:var(--ch-dark);font-style:italic;padding:11px 20px;font-size:1rem;border-bottom:1px solid var(--line)}
+  .persona .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .persona .p-cell{padding:14px 20px;border-top:1px solid var(--line);border-right:1px solid var(--line)}
+  .persona .p-cell:nth-child(even){border-right:none}
+  .persona .p-cell h5{font-family:var(--head);color:var(--ch-dark);font-size:.95rem;margin-bottom:6px;display:flex;gap:7px;align-items:center}
+  .persona .p-cell ul{margin:0 0 0 1.1em;font-size:.93rem}
+  .persona .p-cell.full{grid-column:1 / -1;border-right:none}
+
+  /* ===== empathy map example ===== */
+  .empathy{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+  .empathy .q{border:1.5px solid var(--ch-soft);border-radius:12px;padding:14px 16px;background:var(--ch-softer)}
+  .empathy .q h5{font-family:var(--head);color:var(--ch-dark);font-size:1rem;margin-bottom:6px;display:flex;gap:7px;align-items:center}
+  .empathy .q ul{margin:0 0 0 1.1em;font-size:.92rem}
+  .empathy .pg{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .empathy .pain{border:1.5px solid #f4cfc5;background:#fdf2ee;border-radius:12px;padding:14px 16px}
+  .empathy .gain{border:1.5px solid #cfe9d8;background:#eef8f1;border-radius:12px;padding:14px 16px}
+  .empathy .pain h5{color:var(--warn)} .empathy .gain h5{color:var(--ok)}
+  .empathy .pain h5,.empathy .gain h5{font-family:var(--head);font-size:1rem;margin-bottom:6px}
+  @media(max-width:560px){.empathy{grid-template-columns:1fr}.empathy .pg{grid-template-columns:1fr}.persona .p-grid{grid-template-columns:1fr}.persona .p-cell{border-right:none}}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.08rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.6rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.2rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table,.persona,.empathy{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 4</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 4 · Chapter 4</span>
+    <h1>Persona และ Empathy Map</h1>
+    <div class="en">Personas and Empathy Maps</div>
+    <p class="lead">เปลี่ยนข้อมูลวิจัยดิบให้กลายเป็นตัวแทนผู้ใช้ที่จับต้องได้ — สร้าง Persona เพื่อเป็นตัวแทนกลุ่มเป้าหมาย และ Empathy Map เพื่อเข้าใจสิ่งที่ผู้ใช้พูด คิด ทำ และรู้สึก ก่อนเริ่มออกแบบทางแก้</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO3</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 4 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply · Analyze</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO3</b> — ดำเนินการวิจัยผู้ใช้ และวิเคราะห์ข้อมูลเพื่อสร้าง Persona และ Empathy Map</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายแนวคิดและประโยชน์ของ Persona และ Empathy Map</b> ในกระบวนการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>สังเคราะห์ข้อมูลวิจัยดิบ</b> ด้วยเทคนิค Affinity Mapping เพื่อค้นหารูปแบบและข้อมูลเชิงลึก (insight)
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>สร้าง Persona</b> ที่มีองค์ประกอบครบถ้วนและอ้างอิงจากข้อมูลจริง ไม่ใช่การคาดเดา
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>สร้าง Empathy Map</b> ที่ครอบคลุมมิติ Says, Thinks, Does, Feels รวมถึง Pains และ Gains
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>เชื่อมโยง Persona/Empathy Map กับกรณีศึกษา</b> โดยสร้างตัวแทนผู้ใช้ของ “แอปค้นหาสัตว์เลี้ยงหาย” จากข้อมูลในบทที่ 3
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“เราออกแบบให้ ‘ทุกคน’ ไม่ได้ เพราะการออกแบบให้ทุกคน มักจบลงด้วยการไม่เหมาะกับใครเลย” — ถ้าเช่นนั้น เราจะนิยาม ‘ใคร’ ที่เราออกแบบให้ได้อย่างชัดเจนและเป็นรูปธรรมได้อย่างไร?</p>
+
+  <p>ในบทที่ 3 นักศึกษาได้ข้อมูลดิบจำนวนมากจากการสัมภาษณ์และการสังเกต แต่ข้อมูลดิบเหล่านั้นยังกระจัดกระจายและนำไปออกแบบได้ยาก บทนี้จะแนะนำเครื่องมือสองชิ้นที่ช่วย “ตกผลึก” ข้อมูลให้กลายเป็นตัวแทนผู้ใช้ที่ทีมทั้งหมดเข้าใจตรงกัน ได้แก่ <b>Persona</b> และ <b>Empathy Map</b></p>
+
+  <p>เครื่องมือเหล่านี้ทำให้ผู้ใช้ “มีตัวตน” ขึ้นมาในใจของทีม เมื่อต้องตัดสินใจออกแบบ เราจะถามได้ว่า “สิ่งนี้ช่วยพีไหม?” แทนที่จะเถียงกันด้วยความเห็นส่วนตัว</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    จากการสัมภาษณ์เจ้าของที่ทำสัตว์เลี้ยงหาย นักศึกษาพบว่าแต่ละคนมีพฤติกรรมและความกังวลต่างกัน เราจะรวมความหลากหลายนี้ให้เป็น “ตัวแทน” ไม่กี่คนที่สะท้อนผู้ใช้ส่วนใหญ่ได้อย่างไร โดยไม่ทำให้รายละเอียดสำคัญหายไป?
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 synthesis -->
+  <h3><span class="nm">2.1</span> จากข้อมูลดิบสู่ข้อมูลเชิงลึก (Synthesis)</h3>
+  <p>ก่อนสร้าง Persona เราต้อง “สังเคราะห์” ข้อมูลก่อน เทคนิคที่นิยมคือ <b>Affinity Mapping</b> — การนำข้อสังเกตแต่ละชิ้น (เขียนบน sticky note) มาจัดกลุ่มตามความคล้ายคลึง จนเกิดเป็นหัวข้อ (theme) และข้อมูลเชิงลึก (insight) ที่นำไปออกแบบได้</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="กระบวนการสังเคราะห์ข้อมูลจากดิบสู่ Persona">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- step 1 -->
+        <rect x="14" y="64" width="130" height="80" rx="11" fill="#fce4ef" stroke="#c0397b" stroke-width="2"/>
+        <text x="79" y="96" font-size="26">🗒️</text>
+        <text x="79" y="124" font-size="14" font-weight="700" fill="#962152">ข้อมูลดิบ</text>
+        <text x="79" y="140" font-size="11.5" fill="#5e6b78">บันทึก/quotes</text>
+        <!-- step 2 -->
+        <rect x="190" y="64" width="130" height="80" rx="11" fill="#fce4ef" stroke="#c0397b" stroke-width="2"/>
+        <text x="255" y="96" font-size="26">🧩</text>
+        <text x="255" y="124" font-size="14" font-weight="700" fill="#962152">จัดกลุ่ม</text>
+        <text x="255" y="140" font-size="11.5" fill="#5e6b78">Affinity Mapping</text>
+        <!-- step 3 -->
+        <rect x="366" y="64" width="130" height="80" rx="11" fill="#fff6e9" stroke="#e08a3c" stroke-width="2"/>
+        <text x="431" y="96" font-size="26">💡</text>
+        <text x="431" y="124" font-size="14" font-weight="700" fill="#a8631d">Insight</text>
+        <text x="431" y="140" font-size="11.5" fill="#5e6b78">รูปแบบ/ความหมาย</text>
+        <!-- step 4 -->
+        <rect x="542" y="64" width="104" height="80" rx="11" fill="#fce4ef" stroke="#c0397b" stroke-width="2"/>
+        <text x="594" y="96" font-size="26">🧑</text>
+        <text x="594" y="124" font-size="14" font-weight="700" fill="#962152">Persona</text>
+        <text x="594" y="140" font-size="11.5" fill="#5e6b78">/ Empathy Map</text>
+        <!-- arrows -->
+        <g stroke="#c0397b" stroke-width="2.4" fill="none">
+          <path d="M144 104 L188 104" marker-end="url(#a)"/>
+          <path d="M320 104 L364 104" marker-end="url(#a)"/>
+          <path d="M496 104 L540 104" marker-end="url(#a)"/>
+        </g>
+        <text x="330" y="30" font-size="17" font-weight="700" fill="#962152">เส้นทางจากข้อมูลดิบสู่ตัวแทนผู้ใช้</text>
+      </g>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#c0397b"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 4.1</b> การสังเคราะห์ข้อมูล: จากบันทึกดิบ → จัดกลุ่ม → ตกผลึกเป็น insight → สร้าง Persona</figcaption>
+  </figure>
+
+  <!-- 2.2 persona -->
+  <h3><span class="nm">2.2</span> Persona คืออะไร และมีองค์ประกอบอะไรบ้าง</h3>
+  <p><b>Persona</b> คือตัวละครสมมติที่สร้างขึ้นเพื่อเป็นตัวแทนของกลุ่มผู้ใช้จริง โดยอ้างอิงจากข้อมูลวิจัย ช่วยให้ทีมจดจำและออกแบบโดยนึกถึงคนจริง ไม่ใช่ผู้ใช้ที่เป็นนามธรรม Persona ที่ดีต้องมาจากข้อมูล (data-driven) ไม่ใช่จากจินตนาการ องค์ประกอบหลักมีดังภาพ</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="องค์ประกอบของ Persona card">
+      <g font-family="'Sarabun',sans-serif">
+        <rect x="20" y="20" width="580" height="250" rx="12" fill="#fdf3f8" stroke="#c0397b" stroke-width="2"/>
+        <!-- header -->
+        <circle cx="80" cy="70" r="30" fill="#fce4ef" stroke="#c0397b" stroke-width="2"/>
+        <text x="80" y="80" text-anchor="middle" font-size="28">🧑</text>
+        <text x="125" y="60" font-size="15" font-weight="700" fill="#962152">① ชื่อ + รูป + คำนิยามสั้น</text>
+        <text x="125" y="82" font-size="12.5" fill="#5e6b78">ทำให้ persona มีตัวตน จดจำง่าย</text>
+        <line x1="40" y1="110" x2="580" y2="110" stroke="#f2d6e3" stroke-width="1.5"/>
+        <!-- cells -->
+        <text x="48" y="138" font-size="14" font-weight="700" fill="#962152">② ข้อมูลพื้นฐาน</text>
+        <text x="48" y="158" font-size="12.5" fill="#5e6b78">อายุ อาชีพ บริบทการใช้งาน</text>
+        <text x="320" y="138" font-size="14" font-weight="700" fill="#962152">③ เป้าหมาย (Goals)</text>
+        <text x="320" y="158" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้ต้องการบรรลุ</text>
+        <text x="48" y="190" font-size="14" font-weight="700" fill="#962152">④ ความคับข้องใจ (Frustrations)</text>
+        <text x="48" y="210" font-size="12.5" fill="#5e6b78">อุปสรรค/ปัญหาที่เจอ</text>
+        <text x="320" y="190" font-size="14" font-weight="700" fill="#962152">⑤ พฤติกรรม (Behaviors)</text>
+        <text x="320" y="210" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้ทำเป็นประจำ</text>
+        <line x1="40" y1="226" x2="580" y2="226" stroke="#f2d6e3" stroke-width="1.5"/>
+        <text x="48" y="252" font-size="14" font-weight="700" fill="#a8631d">⑥ คำพูดประจำตัว (Quote)</text>
+        <text x="300" y="252" font-size="12.5" fill="#5e6b78" font-style="italic">“ประโยคที่สะท้อนตัวตนและความต้องการของ persona”</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 4.2</b> องค์ประกอบมาตรฐานของ Persona card 6 ส่วน</figcaption>
+  </figure>
+
+  <h4>ตัวอย่าง Persona จริงของกรณีศึกษา</h4>
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">👩</div>
+      <div><div class="nm">พิม · อายุ 27 ปี</div><div class="tl">พนักงานออฟฟิศ เลี้ยงสุนัขพันธุ์เล็ก 1 ตัว · อาศัยในหมู่บ้านชานเมือง</div></div>
+    </div>
+    <div class="p-quote">“พอรู้ว่าน้องหมาหลุดออกไป ฉันใจหายวาบ แล้วก็ไม่รู้จะเริ่มตามหาตรงไหนก่อนเลย”</div>
+    <div class="p-grid">
+      <div class="p-cell"><h5>🎯 เป้าหมาย</h5><ul><li>กระจายข่าวสัตว์หายให้คนในละแวกเห็นเร็วที่สุด</li><li>รวมเบาะแสจากคนที่พบเห็นไว้ที่เดียว</li></ul></div>
+      <div class="p-cell"><h5>😤 ความคับข้องใจ</h5><ul><li>ตื่นตระหนกจนคิดไม่เป็นระบบ</li><li>โพสต์หลายกลุ่มแต่คนเห็นช้าและกระจัดกระจาย</li></ul></div>
+      <div class="p-cell"><h5>📱 พฤติกรรม</h5><ul><li>ใช้สมาร์ทโฟนเป็นหลัก ถนัดโซเชียลมีเดีย</li><li>มักถ่ายรูปสัตว์เลี้ยงไว้เยอะ</li></ul></div>
+      <div class="p-cell"><h5>🧰 บริบท/อุปกรณ์</h5><ul><li>ใช้งานบนมือถือระหว่างเดินตามหา</li><li>ต้องการขั้นตอนที่สั้นและทำได้เร็ว</li></ul></div>
+    </div>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>สร้าง persona จากจินตนาการ</b> ไม่อ้างอิงข้อมูลวิจัย ทำให้เป็นเพียงความเชื่อของทีม</li>
+      <li><b>ใส่ข้อมูลประชากรเยอะแต่ไม่มีเป้าหมาย/พฤติกรรม</b> ทำให้ persona ไม่ช่วยตัดสินใจออกแบบ</li>
+      <li><b>สร้าง persona มากเกินไป</b> จนทีมจำไม่ได้ — โดยทั่วไป 2–4 persona ก็เพียงพอ</li>
+    </ul>
+  </div>
+
+  <!-- 2.3 empathy map -->
+  <h3><span class="nm">2.3</span> Empathy Map</h3>
+  <p><b>Empathy Map</b> เป็นเครื่องมือที่ช่วยจัดระเบียบสิ่งที่เรารู้เกี่ยวกับผู้ใช้ออกเป็น 4 มิติหลัก ได้แก่ <b>Says</b> (พูดอะไร) <b>Thinks</b> (คิดอะไร) <b>Does</b> (ทำอะไร) และ <b>Feels</b> (รู้สึกอย่างไร) พร้อมส่วนเสริมคือ <b>Pains</b> (ความเจ็บปวด/อุปสรรค) และ <b>Gains</b> (สิ่งที่อยากได้/ความสำเร็จ) จุดเด่นคือช่วยให้เราเห็น “ช่องว่าง” ระหว่างสิ่งที่ผู้ใช้พูดกับสิ่งที่เขาทำหรือรู้สึกจริง</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="แม่แบบ Empathy Map 4 ช่อง">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- quadrants -->
+        <rect x="20" y="20" width="230" height="140" rx="10" fill="#fdf3f8" stroke="#c0397b" stroke-width="1.8"/>
+        <rect x="270" y="20" width="230" height="140" rx="10" fill="#fdf3f8" stroke="#c0397b" stroke-width="1.8"/>
+        <rect x="20" y="170" width="230" height="140" rx="10" fill="#fdf3f8" stroke="#c0397b" stroke-width="1.8"/>
+        <rect x="270" y="170" width="230" height="140" rx="10" fill="#fdf3f8" stroke="#c0397b" stroke-width="1.8"/>
+        <text x="135" y="48" font-size="16" font-weight="700" fill="#962152">SAYS 🗣️</text>
+        <text x="135" y="70" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้พูดออกมา</text>
+        <text x="385" y="48" font-size="16" font-weight="700" fill="#962152">THINKS 💭</text>
+        <text x="385" y="70" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้คิดในใจ</text>
+        <text x="135" y="198" font-size="16" font-weight="700" fill="#962152">DOES 🤚</text>
+        <text x="135" y="220" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้ลงมือทำ</text>
+        <text x="385" y="198" font-size="16" font-weight="700" fill="#962152">FEELS ❤️</text>
+        <text x="385" y="220" font-size="12.5" fill="#5e6b78">สิ่งที่ผู้ใช้รู้สึก</text>
+        <!-- center user -->
+        <circle cx="260" cy="165" r="34" fill="#c0397b"/>
+        <text x="260" y="172" font-size="26" fill="#fff">🧑</text>
+        <!-- pains gains -->
+        <rect x="20" y="322" width="230" height="30" rx="8" fill="#fdf2ee" stroke="#c0492f" stroke-width="1.5"/>
+        <text x="135" y="342" font-size="14" font-weight="700" fill="#c0492f">PAINS — อุปสรรค/ความเจ็บปวด</text>
+        <rect x="270" y="322" width="230" height="30" rx="8" fill="#eef8f1" stroke="#2e8b57" stroke-width="1.5"/>
+        <text x="385" y="342" font-size="14" font-weight="700" fill="#2e8b57">GAINS — สิ่งที่อยากได้</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 4.3</b> แม่แบบ Empathy Map — ผู้ใช้อยู่ตรงกลาง ล้อมด้วย 4 มิติ และเสริมด้วย Pains/Gains</figcaption>
+  </figure>
+
+  <h4>ตัวอย่าง Empathy Map ของ “พิม” (จากกรณีศึกษา)</h4>
+  <div class="empathy">
+    <div class="q"><h5>🗣️ Says — พูดว่า</h5><ul><li>“ใครเห็นน้องหมาฉันบ้างคะ”</li><li>“ขอแชร์ด่วน ๆ นะคะ”</li></ul></div>
+    <div class="q"><h5>💭 Thinks — คิดว่า</h5><ul><li>“ต้องรีบ ไม่งั้นน้องไปไกล”</li><li>“โพสต์ตรงไหนคนถึงจะเห็นเยอะ”</li></ul></div>
+    <div class="q"><h5>🤚 Does — ทำ</h5><ul><li>เดินหารอบหมู่บ้าน พร้อมถ่ายรูปไปด้วย</li><li>โพสต์ลงหลายกลุ่มซ้ำ ๆ</li></ul></div>
+    <div class="q"><h5>❤️ Feels — รู้สึก</h5><ul><li>ตื่นตระหนก กังวล</li><li>ท้อเมื่อไม่มีคนตอบ</li></ul></div>
+    <div class="pg">
+      <div class="pain"><h5>⛔ Pains</h5><ul style="margin:0 0 0 1.1em;font-size:.92rem"><li>ไม่รู้จะเริ่มตรงไหน</li><li>ข่าวกระจายช้าและกระจัดกระจาย</li></ul></div>
+      <div class="gain"><h5>✅ Gains</h5><ul style="margin:0 0 0 1.1em;font-size:.92rem"><li>กระจายข่าวถึงคนใกล้เคียงได้ทันที</li><li>รวบรวมเบาะแสไว้ที่เดียว</li></ul></div>
+    </div>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    Persona และ Empathy Map ทำงานเสริมกัน — Persona บอกว่า “ผู้ใช้เป็นใคร” ส่วน Empathy Map เจาะลึก “โลกภายในของผู้ใช้ในสถานการณ์หนึ่ง ๆ” ทั้งคู่ต้องอ้างอิงข้อมูลจริงจากบทที่ 3
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: Persona สู่การกำหนดกลุ่มผู้ใช้ในระบบ</h4>
+  <p>Persona สามารถแปลงเป็น “กลุ่มผู้ใช้” (user segment) ที่มีผลต่อการออกแบบฟีเจอร์และสิทธิ์การใช้งานจริงในระบบ การจดบันทึกอย่างมีโครงสร้างช่วยส่งต่อระหว่างทีมออกแบบและทีมพัฒนา</p>
+  <pre><span class="cm">// แปลง persona เป็นกลุ่มผู้ใช้ที่ทีมพัฒนานำไปใช้ออกแบบฟีเจอร์ได้</span>
+<span class="ky">const</span> persona = {
+  id: <span class="st">"owner-pim"</span>,
+  label: <span class="st">"เจ้าของที่เพิ่งทำสัตว์เลี้ยงหาย"</span>,
+  primaryGoal: <span class="st">"แจ้งหายและกระจายข่าวให้เร็วที่สุด"</span>,
+  device: <span class="st">"mobile"</span>,
+  topPains: [<span class="st">"เริ่มต้นไม่ถูก"</span>, <span class="st">"ข่าวกระจายช้า"</span>],
+  designImplications: [
+    <span class="st">"ปุ่มแจ้งหายต้องเด่นบนหน้าแรก"</span>,
+    <span class="st">"ฟอร์มสั้น กรอกเสร็จใน 3 ขั้นตอน"</span>
+  ]
+};</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">ใน <b>บทที่ 3</b> นักศึกษาเก็บข้อมูลดิบจากการสัมภาษณ์และสังเกตผู้ใช้จริง บทนี้จะนำบันทึกและ pain points เหล่านั้นมา <b>สังเคราะห์</b> ด้วย Affinity Mapping แล้วตกผลึกเป็น Persona และ Empathy Map ของแอปค้นหาสัตว์เลี้ยงหาย</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">Persona ที่ได้ในบทนี้จะกลายเป็น “ตัวเอก” ของ <b>บทที่ 5: User Journey Map</b> ซึ่งจะติดตามเส้นทางของพีตั้งแต่รู้ว่าสัตว์หายจนถึงได้กลับคืน เพื่อค้นหา pain points ตามแต่ละช่วงเวลา</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li>ก่อนสร้าง Persona ต้อง <b>สังเคราะห์ข้อมูลดิบ</b> ด้วย Affinity Mapping เพื่อหารูปแบบและ insight</li>
+    <li><b>Persona</b> คือตัวแทนกลุ่มผู้ใช้ที่อ้างอิงข้อมูลจริง องค์ประกอบหลัก: ข้อมูลพื้นฐาน เป้าหมาย ความคับข้องใจ พฤติกรรม และคำพูดประจำตัว</li>
+    <li><b>Empathy Map</b> จัดระเบียบความเข้าใจผู้ใช้เป็น Says, Thinks, Does, Feels พร้อม Pains และ Gains</li>
+    <li>ทั้งสองเครื่องมือทำงานเสริมกัน และต้อง <b>มาจากข้อมูล ไม่ใช่การคาดเดา</b></li>
+    <li>โดยทั่วไป <b>2–4 persona</b> ก็เพียงพอ — มากเกินไปจะทำให้ทีมจำและใช้งานยาก</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">Affinity Mapping ช่วยในการสังเคราะห์ข้อมูลอย่างไร และให้ผลลัพธ์เป็นอะไร</div>
+    <div class="rq">องค์ประกอบหลักของ Persona มีอะไรบ้าง และเหตุใด “เป้าหมาย” กับ “พฤติกรรม” จึงสำคัญกว่าข้อมูลประชากรเพียงอย่างเดียว</div>
+    <div class="rq">Empathy Map 4 มิติ (Says, Thinks, Does, Feels) ต่างกันอย่างไร และเหตุใดการเทียบ “Says” กับ “Does” จึงมีประโยชน์</div>
+    <div class="rq">เพราะเหตุใด Persona ที่สร้างจากการคาดเดาจึงเป็นอันตรายต่อการออกแบบ</div>
+    <div class="rq">จากกรณีศึกษา ลองร่าง Persona ที่ 2 สำหรับ “ผู้พบเห็นสัตว์จรที่อยากช่วย” ว่าควรมีเป้าหมายและความคับข้องใจอะไร</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มเดิม โดยใช้ sticky note/กระดาษหรือ FigJam/Miro ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “ใครคือผู้ใช้ของเรา”</span> <span class="min">(10 นาที)</span><br>แต่ละกลุ่มเขียนชื่อกลุ่มผู้ใช้ที่พบจากการสัมภาษณ์ลง sticky note ภายใน 5 นาที</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวน Affinity Mapping, องค์ประกอบ Persona และโครงสร้าง Empathy Map แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">Affinity Mapping</span> <span class="min">(25 นาที)</span><br>นำบันทึกการสัมภาษณ์จากบทที่ 3 มาเขียนลง sticky note แล้วจัดกลุ่มตามความคล้าย ตั้งชื่อหัวข้อแต่ละกลุ่ม</li>
+    <li><span class="t">สร้าง Persona</span> <span class="min">(25 นาที)</span><br>เลือกกลุ่มผู้ใช้หลัก 1–2 กลุ่ม สร้าง Persona card ครบองค์ประกอบโดยอ้างอิงข้อมูลจริง</li>
+    <li><span class="t">สร้าง Empathy Map</span> <span class="min">(20 นาที)</span><br>เลือก Persona หลัก 1 คน สร้าง Empathy Map ครบ Says/Thinks/Does/Feels + Pains/Gains</li>
+    <li><span class="t">Peer Review</span> <span class="min">(15 นาที)</span><br>สลับกับอีกกลุ่ม ตรวจว่าทุกข้อมูลอ้างอิงจากการวิจัยจริงหรือไม่ และให้ข้อเสนอแนะ</li>
+    <li><span class="t">นำเสนอและสรุป</span> <span class="min">(10 นาที)</span><br>แต่ละกลุ่มนำเสนอ Persona 1 คน ร่วมกันสรุปบทเรียน และทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 4)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 5</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “Persona &amp; Empathy Map ของกลุ่มผู้ใช้เป้าหมาย”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 4 ของ Design Portfolio ต่อยอดจากบทที่ 3 ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>ผล Affinity Mapping</b> (ภาพถ่าย/สแกน) พร้อมระบุหัวข้อ (theme) ที่ค้นพบอย่างน้อย 3 หัวข้อ</li>
+      <li><b>Persona อย่างน้อย 2 คน</b> ครบองค์ประกอบ 6 ส่วน โดยระบุว่าข้อมูลแต่ละส่วนมาจากการวิจัยข้อใด</li>
+      <li><b>Empathy Map อย่างน้อย 1 ชุด</b> ของ Persona หลัก ครบ Says/Thinks/Does/Feels + Pains/Gains</li>
+      <li><b>ข้อมูลเชิงลึก (Insight)</b> 2–3 ข้อ ที่ค้นพบจากการสังเคราะห์ และข้อเสนอแนะต่อการออกแบบ</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: การสังเคราะห์เปลี่ยนความเข้าใจผู้ใช้ของกลุ่มอย่างไร</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> การอ้างอิงข้อมูลจริง (30%) · ความครบถ้วนขององค์ประกอบ (25%) · คุณภาพของ insight (25%) · การสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">ทำ Affinity Mapping และระบุหัวข้อที่ค้นพบอย่างน้อย 3 หัวข้อ</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">สร้าง Persona อย่างน้อย 2 คน ครบองค์ประกอบ 6 ส่วน</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">ระบุได้ว่าข้อมูลแต่ละส่วนของ Persona มาจากการวิจัยข้อใด (ไม่ใช่การเดา)</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">สร้าง Empathy Map ครบ Says/Thinks/Does/Feels + Pains/Gains</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">สรุปข้อมูลเชิงลึก (Insight) 2–3 ข้อ พร้อมข้อเสนอแนะต่อการออกแบบ</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">เขียนส่วนสะท้อนคิด (Reflection) 3–5 บรรทัด</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อตามรูปแบบ <code class="inl">A4_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 5</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่3_การวิจัยผู้ใช้.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 3 · การวิจัยผู้ใช้</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่5_UserJourneyMap.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 5 · User Journey Map</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch4_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

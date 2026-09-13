@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 9 — Wireframe และ Interactive Prototype | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 9 : น้ำเงินสเลท (Slate Blue) ===== */
+  :root{
+    --ch:#3f5e80;
+    --ch-dark:#2b4159;
+    --ch-soft:#e6edf4;
+    --ch-softer:#f2f6fa;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --line:#d7e0e9;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(43,65,89,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(43,65,89,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.12rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.18rem;margin:26px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.22rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+  .subpart{background:linear-gradient(90deg,var(--ch-soft),transparent);border-left:5px solid var(--ch);border-radius:0 10px 10px 0;padding:10px 18px;margin:30px 0 6px;font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.15rem}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#eaf0f6;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0;font-size:.88rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  pre .nu{color:#f0b072}
+  pre .tg{color:#7ee787}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+  .wk-tag{display:inline-block;background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600;font-size:.82rem;padding:3px 11px;border-radius:7px;margin:14px 0 4px}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== render preview (prototype -> real) ===== */
+  .preview-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0}
+  .preview-bar{background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600;font-size:.85rem;padding:7px 14px;display:flex;align-items:center;gap:8px}
+  .preview-bar::before{content:"●●●";color:#b7c4d0;letter-spacing:2px}
+  .preview-body{padding:20px;background:#eef2f5;display:flex;justify-content:center}
+  /* demo post card (styled with design tokens from ch8) */
+  .demo-card{width:300px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(31,55,89,.12);font-family:'Sarabun',sans-serif}
+  .demo-card .img{height:140px;background:linear-gradient(135deg,#c6d3de,#9fb1c0);display:grid;place-items:center;font-size:2.4rem}
+  .demo-card .body{padding:14px 16px}
+  .demo-card .row{display:flex;align-items:center;justify-content:space-between}
+  .demo-card .nm{font-family:'Prompt',sans-serif;font-weight:700;font-size:1.15rem;color:#1f2733}
+  .demo-card .badge{background:#c0392f;color:#fff;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px}
+  .demo-card .meta{color:#5e6b78;font-size:.9rem;margin:6px 0 14px}
+  .demo-card .btn{display:block;width:100%;text-align:center;background:#e8743b;color:#fff;font-family:'Prompt',sans-serif;font-weight:600;padding:11px;border:none;border-radius:10px;font-size:1rem;cursor:pointer}
+  .demo-card .btn:hover{filter:brightness(.95)}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table,.preview-wrap{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 9</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#proto">Wireframe/Prototype</a>
+      <a href="#build">สู่เว็บจริง</a>
+      <a href="#summary">สรุป</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 9 · Chapter 9 · สัปดาห์ 12–13</span>
+    <h1>Wireframe และ Interactive Prototype</h1>
+    <div class="en">Wireframing, Prototyping &amp; From Prototype to Code</div>
+    <p class="lead">เปลี่ยนทุกสิ่งที่ออกแบบมาให้กลายเป็นต้นแบบที่จับต้องและกดได้จริง — ตั้งแต่โครงร่างความละเอียดต่ำ ไปจนถึงต้นแบบโต้ตอบความละเอียดสูง และเรียนรู้วิธีส่งต่อต้นแบบสู่การสร้างหน้าเว็บจริงด้วย HTML/CSS</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO7</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 12–13 (8 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO7</b> — สร้างโครงร่างหน้าจอ (Wireframe) และต้นแบบที่โต้ตอบได้ (Interactive Prototype)</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายระดับความละเอียดของต้นแบบ</b> (lo-fi, mid-fi, hi-fi) และเลือกใช้ให้เหมาะกับแต่ละช่วงของงาน
+    <div class="obj-meta"><span class="tagm tag-clo">CLO7</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>สร้าง Wireframe</b> ของหน้าจอหลักโดยอ้างอิงจาก Sitemap และหลักการจัดวาง
+    <div class="obj-meta"><span class="tagm tag-clo">CLO7</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>สร้าง Interactive Prototype</b> โดยเชื่อมหน้าจอ กำหนด hotspot และสถานะของหน้าจอ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO7</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>ออกแบบสถานะของหน้าจอ</b> (empty, loading, error, success) ให้ครบถ้วน
+    <div class="obj-meta"><span class="tagm tag-clo">CLO7</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>อธิบายและสาธิตการส่งต่อต้นแบบสู่โค้ดจริง (Design Handoff)</b> โดยแปลงหน้าจอเป็น HTML/CSS ที่ใช้ design tokens
+    <div class="obj-meta"><span class="tagm tag-clo">CLO7</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+  <p class="lead-q">“ต้นแบบที่ดีคือคำถามที่จับต้องได้ ไม่ใช่คำตอบสุดท้าย” — เราสร้างต้นแบบเพื่อ ‘ทดสอบไอเดีย’ ด้วยต้นทุนต่ำ ก่อนจะลงทุนเขียนโค้ดจริง แล้วต้นแบบควรละเอียดแค่ไหนจึงจะพอดี?</p>
+  <p>ตลอด 8 บทที่ผ่านมา เราเข้าใจผู้ใช้ ออกแบบโครงสร้าง วางเลย์เอาต์ และกำหนดสี/ตัวอักษรครบแล้ว บทนี้คือจุดที่ทุกอย่างมารวมกันเป็น <b>ต้นแบบ (Prototype)</b> ที่กดเล่นได้จริง และเป็นบทที่เชื่อมโลกของ “การออกแบบ” เข้ากับโลกของ “การพัฒนาเว็บ” โดยตรง</p>
+  <p>เนื้อหาแบ่งเป็น 2 ส่วน: ส่วนแรกว่าด้วยการสร้าง wireframe และ prototype ตั้งแต่ความละเอียดต่ำถึงสูง ส่วนที่สองเป็นสิ่งที่หลายคนข้าม — <b>การนำต้นแบบไปสร้างเป็นหน้าเว็บจริง</b> ด้วย HTML/CSS</p>
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    ถ้าต้นแบบหน้า “แจ้งสัตว์หาย” กดแล้วไม่มีอะไรเกิดขึ้นเลย ผู้ทดสอบจะบอกอะไรเราได้บ้าง? และถ้ามันโต้ตอบได้เหมือนจริง เราจะได้ feedback ต่างออกไปอย่างไร?
+  </div>
+</section>
+
+<!-- ============ ส่วน A : Wireframe & Prototype ============ -->
+<section id="proto">
+  <div class="sec-head"><div class="sec-ic">🧩</div><h2>2. Wireframe และ Prototype</h2></div>
+
+  <!-- 2.1 fidelity -->
+  <h3><span class="nm">2.1</span> ระดับความละเอียดของต้นแบบ (Fidelity)</h3>
+  <p>ต้นแบบมีหลายระดับความละเอียด เลือกใช้ตามวัตถุประสงค์และช่วงเวลาของงาน ยิ่งช่วงต้นยิ่งควรหยาบและเร็ว (แก้ง่าย ทดสอบไอเดียโครงสร้าง) ยิ่งช่วงท้ายยิ่งละเอียด (ทดสอบรูปลักษณ์และการโต้ตอบจริง)</p>
+  <figure class="fig">
+    <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ระดับความละเอียดของต้นแบบ">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- arrow -->
+        <line x1="40" y1="200" x2="580" y2="200" stroke="#3f5e80" stroke-width="2" marker-end="url(#a)"/>
+        <text x="40" y="216" font-size="11.5" fill="#5e6b78">หยาบ/เร็ว/ต้นทุนต่ำ</text>
+        <text x="580" y="216" text-anchor="end" font-size="11.5" fill="#5e6b78">ละเอียด/เหมือนจริง</text>
+        <!-- lo-fi -->
+        <rect x="50" y="40" width="150" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <g stroke="#c3cedb" stroke-width="2" fill="#eef2f6">
+          <rect x="66" y="56" width="118" height="16"/><rect x="66" y="82" width="118" height="40"/><rect x="66" y="132" width="70" height="22"/>
+        </g>
+        <text x="125" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#2b4159">Lo-fi · Wireframe</text>
+        <!-- mid-fi -->
+        <rect x="235" y="40" width="150" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <rect x="251" y="56" width="118" height="16" rx="3" fill="#cdd8e3"/>
+        <rect x="251" y="82" width="118" height="40" rx="4" fill="#dde6ee"/>
+        <rect x="251" y="132" width="70" height="22" rx="5" fill="#9fb1c0"/>
+        <text x="310" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#2b4159">Mid-fi · Mockup</text>
+        <!-- hi-fi -->
+        <rect x="420" y="40" width="150" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <rect x="436" y="56" width="118" height="34" rx="5" fill="#9fb1c0"/>
+        <text x="448" y="78" font-size="11" fill="#fff">น้องดำ</text>
+        <rect x="436" y="98" width="118" height="14" rx="3" fill="#e6edf4"/>
+        <rect x="436" y="132" width="118" height="24" rx="6" fill="#e8743b"/><text x="495" y="148" text-anchor="middle" font-size="10.5" fill="#fff">ส่งเบาะแส</text>
+        <text x="495" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#2b4159">Hi-fi · Prototype</text>
+      </g>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#3f5e80"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 9.1</b> สเปกตรัมความละเอียดของต้นแบบ: Lo-fi (wireframe) → Mid-fi (mockup) → Hi-fi (prototype)</figcaption>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ระดับ</th><th>ลักษณะ</th><th>ใช้ทดสอบ</th><th>เครื่องมือ</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lo-fi</b><br>Wireframe</td><td>ขาวดำ กล่อง/เส้น ไม่มีสีจริง</td><td>โครงสร้าง การจัดวาง การไหล</td><td>กระดาษ, Figma, Balsamiq</td></tr>
+        <tr><td><b>Mid-fi</b><br>Mockup</td><td>มีสเกล/สัดส่วนจริง เริ่มมีสีบางส่วน</td><td>ลำดับชั้น ความหนาแน่นของข้อมูล</td><td>Figma</td></tr>
+        <tr><td><b>Hi-fi</b><br>Prototype</td><td>สี ตัวอักษร รูปจริง โต้ตอบได้</td><td>รูปลักษณ์ การโต้ตอบ usability</td><td>Figma (prototype mode)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.2 wireframe -->
+  <h3><span class="nm">2.2</span> Wireframe — โครงร่างความละเอียดต่ำ</h3>
+  <p><b>Wireframe</b> คือโครงร่างหน้าจอแบบเรียบง่าย เน้น “อะไรอยู่ตรงไหนและสำคัญแค่ไหน” โดยตั้งใจตัดสีและรายละเอียดทิ้ง เพื่อให้ทีมโฟกัสที่โครงสร้างและการจัดวาง ไม่ใช่ความสวยงาม ทำให้แก้ไขได้เร็วและถูก</p>
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา</span>
+    <p style="margin:0">Wireframe ของแอปค้นหาสัตว์เลี้ยงหายเริ่มจากหน้าที่สำคัญที่สุดก่อน (หน้าแรก, แจ้งสัตว์หาย, รายละเอียดประกาศ) โดยอ้างอิงจากการจัดวางในบทที่ 7 ทุกองค์ประกอบยังเป็นกล่องขาวดำ</p>
+  </div>
+
+  <!-- 2.3 prototype linking -->
+  <h3><span class="nm">2.3</span> Interactive Prototype — เชื่อมจอให้กดได้</h3>
+  <p><b>Prototype ที่โต้ตอบได้</b> เกิดจากการนำหน้าจอหลายหน้ามา “เชื่อม” กันด้วยจุดเชื่อม (hotspot) เพื่อจำลองการกดและการเปลี่ยนหน้าจริง ทำให้ทดสอบ user flow กับผู้ใช้ได้โดยยังไม่ต้องเขียนโค้ด แนวคิดหลักได้แก่ <b>hotspot</b> (พื้นที่ที่กดได้), <b>การเปลี่ยนหน้า (transition)</b> และ <b>สถานะ (state)</b></p>
+  <figure class="fig">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="การเชื่อมหน้าจอใน prototype">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- screen 1 -->
+        <rect x="30" y="40" width="110" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <text x="85" y="30" font-size="12" font-weight="700" fill="#2b4159">หน้าแรก</text>
+        <rect x="46" y="120" width="78" height="22" rx="6" fill="#e8743b"/><text x="85" y="135" font-size="10" fill="#fff">แจ้งหาย</text>
+        <!-- screen 2 -->
+        <rect x="255" y="40" width="110" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <text x="310" y="30" font-size="12" font-weight="700" fill="#2b4159">ฟอร์มแจ้งหาย</text>
+        <rect x="271" y="60" width="78" height="12" rx="3" fill="#e6edf4"/><rect x="271" y="80" width="78" height="12" rx="3" fill="#e6edf4"/>
+        <rect x="271" y="120" width="78" height="22" rx="6" fill="#e8743b"/><text x="310" y="135" font-size="10" fill="#fff">ยืนยัน</text>
+        <!-- screen 3 -->
+        <rect x="480" y="40" width="110" height="130" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.6"/>
+        <text x="535" y="30" font-size="12" font-weight="700" fill="#2b4159">แจ้งสำเร็จ</text>
+        <circle cx="535" cy="95" r="20" fill="#2e8b57"/><text x="535" y="101" font-size="18" fill="#fff">✓</text>
+        <!-- hotspot arrows -->
+        <rect x="46" y="120" width="78" height="22" rx="6" fill="none" stroke="#e08a3c" stroke-width="2" stroke-dasharray="4 3"/>
+        <path d="M140 131 L253 131" stroke="#3f5e80" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+        <text x="196" y="124" font-size="10.5" fill="#5e6b78">กดปุ่ม</text>
+        <path d="M365 131 L478 131" stroke="#3f5e80" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+        <text x="421" y="124" font-size="10.5" fill="#5e6b78">ยืนยัน</text>
+      </g>
+      <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#3f5e80"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 9.2</b> การเชื่อมหน้าจอด้วย hotspot — กดปุ่มบนหน้าหนึ่งเพื่อเปลี่ยนไปอีกหน้า จำลอง user flow จากบทที่ 6</figcaption>
+  </figure>
+
+  <!-- 2.4 states -->
+  <h3><span class="nm">2.4</span> สถานะของหน้าจอ (Screen States)</h3>
+  <p>หน้าจอจริงไม่ได้มีแค่สถานะ “ปกติ” ต้นแบบที่ดีต้องออกแบบสถานะอื่นด้วย เพื่อให้ครอบคลุมสถานการณ์จริง สถานะที่พบบ่อยได้แก่ <b>Empty</b> (ยังไม่มีข้อมูล), <b>Loading</b> (กำลังโหลด), <b>Error</b> (เกิดข้อผิดพลาด) และ <b>Success</b> (สำเร็จ)</p>
+  <figure class="fig">
+    <svg viewBox="0 0 620 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="สถานะของหน้าจอ 4 แบบ">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <rect x="24" y="24" width="130" height="110" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.5"/>
+        <text x="89" y="76" font-size="26">📭</text><text x="89" y="104" font-size="12" fill="#5e6b78">ยังไม่มีประกาศ</text>
+        <text x="89" y="152" font-size="12.5" font-weight="700" fill="#2b4159">Empty</text>
+        <rect x="178" y="24" width="130" height="110" rx="10" fill="#fff" stroke="#3f5e80" stroke-width="1.5"/>
+        <circle cx="243" cy="74" r="16" fill="none" stroke="#9fb1c0" stroke-width="4" stroke-dasharray="60 30"/><text x="243" y="104" font-size="12" fill="#5e6b78">กำลังโหลด...</text>
+        <text x="243" y="152" font-size="12.5" font-weight="700" fill="#2b4159">Loading</text>
+        <rect x="332" y="24" width="130" height="110" rx="10" fill="#fff" stroke="#c0492f" stroke-width="1.5"/>
+        <text x="397" y="76" font-size="24">⚠️</text><text x="397" y="104" font-size="12" fill="#c0492f">เชื่อมต่อไม่สำเร็จ</text>
+        <text x="397" y="152" font-size="12.5" font-weight="700" fill="#c0492f">Error</text>
+        <rect x="486" y="24" width="130" height="110" rx="10" fill="#fff" stroke="#2e8b57" stroke-width="1.5"/>
+        <text x="551" y="76" font-size="24">✅</text><text x="551" y="104" font-size="12" fill="#2e8b57">แจ้งหายสำเร็จ</text>
+        <text x="551" y="152" font-size="12.5" font-weight="700" fill="#2e8b57">Success</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 9.3</b> สถานะของหน้าจอ 4 แบบที่ควรออกแบบในต้นแบบ</figcaption>
+  </figure>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li>ออกแบบเฉพาะสถานะปกติ ลืม empty/loading/error ทำให้ผู้ใช้สับสนเมื่อเจอสถานการณ์จริง</li>
+      <li>ทำ hi-fi ละเอียดเกินไปตั้งแต่ต้น ก่อนทดสอบโครงสร้าง — เสียเวลาแก้</li>
+      <li>prototype สวยจน “ขายฝัน” ผู้ทดสอบเข้าใจผิดว่าเป็นของจริงที่ทำงานทุกปุ่ม</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ส่วน B : สู่เว็บจริง ============ -->
+<section id="build">
+  <div class="sec-head"><div class="sec-ic">💻</div><h2>3. จาก Prototype สู่หน้าเว็บจริง</h2></div>
+  <p>ส่วนนี้คือสะพานสำคัญระหว่างการออกแบบกับการพัฒนาเว็บ ต้นแบบใน Figma ยังไม่ใช่เว็บจริง — มันเป็น “ภาพที่กดได้” แต่ไม่มีโค้ดที่ทำงานเบื้องหลัง การเปลี่ยนต้นแบบให้เป็นเว็บจริงต้องผ่านกระบวนการ <b>ส่งต่องานออกแบบ (Design Handoff)</b> และการเขียนโค้ด</p>
+
+  <!-- 3.1 handoff -->
+  <h3><span class="nm">3.1</span> Design Handoff — ส่งต่ออะไรให้นักพัฒนาบ้าง</h3>
+  <p>เพื่อให้นักพัฒนาสร้างหน้าเว็บได้ตรงกับที่ออกแบบ นักออกแบบต้องส่งมอบข้อมูลที่ชัดเจน ได้แก่</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>สิ่งที่ส่งมอบ</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr><td><b>ค่าระยะและขนาด (Specs/Redlines)</b></td><td>ระยะห่าง (spacing) ขนาดองค์ประกอบ ความกว้างคอลัมน์ — อ้างอิงกริดจากบทที่ 7</td></tr>
+        <tr><td><b>Design Tokens</b></td><td>ชุดสีและ type scale ในรูปตัวแปร (จากบทที่ 8) เพื่อให้โค้ดใช้ค่าเดียวกัน</td></tr>
+        <tr><td><b>Assets</b></td><td>ไอคอน รูปภาพ โลโก้ ส่งออกเป็นไฟล์ (SVG/PNG) พร้อมใช้</td></tr>
+        <tr><td><b>States &amp; Interactions</b></td><td>พฤติกรรมของปุ่ม (hover, กด), สถานะ empty/loading/error, การเปลี่ยนหน้า</td></tr>
+        <tr><td><b>Flow</b></td><td>ลำดับการเชื่อมหน้าจอ (จาก User Flow บทที่ 6)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3.2 mapping -->
+  <h3><span class="nm">3.2</span> จับคู่องค์ประกอบออกแบบกับเทคโนโลยีเว็บ</h3>
+  <p>แต่ละสิ่งที่ออกแบบไว้มี “คู่” ในโลกของโค้ด การเข้าใจการจับคู่นี้ทำให้ส่งต่องานได้ราบรื่นและช่วยให้นักออกแบบสื่อสารกับนักพัฒนาได้</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ในต้นแบบ (ออกแบบ)</th><th>ในเว็บจริง (โค้ด)</th></tr></thead>
+      <tbody>
+        <tr><td>โครงสร้าง/องค์ประกอบหน้าจอ</td><td><b>HTML</b> ที่สื่อความหมาย (semantic) เช่น <code class="inl">&lt;button&gt;</code>, <code class="inl">&lt;form&gt;</code></td></tr>
+        <tr><td>การจัดวาง/กริด (บทที่ 7)</td><td><b>CSS Layout</b> — Flexbox / Grid</td></tr>
+        <tr><td>สีและตัวอักษร (บทที่ 8)</td><td><b>CSS</b> + ตัวแปร (design tokens)</td></tr>
+        <tr><td>การเชื่อมหน้า/hotspot</td><td><b>ลิงก์/เส้นทาง (routing)</b> หรือ <code class="inl">&lt;a href&gt;</code></td></tr>
+        <tr><td>การโต้ตอบ/สถานะ</td><td><b>JavaScript</b> (เปลี่ยนสถานะ, ตรวจฟอร์ม)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3.3 worked example -->
+  <h3><span class="nm">3.3</span> ตัวอย่าง: แปลง “การ์ดประกาศสัตว์หาย” เป็นโค้ดจริง</h3>
+  <p>เราจะนำการ์ดประกาศที่ออกแบบไว้ มาเขียนเป็น HTML/CSS จริง โดยใช้ design tokens จากบทที่ 8 เริ่มจาก <b>โครงสร้าง HTML ที่สื่อความหมาย</b></p>
+  <pre><span class="cm">&lt;!-- โครงสร้าง (HTML) — สื่อความหมายและเข้าถึงได้ --&gt;</span>
+<span class="ky">&lt;article</span> <span class="st">class=</span><span class="st">"post-card"</span><span class="ky">&gt;</span>
+  <span class="ky">&lt;img</span> <span class="st">class=</span><span class="st">"post-card__img"</span> <span class="st">src=</span><span class="st">"dog.jpg"</span> <span class="st">alt=</span><span class="st">"สุนัขสีดำ ชื่อน้องดำ"</span><span class="ky">&gt;</span>
+  <span class="ky">&lt;div</span> <span class="st">class=</span><span class="st">"post-card__body"</span><span class="ky">&gt;</span>
+    <span class="ky">&lt;div</span> <span class="st">class=</span><span class="st">"post-card__row"</span><span class="ky">&gt;</span>
+      <span class="ky">&lt;h3&gt;</span>น้องดำ<span class="ky">&lt;/h3&gt;</span>
+      <span class="ky">&lt;span</span> <span class="st">class=</span><span class="st">"badge badge--lost"</span><span class="ky">&gt;</span>หาย<span class="ky">&lt;/span&gt;</span>
+    <span class="ky">&lt;/div&gt;</span>
+    <span class="ky">&lt;p</span> <span class="st">class=</span><span class="st">"post-card__meta"</span><span class="ky">&gt;</span>หายที่ ซอย 5 · เมื่อวานนี้<span class="ky">&lt;/p&gt;</span>
+    <span class="ky">&lt;button</span> <span class="st">class=</span><span class="st">"btn btn--primary"</span><span class="ky">&gt;</span>ส่งเบาะแส<span class="ky">&lt;/button&gt;</span>
+  <span class="ky">&lt;/div&gt;</span>
+<span class="ky">&lt;/article&gt;</span></pre>
+
+  <p>จากนั้นใส่ <b>สไตล์ (CSS)</b> โดยอ้างอิง design tokens (สี/ตัวอักษร) จากบทที่ 8 และเทคนิคจัดวางจากบทที่ 7</p>
+  <pre><span class="cm">/* ใช้ตัวแปรจาก Style Guide บทที่ 8 */</span>
+.post-card { border-radius: <span class="nu">14px</span>; overflow: hidden;
+  box-shadow: <span class="nu">0 4px 14px rgba(31,55,89,.12)</span>; background:#fff; }
+.post-card__img { width:<span class="nu">100%</span>; height:<span class="nu">140px</span>; object-fit:cover; }
+.post-card__body { padding:<span class="nu">14px 16px</span>; }
+.post-card__row { display:<span class="ky">flex</span>; justify-content:space-between; align-items:center; }
+.badge--lost { background: <span class="ky">var</span>(--color-error); color:#fff;
+  padding:<span class="nu">3px 10px</span>; border-radius:<span class="nu">20px</span>; font-size:<span class="nu">.75rem</span>; }
+.btn--primary { width:<span class="nu">100%</span>; background: <span class="ky">var</span>(--color-accent);
+  color:#fff; border:none; padding:<span class="nu">11px</span>; border-radius:<span class="nu">10px</span>;
+  font-family: <span class="ky">var</span>(--font-base); font-weight:<span class="nu">600</span>; cursor:pointer; }</pre>
+
+  <p>ผลลัพธ์ที่เรนเดอร์จริงด้วย HTML/CSS ข้างต้น จะหน้าตาเหมือนการ์ดที่ออกแบบไว้ในต้นแบบ:</p>
+  <div class="preview-wrap">
+    <div class="preview-bar">ตัวอย่างที่เรนเดอร์จริง (HTML/CSS)</div>
+    <div class="preview-body">
+      <div class="demo-card">
+        <div class="img">🐕</div>
+        <div class="body">
+          <div class="row"><span class="nm">น้องดำ</span><span class="badge">หาย</span></div>
+          <div class="meta">หายที่ ซอย 5 · เมื่อวานนี้</div>
+          <button class="btn">ส่งเบาะแส</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    การ์ดที่เห็นด้านบนนี้คือ HTML/CSS จริงที่ทำงานในเบราว์เซอร์ ไม่ใช่ภาพ — สังเกตว่าปุ่ม “ส่งเบาะแส” กดได้และมีเอฟเฟกต์ตอนชี้เมาส์ นี่คือความต่างระหว่าง “ต้นแบบ” กับ “เว็บจริง”
+  </div>
+
+  <!-- 3.4 interaction & responsive -->
+  <h3><span class="nm">3.4</span> เพิ่มการโต้ตอบและรองรับหลายขนาดจอ</h3>
+  <p>ขั้นสุดท้ายคือทำให้หน้าเว็บ “ตอบสนอง” ด้วย JavaScript (เช่น ตรวจฟอร์ม แสดงสถานะ loading/success) และ “ปรับตามขนาดจอ” (responsive) ด้วย CSS media query ซึ่งจะลงลึกในวิชาการพัฒนาเว็บแอปพลิเคชัน บทนี้ให้เห็นภาพการเชื่อมต่อ</p>
+  <pre><span class="cm">// ตัวอย่างการโต้ตอบ: กดปุ่มแล้วแสดงสถานะ (เทียบกับ hotspot ในต้นแบบ)</span>
+<span class="ky">const</span> btn = document.querySelector(<span class="st">'.btn--primary'</span>);
+btn.addEventListener(<span class="st">'click'</span>, () =&gt; {
+  showState(<span class="st">'loading'</span>);              <span class="cm">// สถานะกำลังส่ง</span>
+  submitTip().then(() =&gt; showState(<span class="st">'success'</span>));  <span class="cm">// สำเร็จ</span>
+});</pre>
+  <pre><span class="cm">/* responsive: มือถือ 1 คอลัมน์ จอใหญ่ 3 คอลัมน์ */</span>
+.post-grid { display:grid; grid-template-columns:<span class="nu">1fr</span>; gap:<span class="nu">16px</span>; }
+<span class="ky">@media</span> (min-width:<span class="nu">768px</span>) {
+  .post-grid { grid-template-columns:<span class="ky">repeat</span>(3, 1fr); }
+}</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">บทนี้รวมผลงานทุกบท: <b>Sitemap/User Flow</b> (บท 6) กำหนดการเชื่อมหน้า, <b>การจัดวาง/กริด</b> (บท 7) เป็นโครง wireframe, และ <b>สี/ตัวอักษร</b> (บท 8) ทำให้ต้นแบบเป็น hi-fi และกลายเป็น CSS tokens เมื่อสร้างเว็บจริง</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">ต้นแบบที่กดได้จากบทนี้ คือสิ่งที่จะนำไป <b>ทดสอบกับผู้ใช้จริง</b> ใน <b>บทที่ 10: การประเมินการใช้งานได้ (Usability Evaluation)</b> เพื่อค้นหาจุดที่ต้องปรับปรุงก่อนพัฒนาเป็นระบบสมบูรณ์</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>4. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li>ต้นแบบมี 3 ระดับ: <b>Lo-fi (wireframe)</b>, <b>Mid-fi (mockup)</b>, <b>Hi-fi (prototype)</b> — เลือกตามวัตถุประสงค์และช่วงงาน</li>
+    <li><b>Interactive prototype</b> เชื่อมหน้าจอด้วย hotspot เพื่อจำลอง user flow และทดสอบโดยยังไม่ต้องเขียนโค้ด</li>
+    <li>ต้องออกแบบ <b>สถานะของหน้าจอ</b> ให้ครบ: empty, loading, error, success</li>
+    <li><b>Design Handoff</b> ส่งมอบ specs, design tokens, assets, states และ flow ให้นักพัฒนา</li>
+    <li>แปลงต้นแบบเป็นเว็บจริง: โครงสร้าง→<b>HTML</b>, จัดวาง→<b>CSS Layout</b>, สี/ตัวอักษร→<b>CSS tokens</b>, โต้ตอบ→<b>JavaScript</b>, รองรับหลายจอ→<b>responsive</b></li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>5. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">Lo-fi, Mid-fi และ Hi-fi ต่างกันอย่างไร และควรใช้ระดับใดในช่วงต้นของงาน เพราะเหตุใด</div>
+    <div class="rq">hotspot ในต้นแบบทำหน้าที่อะไร และเชื่อมโยงกับ User Flow จากบทที่ 6 อย่างไร</div>
+    <div class="rq">เหตุใดจึงต้องออกแบบสถานะ empty/loading/error ไม่ใช่แค่สถานะปกติ</div>
+    <div class="rq">Design Handoff ควรส่งมอบอะไรบ้างให้นักพัฒนา</div>
+    <div class="rq">จงจับคู่: การจัดวาง, สี/ตัวอักษร, การเชื่อมหน้า และการโต้ตอบ ไปยังเทคโนโลยีเว็บที่เกี่ยวข้อง</div>
+    <div class="rq">เหตุใด prototype จึงยังไม่ใช่ “เว็บจริง” และต้องผ่านกระบวนการใดจึงจะกลายเป็นเว็บที่ใช้งานได้</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>6. ขั้นตอน Workshop (2 สัปดาห์)</h2></div>
+  <p>บทนี้มี workshop 2 คาบ โดยใช้ Figma และเอดิเตอร์โค้ด (เช่น VS Code) ห้ามใช้เครื่องมือ AI</p>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 12 — Wireframe → Mockup → Prototype</div>
+  <ol class="steps">
+    <li><span class="t">ทบทวนผลงานบท 6–8</span> <span class="min">(15 นาที)</span><br>เตรียม Sitemap, การจัดวาง และ Style Guide ให้พร้อมใช้</li>
+    <li><span class="t">สร้าง Wireframe</span> <span class="min">(35 นาที)</span><br>วาด wireframe ขาวดำของหน้าจอหลัก 4–6 หน้า อ้างอิงการจัดวางบทที่ 7</li>
+    <li><span class="t">ยกระดับเป็น Hi-fi</span> <span class="min">(35 นาที)</span><br>ใส่สีและตัวอักษรจาก Style Guide (บทที่ 8) ลงใน wireframe</li>
+    <li><span class="t">เชื่อม Prototype</span> <span class="min">(25 นาที)</span><br>เชื่อมหน้าจอด้วย hotspot ตาม user flow “แจ้งสัตว์หาย” ให้กดทดลองได้</li>
+  </ol>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 13 — สถานะหน้าจอ + แปลงเป็นโค้ด</div>
+  <ol class="steps">
+    <li><span class="t">ออกแบบสถานะหน้าจอ</span> <span class="min">(25 นาที)</span><br>เพิ่มสถานะ empty/loading/error/success ให้หน้าจอสำคัญ</li>
+    <li><span class="t">เรียนรู้ Design Handoff</span> <span class="min">(20 นาที)</span><br>ดูการสาธิต แล้วลองเปิดดู specs/tokens และส่งออก assets จาก Figma ด้วยตนเอง</li>
+    <li><span class="t">แปลง 1 องค์ประกอบเป็นโค้ด</span> <span class="min">(40 นาที)</span><br>เลือก 1 องค์ประกอบ (เช่น การ์ดประกาศหรือปุ่ม) เขียน HTML/CSS ให้เหมือนต้นแบบ</li>
+    <li><span class="t">Peer Review &amp; สรุป</span> <span class="min">(15 นาที)</span><br>เทียบโค้ดที่ได้กับต้นแบบ และเตรียมต้นแบบสำหรับทดสอบในบทที่ 10</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>7. งานที่ต้องส่ง (Assignment 9)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 14</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “Interactive Prototype + ตัวอย่างโค้ด 1 องค์ประกอบ”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 9 ของ Design Portfolio ส่งเป็นไฟล์ PDF + ลิงก์ prototype + ไฟล์โค้ด ประกอบด้วย:</p>
+    <ol>
+      <li><b>Wireframe</b> ของหน้าจอหลักอย่างน้อย 4 หน้า</li>
+      <li><b>Hi-fi Prototype ที่กดได้</b> เชื่อม flow “แจ้งสัตว์หาย” ครบ (แนบลิงก์/ภาพ)</li>
+      <li><b>สถานะหน้าจอ</b> อย่างน้อย 3 สถานะ (เช่น empty, loading/error, success)</li>
+      <li><b>ตัวอย่างโค้ดจริง</b> ของ 1 องค์ประกอบ (HTML + CSS ที่ใช้ design tokens) พร้อมภาพผลลัพธ์ที่เรนเดอร์</li>
+      <li><b>หมายเหตุ Handoff</b> ระบุ spacing/สี/ฟอนต์ที่ใช้ และ assets ที่ต้องส่งมอบ</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: ความต่างระหว่างต้นแบบกับเว็บจริงที่ได้เรียนรู้</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความสมบูรณ์ของ prototype/flow (30%) · ความครบของสถานะหน้าจอ (20%) · คุณภาพโค้ดที่ตรงกับต้นแบบ (30%) · Handoff &amp; สะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>8. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">มี Wireframe ของหน้าจอหลักอย่างน้อย 4 หน้า</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">ยกระดับเป็น Hi-fi ด้วยสี/ตัวอักษรจาก Style Guide</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">Prototype เชื่อม flow “แจ้งสัตว์หาย” กดทดลองได้ครบ</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">ออกแบบสถานะหน้าจออย่างน้อย 3 สถานะ</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">เขียนโค้ด HTML/CSS ของ 1 องค์ประกอบให้เหมือนต้นแบบ ใช้ design tokens</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">HTML สื่อความหมาย (ใช้ &lt;button&gt;, &lt;form&gt;, alt บนรูป)</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">มีหมายเหตุ Handoff (spacing/สี/ฟอนต์/assets)</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">บันทึก/แนบลิงก์ และส่งก่อนคาบสัปดาห์ที่ 14</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่8_ทฤษฎีสีและการใช้ตัวอักษร.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 8 · ทฤษฎีสีและการใช้ตัวอักษร</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่10_UsabilityEvaluation.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 10 · การประเมินการใช้งานได้</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch9_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

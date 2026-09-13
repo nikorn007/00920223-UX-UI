@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 8 — ทฤษฎีสีและการใช้ตัวอักษร | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=Charm:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 8 : ทอง-ส้มอำพัน (Amber Gold) ===== */
+  :root{
+    --ch:#bb7d10;
+    --ch-dark:#8a5a06;
+    --ch-soft:#f7eccd;
+    --ch-softer:#fbf6e8;
+    --accent:#127a7a;          /* เสริม-เขียวมรกตเข้ม เพื่อตัดกับทอง */
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#fbf8ef;
+    --card:#ffffff;
+    --line:#ecddbf;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(138,90,6,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(138,90,6,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(18,122,122,.18)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.12rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch-dark);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.18rem;margin:26px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.22rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+  .subpart{background:linear-gradient(90deg,var(--ch-soft),transparent);border-left:5px solid var(--ch);border-radius:0 10px 10px 0;padding:10px 18px;margin:30px 0 6px;font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.15rem}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#fbf4e0;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#eafafa;border-color:var(--accent)}
+  .box-key .bh{color:#0c5b5b}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#e8f6f6;border-color:#bfe3e3}
+  .bridge.next h4{color:#0c5b5b}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  pre .nu{color:#f0b072}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+  .wk-tag{display:inline-block;background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600;font-size:.82rem;padding:3px 11px;border-radius:7px;margin:14px 0 4px}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== color swatches ===== */
+  .swatches{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+  .sw-item{width:96px;text-align:center}
+  .sw-chip{height:64px;border-radius:10px;border:1px solid rgba(0,0,0,.08);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .sw-item .nm{font-size:.82rem;font-weight:600;margin-top:5px;color:var(--ink)}
+  .sw-item .hex{font-family:'JetBrains Mono';font-size:.74rem;color:var(--muted)}
+  .palette{display:flex;border-radius:10px;overflow:hidden;border:1px solid var(--line);margin:14px 0}
+  .palette div{flex:1;height:56px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-size:.72rem;font-family:'JetBrains Mono';color:rgba(255,255,255,.95)}
+
+  /* 60-30-10 */
+  .bar6030{display:flex;height:46px;border-radius:9px;overflow:hidden;margin:14px 0;font-family:var(--head);font-weight:600;color:#fff}
+  .bar6030 div{display:flex;align-items:center;justify-content:center;font-size:.9rem}
+
+  /* contrast demo */
+  .contrast-demo{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+  .cd{flex:1;min-width:180px;border-radius:10px;padding:16px;font-weight:600;text-align:center}
+  .cd .ratio{display:block;font-size:.8rem;font-weight:400;margin-top:6px;opacity:.9}
+
+  /* type specimen */
+  .specimen{border:1px solid var(--line);border-radius:11px;padding:14px 18px;margin:12px 0;background:#fff}
+  .specimen .lbl{font-family:var(--head);font-size:.82rem;color:var(--accent);font-weight:600;margin-bottom:4px}
+  .specimen .samp{font-size:1.5rem;line-height:1.3;color:var(--ink)}
+  .specimen .meta{font-size:.8rem;color:var(--muted);margin-top:4px}
+  .f-serif{font-family:Georgia,'Times New Roman',serif}
+  .f-sans{font-family:Arial,Helvetica,sans-serif}
+  .f-mono{font-family:'JetBrains Mono',monospace}
+  .f-script{font-family:'Charm',cursive}
+  .f-thai-loop{font-family:'Sarabun',sans-serif}
+  .f-thai-loopless{font-family:'Prompt',sans-serif}
+
+  /* type scale */
+  .scale-row{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding:7px 0}
+  .scale-row .tag{font-family:'JetBrains Mono';font-size:.74rem;color:var(--muted);width:120px;flex-shrink:0}
+  .scale-row .txt{color:var(--ink);font-family:var(--head);font-weight:600;line-height:1.2}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table,.specimen,.swatches{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 8</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#color">ทฤษฎีสี</a>
+      <a href="#type">ตัวอักษร</a>
+      <a href="#summary">สรุป</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 8 · Chapter 8 · สัปดาห์ 10–11</span>
+    <h1>ทฤษฎีสีและการใช้ตัวอักษร</h1>
+    <div class="en">Color Theory &amp; Typography</div>
+    <p class="lead">เพิ่ม “ภาษาภาพ” ให้หน้าจอ — เรียนรู้ทฤษฎีสีตั้งแต่มิติของสี โมเดลสี วงล้อสี ชุดสีที่กลมกลืน จิตวิทยาสี และการเข้าถึง ตามด้วยหลักการใช้ตัวอักษรทั้งกายวิภาค ประเภท การจัดลำดับ และตัวอักษรภาษาไทย</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO6</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 10–11 (8 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO6</b> — ประยุกต์หลักการออกแบบส่วนติดต่อผู้ใช้ — ทฤษฎีสี การจัดวางองค์ประกอบ และการใช้ตัวอักษร</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายมิติของสีและโมเดลสี</b> (HSB, RGB, CMYK, HEX) และเลือกใช้ให้เหมาะกับสื่อจอภาพหรือสิ่งพิมพ์
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>ออกแบบชุดสีที่กลมกลืน</b> โดยใช้วงล้อสีและรูปแบบ color harmony รวมถึงกฎ 60-30-10
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>ตรวจสอบความตัดกันของสี (contrast) ตามมาตรฐาน WCAG</b> และคำนึงถึงผู้ใช้ที่ตาบอดสี
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>อธิบายกายวิภาคและประเภทของตัวอักษร</b> ทั้งภาษาอังกฤษและภาษาไทย พร้อมเลือกใช้ให้เหมาะกับบริบท
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>สร้างลำดับชั้นตัวอักษร (type scale)</b> โดยกำหนดขนาด น้ำหนัก ระยะบรรทัด และการจับคู่ฟอนต์
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">6</div><div class="obj-body">
+    <b>สร้างชุดสีและระบบตัวอักษร (Style Guide เบื้องต้น)</b> ของแอปค้นหาสัตว์เลี้ยงหาย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+  <p class="lead-q">“สีและตัวอักษรพูดกับผู้ใช้ก่อนที่ข้อความใด ๆ จะถูกอ่านเสียอีก” — ก่อนผู้ใช้จะอ่านคำว่า ‘แจ้งหาย’ เขารับรู้ ‘ความเร่งด่วน’ จากสีและขนาดไปแล้ว เราจะใช้สองสิ่งนี้สื่อสารอย่างตั้งใจได้อย่างไร?</p>
+  <p>ในบทที่ 7 เราจัดวางองค์ประกอบด้วยลำดับชั้นและกริดแล้ว แต่หน้าจอยังเป็นโครงร่างขาวดำ บทนี้จะเติม “ภาษาภาพ” สองอย่างที่ทรงพลังที่สุดในงาน UI คือ <b>สี</b> และ <b>ตัวอักษร</b> ซึ่งเป็นเครื่องมือเสริมลำดับชั้น สื่ออารมณ์ และสร้างเอกลักษณ์ของแบรนด์</p>
+  <p>บทนี้กินเวลา 2 สัปดาห์: สัปดาห์แรกเน้นทฤษฎีสีและการสร้างชุดสี สัปดาห์ที่สองเน้นการใช้ตัวอักษรและการสร้างระบบ type เนื้อหามีทฤษฎีค่อนข้างมาก จึงแบ่งเป็นสองส่วนใหญ่ พร้อมตัวอย่างประกอบหลากหลายรูปแบบ</p>
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    ถ้าแอปค้นหาสัตว์เลี้ยงหายใช้สีชมพูพาสเทลและฟอนต์ลายมือทั้งหมด ผู้ใช้ที่กำลังตื่นตระหนกจะรู้สึกอย่างไร? สีและตัวอักษรควร “เข้ากับอารมณ์ของสถานการณ์” หรือไม่?
+  </div>
+</section>
+
+<!-- ============ ส่วน A : ทฤษฎีสี ============ -->
+<section id="color">
+  <div class="sec-head"><div class="sec-ic">🎨</div><h2>2. ทฤษฎีสี (Color Theory)</h2></div>
+
+  <!-- 2.1 dimensions -->
+  <h3><span class="nm">2.1</span> มิติของสี: Hue, Saturation, Brightness</h3>
+  <p>ทุกสีอธิบายได้ด้วย 3 มิติ — <b>Hue (เนื้อสี)</b> คือชนิดของสี เช่น แดง เขียว น้ำเงิน, <b>Saturation (ความอิ่มตัว)</b> คือความสดของสี (สดจัด ↔ หม่น/เทา), และ <b>Brightness/Value (ความสว่าง)</b> คือความสว่าง-มืดของสี โมเดลนี้เรียกว่า HSB (หรือ HSV) ซึ่งเข้าใจง่ายกว่าการคิดเป็นค่าตัวเลข RGB</p>
+  <figure class="fig">
+    <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="มิติของสี Hue Saturation Brightness">
+      <defs>
+        <linearGradient id="hue" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#e8443a"/><stop offset="0.17" stop-color="#f4c20d"/><stop offset="0.34" stop-color="#4caf50"/><stop offset="0.5" stop-color="#16b1c4"/><stop offset="0.67" stop-color="#3b5bdb"/><stop offset="0.84" stop-color="#b53fb0"/><stop offset="1" stop-color="#e8443a"/>
+        </linearGradient>
+        <linearGradient id="sat" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa0a6"/><stop offset="1" stop-color="#bb7d10"/></linearGradient>
+        <linearGradient id="bri" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#bb7d10"/></linearGradient>
+      </defs>
+      <g font-family="'Sarabun',sans-serif" font-size="13">
+        <text x="20" y="40" fill="#8a5a06" font-weight="700">Hue (เนื้อสี)</text>
+        <rect x="200" y="24" width="340" height="26" rx="6" fill="url(#hue)"/>
+        <text x="20" y="110" fill="#8a5a06" font-weight="700">Saturation (อิ่มตัว)</text>
+        <rect x="200" y="94" width="340" height="26" rx="6" fill="url(#sat)"/>
+        <text x="206" y="138" font-size="11" fill="#5e6b78">หม่น/เทา → สดจัด</text>
+        <text x="20" y="180" fill="#8a5a06" font-weight="700">Brightness (สว่าง)</text>
+        <rect x="200" y="164" width="340" height="26" rx="6" fill="url(#bri)"/>
+        <text x="206" y="208" font-size="11" fill="#5e6b78">มืด → สว่าง</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 8.1</b> สามมิติของสีตามโมเดล HSB — เนื้อสี ความอิ่มตัว และความสว่าง</figcaption>
+  </figure>
+
+  <!-- 2.2 color models -->
+  <h3><span class="nm">2.2</span> โมเดลสี: RGB, CMYK และ HEX</h3>
+  <p>สื่อต่างชนิดใช้โมเดลสีต่างกัน <b>RGB</b> (Red-Green-Blue) เป็นระบบ <b>บวก (additive)</b> ใช้กับจอภาพ ยิ่งผสมแสงมากยิ่งสว่างจนเป็นสีขาว ส่วน <b>CMYK</b> (Cyan-Magenta-Yellow-Key/black) เป็นระบบ <b>ลบ (subtractive)</b> ใช้กับงานพิมพ์ ยิ่งผสมหมึกมากยิ่งมืดลง สำหรับงานเว็บและแอปเราใช้ RGB และมักเขียนเป็นรหัส <b>HEX</b> เช่น <code class="inl">#BB7D10</code></p>
+  <figure class="fig">
+    <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="เปรียบเทียบ RGB กับ CMYK">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- RGB additive on dark -->
+        <rect x="20" y="20" width="250" height="190" rx="10" fill="#111418"/>
+        <text x="145" y="42" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">RGB — บวก (จอภาพ)</text>
+        <g style="mix-blend-mode:screen">
+          <circle cx="120" cy="110" r="52" fill="#ff2d2d"/><circle cx="170" cy="110" r="52" fill="#2dff2d"/><circle cx="145" cy="150" r="52" fill="#2d6bff"/>
+        </g>
+        <text x="145" y="200" text-anchor="middle" font-size="11.5" fill="#cfd6dd">ผสมแสงมาก → ขาว</text>
+        <!-- CMYK subtractive on white -->
+        <rect x="290" y="20" width="250" height="190" rx="10" fill="#fff" stroke="#ecddbf"/>
+        <text x="415" y="42" text-anchor="middle" font-size="13.5" font-weight="700" fill="#8a5a06">CMYK — ลบ (งานพิมพ์)</text>
+        <g style="mix-blend-mode:multiply">
+          <circle cx="390" cy="110" r="52" fill="#22c7e6"/><circle cx="440" cy="110" r="52" fill="#ec3fb0"/><circle cx="415" cy="150" r="52" fill="#f4d51a"/>
+        </g>
+        <text x="415" y="200" text-anchor="middle" font-size="11.5" fill="#5e6b78">ผสมหมึกมาก → ดำ</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 8.2</b> RGB (บวก) สำหรับจอภาพ และ CMYK (ลบ) สำหรับงานพิมพ์</figcaption>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>โมเดล</th><th>ระบบ</th><th>ใช้กับ</th><th>ตัวอย่างค่า</th></tr></thead>
+      <tbody>
+        <tr><td><b>RGB</b></td><td>บวก (แสง)</td><td>จอภาพ เว็บ แอป</td><td>rgb(187, 125, 16)</td></tr>
+        <tr><td><b>HEX</b></td><td>บวก (เขียนย่อของ RGB)</td><td>โค้ดเว็บ/CSS</td><td>#BB7D10</td></tr>
+        <tr><td><b>HSL/HSB</b></td><td>บวก (เชิงการรับรู้)</td><td>เครื่องมือออกแบบ</td><td>hsl(38, 84%, 40%)</td></tr>
+        <tr><td><b>CMYK</b></td><td>ลบ (หมึก)</td><td>งานพิมพ์</td><td>C0 M33 Y91 K27</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.3 color wheel -->
+  <h3><span class="nm">2.3</span> วงล้อสีและชนิดของสี</h3>
+  <p><b>วงล้อสี (Color Wheel)</b> จัดเรียงเนื้อสีเป็นวงกลม ช่วยให้เห็นความสัมพันธ์ระหว่างสี แบ่งได้เป็น <b>แม่สี (Primary)</b> = แดง เหลือง น้ำเงิน, <b>สีขั้นที่สอง (Secondary)</b> = ส้ม เขียว ม่วง (เกิดจากผสมแม่สี), และ <b>สีขั้นที่สาม (Tertiary)</b> = สีที่อยู่ระหว่างแม่สีกับสีขั้นที่สอง</p>
+  <figure class="fig">
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="วงล้อสี 12 สี">
+      <g font-family="'Sarabun',sans-serif">
+        <circle cx="120" cy="120" r="92" fill="none" stroke="#ecddbf" stroke-width="1"/>
+        <g>
+          <circle cx="120" cy="36" r="13" fill="#f4c20d"/>
+          <circle cx="162" cy="47" r="13" fill="#a8cf3f"/>
+          <circle cx="193" cy="78" r="13" fill="#4caf50"/>
+          <circle cx="204" cy="120" r="13" fill="#19a589"/>
+          <circle cx="193" cy="162" r="13" fill="#16b1c4"/>
+          <circle cx="162" cy="193" r="13" fill="#2f86d6"/>
+          <circle cx="120" cy="204" r="13" fill="#3b5bdb"/>
+          <circle cx="78" cy="193" r="13" fill="#7048c4"/>
+          <circle cx="47" cy="162" r="13" fill="#b53fb0"/>
+          <circle cx="36" cy="120" r="13" fill="#e0468c"/>
+          <circle cx="47" cy="78" r="13" fill="#e8443a"/>
+          <circle cx="78" cy="47" r="13" fill="#ef7d33"/>
+        </g>
+        <text x="120" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a06">วงล้อสี</text>
+        <text x="120" y="132" text-anchor="middle" font-size="11" fill="#5e6b78">12 สี</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 8.3</b> วงล้อสี 12 สี — พื้นฐานของการเลือกชุดสีที่กลมกลืน</figcaption>
+  </figure>
+
+  <!-- 2.4 harmony -->
+  <h3><span class="nm">2.4</span> ชุดสีที่กลมกลืน (Color Harmony)</h3>
+  <p>การเลือกสีที่ “เข้ากัน” ทำได้ด้วยการอ้างอิงตำแหน่งบนวงล้อสี รูปแบบที่นิยมมีดังนี้</p>
+  <figure class="fig">
+    <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="รูปแบบชุดสีที่กลมกลืน">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- complementary -->
+        <circle cx="90" cy="55" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="90" cy="21" r="8" fill="#bb7d10"/><circle cx="90" cy="89" r="8" fill="#127a7a"/>
+        <text x="90" y="120" font-size="12.5" font-weight="700" fill="#8a5a06">Complementary</text>
+        <text x="90" y="136" font-size="11" fill="#5e6b78">คู่ตรงข้าม</text>
+        <!-- analogous -->
+        <circle cx="240" cy="55" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="240" cy="21" r="8" fill="#bb7d10"/><circle cx="269" cy="38" r="8" fill="#cf9a1a"/><circle cx="211" cy="38" r="8" fill="#a8581a"/>
+        <text x="240" y="120" font-size="12.5" font-weight="700" fill="#8a5a06">Analogous</text>
+        <text x="240" y="136" font-size="11" fill="#5e6b78">สีข้างเคียง</text>
+        <!-- triadic -->
+        <circle cx="390" cy="55" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="390" cy="21" r="8" fill="#bb7d10"/><circle cx="419" cy="72" r="8" fill="#127a7a"/><circle cx="361" cy="72" r="8" fill="#b53fb0"/>
+        <text x="390" y="120" font-size="12.5" font-weight="700" fill="#8a5a06">Triadic</text>
+        <text x="390" y="136" font-size="11" fill="#5e6b78">สามเหลี่ยม</text>
+        <!-- split-comp -->
+        <circle cx="90" cy="180" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="90" cy="146" r="8" fill="#bb7d10"/><circle cx="119" cy="197" r="8" fill="#127a7a"/><circle cx="61" cy="197" r="8" fill="#2f86d6"/>
+        <text x="90" y="244" font-size="12.5" font-weight="700" fill="#8a5a06">Split-Comp.</text>
+        <!-- monochromatic -->
+        <circle cx="240" cy="180" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="240" cy="146" r="8" fill="#e7c878"/><circle cx="240" cy="170" r="8" fill="#bb7d10"/><circle cx="240" cy="194" r="8" fill="#7a5208"/>
+        <text x="240" y="244" font-size="12.5" font-weight="700" fill="#8a5a06">Monochromatic</text>
+        <!-- tetradic -->
+        <circle cx="390" cy="180" r="34" fill="none" stroke="#ecddbf" stroke-width="6"/>
+        <circle cx="390" cy="146" r="8" fill="#bb7d10"/><circle cx="424" cy="180" r="8" fill="#127a7a"/><circle cx="390" cy="214" r="8" fill="#3b5bdb"/><circle cx="356" cy="180" r="8" fill="#e0468c"/>
+        <text x="390" y="244" font-size="12.5" font-weight="700" fill="#8a5a06">Tetradic</text>
+        <!-- mini explanation right -->
+        <g text-anchor="start" font-size="11.5" fill="#5e6b78">
+          <text x="470" y="40">• คู่ตรงข้าม = ตัดกันแรง</text>
+          <text x="470" y="62">• ข้างเคียง = นุ่มนวล</text>
+          <text x="470" y="84">• สามเหลี่ยม = สดใส สมดุล</text>
+          <text x="470" y="160">• โทนเดียว = สงบ เรียบ</text>
+          <text x="470" y="182">• สี่สี = หลากหลาย</text>
+          <text x="470" y="204">  (ใช้ยาก ต้องคุมโทน)</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 8.4</b> รูปแบบชุดสีที่กลมกลืน 6 แบบ จากตำแหน่งบนวงล้อสี</figcaption>
+  </figure>
+
+  <!-- 2.5 temperature & psychology -->
+  <h3><span class="nm">2.5</span> อุณหภูมิสีและจิตวิทยาสี</h3>
+  <p><b>อุณหภูมิสี</b> แบ่งเป็นสีโทนร้อน (แดง ส้ม เหลือง) ที่ให้ความรู้สึกอบอุ่น ตื่นเต้น เร่งด่วน และสีโทนเย็น (เขียว น้ำเงิน ม่วง) ที่ให้ความรู้สึกสงบ น่าเชื่อถือ นอกจากนี้แต่ละสียังมี <b>ความหมายเชิงจิตวิทยา</b> ที่ควรเลือกใช้ให้สอดคล้องกับบุคลิกของผลิตภัณฑ์ (ทั้งนี้ความหมายอาจต่างกันตามวัฒนธรรม)</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>สี</th><th>ความรู้สึก/ความหมายที่พบบ่อย</th><th>มักใช้กับ</th></tr></thead>
+      <tbody>
+        <tr><td><b>แดง</b></td><td>เร่งด่วน อันตราย พลังงาน ความรัก</td><td>การแจ้งเตือน ข้อผิดพลาด ปุ่มสำคัญ</td></tr>
+        <tr><td><b>ส้ม</b></td><td>กระตือรือร้น เป็นมิตร อบอุ่น</td><td>ปุ่ม CTA โปรโมชัน</td></tr>
+        <tr><td><b>เหลือง</b></td><td>สดใส มองเห็นง่าย คำเตือน</td><td>ป้ายเตือน ไฮไลต์</td></tr>
+        <tr><td><b>เขียว</b></td><td>สำเร็จ ปลอดภัย ธรรมชาติ เติบโต</td><td>สถานะสำเร็จ การเงิน สุขภาพ</td></tr>
+        <tr><td><b>น้ำเงิน</b></td><td>น่าเชื่อถือ มั่นคง สงบ มืออาชีพ</td><td>ธนาคาร เทคโนโลยี องค์กร</td></tr>
+        <tr><td><b>ม่วง</b></td><td>หรูหรา สร้างสรรค์ ลึกลับ</td><td>แบรนด์พรีเมียม ความงาม</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0">เลือกสีหลักเป็น <b>น้ำเงิน-เขียว</b> ที่ให้ความรู้สึกน่าเชื่อถือและสงบ (ช่วยปลอบใจผู้ใช้ที่ตื่นตระหนก) แต่ใช้ <b>ส้ม/แดง</b> เป็นสีเน้นเฉพาะปุ่ม “แจ้งสัตว์หาย” เพื่อสื่อความเร่งด่วน — เป็นการจับคู่อารมณ์ของสีให้ตรงกับงาน</p>
+  </div>
+
+  <!-- 2.6 building palette -->
+  <h3><span class="nm">2.6</span> การสร้างชุดสี UI และกฎ 60-30-10</h3>
+  <p>ชุดสีของ UI ที่ใช้งานได้จริงควรมี: <b>สีหลัก (Primary)</b>, <b>สีรอง (Secondary)</b>, <b>สีเน้น (Accent)</b>, <b>สีกลาง (Neutrals)</b> สำหรับข้อความและพื้นหลัง และ <b>สีเชิงความหมาย (Semantic)</b> สำหรับสถานะต่าง ๆ</p>
+
+  <h4>ตัวอย่างชุดสีของแอปค้นหาสัตว์เลี้ยงหาย</h4>
+  <div class="swatches">
+    <div class="sw-item"><div class="sw-chip" style="background:#1f6f8b"></div><div class="nm">Primary</div><div class="hex">#1F6F8B</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#2e8b8b"></div><div class="nm">Secondary</div><div class="hex">#2E8B8B</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#e8743b"></div><div class="nm">Accent (CTA)</div><div class="hex">#E8743B</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#1f2733"></div><div class="nm">Text</div><div class="hex">#1F2733</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#eef2f5;border:1px solid #d9e0e6"></div><div class="nm" >Background</div><div class="hex">#EEF2F5</div></div>
+  </div>
+  <h4>สีเชิงความหมาย (Semantic colors)</h4>
+  <div class="swatches">
+    <div class="sw-item"><div class="sw-chip" style="background:#2e8b57"></div><div class="nm">Success</div><div class="hex">#2E8B57</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#e0a325"></div><div class="nm">Warning</div><div class="hex">#E0A325</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#c0392f"></div><div class="nm">Error</div><div class="hex">#C0392F</div></div>
+    <div class="sw-item"><div class="sw-chip" style="background:#2f86d6"></div><div class="nm">Info</div><div class="hex">#2F86D6</div></div>
+  </div>
+
+  <h4>กฎ 60-30-10</h4>
+  <p>หลักการจัดสัดส่วนสีที่ทำให้หน้าจอสมดุล: ใช้ <b>สีกลาง/พื้นหลัง 60%</b>, <b>สีหลัก 30%</b>, และ <b>สีเน้น 10%</b> เพื่อให้สีเน้น (เช่น ปุ่ม CTA) โดดเด่นโดยไม่ล้นจอ</p>
+  <div class="bar6030">
+    <div style="flex:6;background:#eef2f5;color:#5e6b78">60% พื้นหลัง/สีกลาง</div>
+    <div style="flex:3;background:#1f6f8b">30% สีหลัก</div>
+    <div style="flex:1;background:#e8743b;font-size:.72rem">10%</div>
+  </div>
+
+  <!-- 2.7 accessibility -->
+  <h3><span class="nm">2.7</span> สีกับการเข้าถึง (Accessibility)</h3>
+  <p>สีที่สวยแต่ตัดกันน้อยทำให้อ่านยาก โดยเฉพาะผู้สูงอายุหรือผู้มีสายตาเลือนราง มาตรฐาน <b>WCAG</b> กำหนด <b>อัตราส่วนความตัดกัน (contrast ratio)</b> ระหว่างข้อความกับพื้นหลัง โดยข้อความปกติควรมีอัตราอย่างน้อย <b>4.5:1 (ระดับ AA)</b> และข้อความใหญ่อย่างน้อย 3:1</p>
+  <div class="contrast-demo">
+    <div class="cd" style="background:#1f6f8b;color:#ffffff">ข้อความบนพื้นเข้ม<span class="ratio">contrast ≈ 6.1:1 — ผ่าน AA ✓</span></div>
+    <div class="cd" style="background:#eef2f5;color:#1f2733">ข้อความเข้มบนพื้นอ่อน<span class="ratio">contrast ≈ 13:1 — ผ่าน AAA ✓</span></div>
+    <div class="cd" style="background:#2e8b8b;color:#bfe0e0">ข้อความอ่อนบนพื้นกลาง<span class="ratio">contrast ≈ 1.8:1 — ไม่ผ่าน ✗</span></div>
+  </div>
+  <p>นอกจากนี้ ผู้ใช้ราว 1 ใน 12 ของผู้ชายมีภาวะ <b>ตาบอดสี</b> (มักแยกแดง-เขียวยาก) จึงไม่ควรสื่อความหมายด้วย “สีเพียงอย่างเดียว” เช่น สถานะผิดพลาดควรมีทั้งสีแดง <i>และ</i> ไอคอน/ข้อความกำกับ</p>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย (เรื่องสี)</div>
+    <ul style="margin-bottom:0">
+      <li>ใช้สีมากเกินไปจนไม่มีลำดับชั้น — ควรจำกัดชุดสีหลักไม่กี่สี</li>
+      <li>ข้อความสีเทาอ่อนบนพื้นขาว contrast ต่ำ อ่านไม่ออก</li>
+      <li>สื่อสถานะด้วยสีอย่างเดียว ผู้ใช้ตาบอดสีแยกไม่ออก</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ส่วน B : ตัวอักษร ============ -->
+<section id="type">
+  <div class="sec-head"><div class="sec-ic">🔤</div><h2>3. การใช้ตัวอักษร (Typography)</h2></div>
+
+  <!-- 3.1 anatomy -->
+  <h3><span class="nm">3.1</span> กายวิภาคของตัวอักษร</h3>
+  <p>การเข้าใจส่วนประกอบของตัวอักษรช่วยให้สื่อสารและเลือกฟอนต์ได้แม่นยำ คำศัพท์สำคัญได้แก่ <b>baseline</b> (เส้นฐานที่ตัวอักษรวางอยู่), <b>x-height</b> (ความสูงของตัวพิมพ์เล็ก), <b>cap height</b> (ความสูงตัวพิมพ์ใหญ่), <b>ascender</b> (ส่วนที่สูงเลย x-height เช่นหัว b, d) และ <b>descender</b> (ส่วนที่ต่ำกว่า baseline เช่นหาง g, p)</p>
+  <figure class="fig">
+    <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="กายวิภาคของตัวอักษร">
+      <g font-family="'Sarabun',sans-serif">
+        <g stroke="#ecddbf" stroke-width="1.4">
+          <line x1="40" y1="40" x2="480" y2="40"/><line x1="40" y1="70" x2="480" y2="70"/><line x1="40" y1="140" x2="480" y2="140"/><line x1="40" y1="170" x2="480" y2="170"/>
+        </g>
+        <text x="120" y="140" font-family="Georgia, serif" font-size="100" fill="#1f6f8b">bdg</text>
+        <g font-size="12" fill="#8a5a06" text-anchor="end">
+          <text x="475" y="44">ascender line</text>
+          <text x="475" y="74">cap / x-height</text>
+          <text x="475" y="144">baseline</text>
+          <text x="475" y="174">descender line</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 8.5</b> เส้นอ้างอิงของตัวอักษร — ascender, x-height, baseline และ descender</figcaption>
+  </figure>
+
+  <!-- 3.2 classification -->
+  <h3><span class="nm">3.2</span> ประเภทของตัวอักษร</h3>
+  <p>ตัวอักษรภาษาอังกฤษแบ่งกลุ่มหลักได้ดังนี้ แต่ละกลุ่มให้บุคลิกและความเหมาะสมต่างกัน</p>
+  <div class="specimen"><div class="lbl">Serif — มีเชิง</div><div class="samp f-serif">Lost Pet Finder</div><div class="meta">มีติ่งปลายเส้น ให้ความรู้สึกคลาสสิก เป็นทางการ · เหมาะกับเนื้อหายาว/สิ่งพิมพ์</div></div>
+  <div class="specimen"><div class="lbl">Sans-serif — ไม่มีเชิง</div><div class="samp f-sans">Lost Pet Finder</div><div class="meta">เส้นเรียบ สะอาด ทันสมัย อ่านง่ายบนจอ · นิยมในงานเว็บ/แอป</div></div>
+  <div class="specimen"><div class="lbl">Monospace — ความกว้างเท่ากัน</div><div class="samp f-mono">Lost Pet Finder</div><div class="meta">ทุกตัวอักษรกว้างเท่ากัน · เหมาะกับโค้ด ตัวเลข ตาราง</div></div>
+  <div class="specimen"><div class="lbl">Script/Display — ตกแต่ง</div><div class="samp f-script">Lost Pet Finder</div><div class="meta">มีเอกลักษณ์สูง · ใช้เป็นหัวเรื่องสั้น ๆ เท่านั้น ไม่เหมาะกับเนื้อหายาว</div></div>
+
+  <h4>ตัวอักษรภาษาไทย: แบบมีหัว และไม่มีหัว</h4>
+  <p>ฟอนต์ไทยแบ่งกว้าง ๆ เป็น <b>แบบมีหัว</b> (มีวงกลมเล็กที่หัวตัวอักษร อ่านง่าย เป็นทางการ เหมาะกับเนื้อหายาว) และ <b>แบบไม่มีหัว</b> (ทันสมัย ดูสะอาด เหมาะกับหัวเรื่อง/โลโก้)</p>
+  <div class="specimen"><div class="lbl">ไทยมีหัว (เช่น Sarabun, TH Sarabun New)</div><div class="samp f-thai-loop">ตามหาสัตว์เลี้ยงที่หายไป</div><div class="meta">มีหัวกลม อ่านสบาย เหมาะกับเนื้อหาและงานราชการ/ตำราเรียน</div></div>
+  <div class="specimen"><div class="lbl">ไทยไม่มีหัว (เช่น Prompt, Kanit)</div><div class="samp f-thai-loopless">ตามหาสัตว์เลี้ยงที่หายไป</div><div class="meta">เส้นเรียบทันสมัย เหมาะกับหัวเรื่อง โลโก้ และแบรนด์</div></div>
+
+  <!-- 3.3 type properties -->
+  <h3><span class="nm">3.3</span> คุณสมบัติของตัวอักษรและลำดับชั้น (Type Scale)</h3>
+  <p>การจัดตัวอักษรให้สื่อลำดับชั้นใช้คุณสมบัติหลายอย่างร่วมกัน: <b>ขนาด (size)</b>, <b>น้ำหนัก (weight)</b> เช่น Regular/Bold, <b>ระยะบรรทัด (line-height/leading)</b>, <b>ระยะระหว่างตัวอักษร (letter-spacing/tracking)</b> และ <b>ความยาวบรรทัด (line length/measure)</b> ที่เหมาะสมราว 45–75 ตัวอักษรต่อบรรทัด</p>
+  <p>เรามักกำหนด “ระดับ” ของตัวอักษรเป็น <b>type scale</b> โดยใช้อัตราส่วนคงที่ (เช่น 1.25) เพื่อให้ขนาดต่างกันอย่างมีจังหวะ</p>
+  <div style="border:1px solid var(--line);border-radius:11px;padding:8px 18px;margin:14px 0">
+    <div class="scale-row"><span class="tag">H1 · 32px Bold</span><span class="txt" style="font-size:32px">แจ้งสัตว์เลี้ยงหาย</span></div>
+    <div class="scale-row"><span class="tag">H2 · 25px Semibold</span><span class="txt" style="font-size:25px">รายละเอียดประกาศ</span></div>
+    <div class="scale-row"><span class="tag">H3 · 20px Semibold</span><span class="txt" style="font-size:20px">ข้อมูลสัตว์</span></div>
+    <div class="scale-row"><span class="tag">Body · 16px Regular</span><span class="txt" style="font-size:16px;font-weight:400">เนื้อหาทั่วไปสำหรับอ่าน อ่านง่ายที่ขนาด 16px</span></div>
+    <div class="scale-row"><span class="tag">Caption · 13px Regular</span><span class="txt" style="font-size:13px;font-weight:400;color:var(--muted)">ข้อความกำกับ/หมายเหตุขนาดเล็ก</span></div>
+  </div>
+
+  <!-- 3.4 readability & pairing -->
+  <h3><span class="nm">3.4</span> ความอ่านง่าย การจับคู่ฟอนต์ และตัวอักษรไทย</h3>
+  <p><b>Legibility</b> คือความ “แยกแยะตัวอักษรแต่ละตัวได้ง่าย” ส่วน <b>Readability</b> คือความ “อ่านเป็นข้อความได้ลื่นไหล” ทั้งสองได้รับผลจากขนาด ระยะบรรทัด และความตัดกันของสี การ <b>จับคู่ฟอนต์ (font pairing)</b> ที่ดีมักใช้ฟอนต์ไม่เกิน 2 แบบ เช่น ฟอนต์หัวเรื่องไม่มีหัว + ฟอนต์เนื้อหามีหัว เพื่อให้ต่างกันพอเห็นลำดับชั้นแต่ยังกลมกลืน</p>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> ข้อควรระวังเฉพาะตัวอักษรภาษาไทย</div>
+    ภาษาไทยมีสระบน-ล่างและวรรณยุกต์ที่ต้องการ <b>ระยะบรรทัด (line-height) มากกว่าภาษาอังกฤษ</b> (แนะนำ ~1.6–1.8) มิฉะนั้นวรรณยุกต์จะชนกับบรรทัดถัดไป และควรเลือกฟอนต์ที่จัดวางวรรณยุกต์ได้ถูกต้องเพื่อเลี่ยงปัญหา “วรรณยุกต์ลอย”
+  </div>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย (เรื่องตัวอักษร)</div>
+    <ul style="margin-bottom:0">
+      <li>ใช้ฟอนต์หลายแบบเกินไป ทำให้หน้าจอดูไม่เป็นเอกภาพ</li>
+      <li>ตัวอักษรเล็กเกินไป (ต่ำกว่า 14–16px) หรือบรรทัดชิดเกินไป อ่านยาก</li>
+      <li>บรรทัดยาวเกินไป ตาผู้อ่านหลงบรรทัด</li>
+      <li>ใช้ฟอนต์ตกแต่ง (script) กับเนื้อหายาว</li>
+    </ul>
+  </div>
+
+  <!-- golden thread combined -->
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: Style Guide เบื้องต้นของแอป</span>
+    <p style="margin:0"><b>สี:</b> Primary น้ำเงิน-เขียว (#1F6F8B) + Accent ส้ม (#E8743B) สำหรับปุ่มแจ้งหาย + Semantic (success/warning/error) &nbsp; <b>ตัวอักษร:</b> หัวเรื่องใช้ฟอนต์ไทยไม่มีหัว (เช่น Prompt) เนื้อหาใช้ฟอนต์มีหัว (เช่น Sarabun) ขนาดฐาน 16px line-height 1.7</p>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: Design Tokens ด้วย CSS Variables</h4>
+  <p>ชุดสีและ type scale ที่ออกแบบไว้ แปลงเป็น “design tokens” ในรูปตัวแปร CSS ได้โดยตรง ทำให้ทีมพัฒนาใช้ค่าเดียวกันทั้งระบบและแก้ไขจุดเดียว</p>
+  <pre><span class="cm">:root {</span>
+  <span class="cm">/* สี */</span>
+  --color-primary: <span class="nu">#1F6F8B</span>;
+  --color-accent:  <span class="nu">#E8743B</span>;   <span class="cm">/* ปุ่มแจ้งหาย */</span>
+  --color-success: <span class="nu">#2E8B57</span>;
+  --color-error:   <span class="nu">#C0392F</span>;
+  <span class="cm">/* ตัวอักษร (type scale 1.25) */</span>
+  --font-base: <span class="st">'Sarabun', sans-serif</span>;
+  --text-h1: <span class="nu">2rem</span>;      <span class="cm">/* 32px */</span>
+  --text-body: <span class="nu">1rem</span>;    <span class="cm">/* 16px */</span>
+  --leading: <span class="nu">1.7</span>;        <span class="cm">/* line-height สำหรับภาษาไทย */</span>
+<span class="cm">}</span></pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">ใน <b>บทที่ 7</b> เราจัดวางองค์ประกอบและสร้างลำดับชั้นด้วยขนาด/ตำแหน่งบนโครงร่างขาวดำ บทนี้เติม <b>สีและตัวอักษร</b> เพื่อ <b>เสริมลำดับชั้นเดิมให้ชัดขึ้น</b> เช่น ปุ่มที่เด่นด้วยขนาดอยู่แล้ว เด่นยิ่งขึ้นด้วยสี Accent และหัวเรื่องเด่นขึ้นด้วยฟอนต์/น้ำหนัก</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">ชุดสีและระบบตัวอักษร (Style Guide) ที่ได้ในบทนี้ จะถูกนำไปใช้จริงเมื่อสร้าง <b>บทที่ 9: Wireframe และ Interactive Prototype</b> — เปลี่ยนโครงร่างขาวดำให้กลายเป็นต้นแบบความละเอียดสูงที่มีสีและตัวอักษรครบ</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>4. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li>สีอธิบายด้วย 3 มิติ <b>Hue–Saturation–Brightness</b>; โมเดล <b>RGB/HEX</b> ใช้กับจอ <b>CMYK</b> ใช้กับงานพิมพ์</li>
+    <li><b>วงล้อสี</b> เป็นฐานของ <b>ชุดสีที่กลมกลืน</b> (complementary, analogous, triadic, monochromatic ฯลฯ)</li>
+    <li>เลือกสีให้ตรงกับ <b>อารมณ์/จิตวิทยา</b> ของงาน และจัดสัดส่วนด้วยกฎ <b>60-30-10</b></li>
+    <li>ตรวจ <b>contrast ตาม WCAG (≥4.5:1)</b> และไม่สื่อความหมายด้วยสีอย่างเดียว (เผื่อผู้ใช้ตาบอดสี)</li>
+    <li>เข้าใจ <b>กายวิภาคและประเภทตัวอักษร</b> ทั้งอังกฤษ (serif/sans/mono) และไทย (มีหัว/ไม่มีหัว)</li>
+    <li>สร้าง <b>type scale</b> ด้วยขนาด/น้ำหนัก/ระยะบรรทัด — ภาษาไทยต้องการ line-height สูงกว่า และจับคู่ฟอนต์ไม่เกิน 2 แบบ</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>5. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">RGB กับ CMYK ต่างกันอย่างไร และเหตุใดงานเว็บจึงใช้ RGB/HEX</div>
+    <div class="rq">อธิบายความต่างของชุดสีแบบ Complementary, Analogous และ Monochromatic พร้อมความรู้สึกที่ให้</div>
+    <div class="rq">กฎ 60-30-10 คืออะไร และช่วยให้หน้าจอสมดุลอย่างไร</div>
+    <div class="rq">เหตุใดจึงไม่ควรสื่อความหมายด้วยสีเพียงอย่างเดียว และ contrast ratio ขั้นต่ำของ WCAG ระดับ AA คือเท่าใด</div>
+    <div class="rq">ฟอนต์ไทยแบบมีหัวและไม่มีหัวต่างกันอย่างไร และควรเลือกใช้อย่างไรในแอปค้นหาสัตว์เลี้ยงหาย</div>
+    <div class="rq">เหตุใดตัวอักษรภาษาไทยจึงต้องการระยะบรรทัด (line-height) มากกว่าภาษาอังกฤษ</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>6. ขั้นตอน Workshop (2 สัปดาห์)</h2></div>
+  <p>บทนี้มี workshop 2 คาบ โดยใช้ Figma/Coolors และตัวตรวจ contrast ห้ามใช้เครื่องมือ AI</p>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 10 — ชุดสี (Color)</div>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “สีนี้รู้สึกอย่างไร”</span> <span class="min">(10 นาที)</span><br>ดูตัวอย่างสี/แอปจริงที่กำหนดให้ แล้วช่วยกันในกลุ่มทายอารมณ์และบุคลิกของแบรนด์จากสี</li>
+    <li><span class="t">ทบทวนทฤษฎีสีร่วมกัน</span> <span class="min">(20 นาที)</span><br>ทบทวนมิติของสี โมเดลสี วงล้อสี harmony และ accessibility แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">เลือกชุดสีของแอป</span> <span class="min">(35 นาที)</span><br>เลือกรูปแบบ harmony และกำหนด Primary/Secondary/Accent/Neutral/Semantic ให้สอดคล้องอารมณ์ของกรณีศึกษา</li>
+    <li><span class="t">ตรวจ contrast</span> <span class="min">(25 นาที)</span><br>ทดสอบคู่สีข้อความ-พื้นหลังให้ผ่าน WCAG AA และตรวจการมองเห็นแบบตาบอดสี</li>
+    <li><span class="t">Peer Review</span> <span class="min">(20 นาที)</span><br>สลับชุดสีกับอีกกลุ่ม ตรวจความกลมกลืนและการเข้าถึง</li>
+  </ol>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 11 — ตัวอักษร (Typography)</div>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “จับคู่ฟอนต์”</span> <span class="min">(10 นาที)</span><br>ดูตัวอย่างการจับคู่ฟอนต์ที่ดี/ไม่ดี แล้ววิจารณ์</li>
+    <li><span class="t">ทบทวน Typography ร่วมกัน</span> <span class="min">(20 นาที)</span><br>ทบทวนกายวิภาค ประเภทฟอนต์ type scale และข้อควรระวังภาษาไทย แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">สร้าง Type Scale</span> <span class="min">(35 นาที)</span><br>กำหนดฟอนต์หัวเรื่อง/เนื้อหา และขนาด H1–Caption พร้อม line-height สำหรับภาษาไทย</li>
+    <li><span class="t">ทดลองใช้กับหน้าจอจริง</span> <span class="min">(30 นาที)</span><br>นำชุดสี + type scale ไปลองใส่ใน wireframe หน้า “รายละเอียดประกาศ”</li>
+    <li><span class="t">Peer Review &amp; สรุป</span> <span class="min">(15 นาที)</span><br>ตรวจความอ่านง่ายและความเป็นเอกภาพกับอีกกลุ่ม แล้วร่วมสรุปและทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>7. งานที่ต้องส่ง (Assignment 8)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 12</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “Style Guide เบื้องต้น (สี + ตัวอักษร)”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 8 ของ Design Portfolio ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>ชุดสี</b> Primary/Secondary/Accent/Neutral/Semantic พร้อมรหัส HEX และระบุรูปแบบ harmony ที่ใช้</li>
+      <li><b>เหตุผลการเลือกสี</b> เชื่อมโยงกับอารมณ์/บุคลิกของแอปและกรณีศึกษา</li>
+      <li><b>ผลตรวจ contrast</b> ของคู่สีหลักอย่างน้อย 3 คู่ (ระบุอัตราส่วนและระดับ AA/AAA)</li>
+      <li><b>ระบบตัวอักษร</b>: ฟอนต์หัวเรื่อง/เนื้อหา + type scale (H1–Caption) + line-height</li>
+      <li><b>ตัวอย่างการใช้งานจริง</b> นำสี+ตัวอักษรไปใส่ใน 1 หน้าจอจาก wireframe</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความกลมกลืนของชุดสี (25%) · การเข้าถึง/contrast (20%) · ระบบตัวอักษรและลำดับชั้น (25%) · ความสอดคล้องกับกรณีศึกษา (15%) · การนำไปใช้จริง+สะท้อนคิด (15%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>8. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">กำหนดชุดสีครบ (Primary/Secondary/Accent/Neutral/Semantic) พร้อมรหัส HEX</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">ระบุรูปแบบ color harmony ที่ใช้ และเหตุผลเชื่อมโยงอารมณ์ของแอป</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">ตรวจ contrast อย่างน้อย 3 คู่สี และผ่าน WCAG AA</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">ไม่สื่อความหมายด้วยสีอย่างเดียว (มีไอคอน/ข้อความกำกับ)</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">เลือกฟอนต์หัวเรื่อง/เนื้อหา (ไม่เกิน 2 แบบ) และทำ type scale H1–Caption</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">กำหนด line-height ที่เหมาะกับภาษาไทย (~1.6–1.8)</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">นำสี+ตัวอักษรไปใส่ในหน้าจอตัวอย่าง 1 หน้า</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">บันทึกเป็นไฟล์ PDF <code class="inl">A8_ชื่อกลุ่ม.pdf</code> และส่งก่อนคาบสัปดาห์ที่ 12</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่7_หลักการออกแบบUIและการจัดวาง.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 7 · หลักการออกแบบ UI และการจัดวาง</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่9_WireframeและPrototype.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 9 · Wireframe และ Interactive Prototype</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch8_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

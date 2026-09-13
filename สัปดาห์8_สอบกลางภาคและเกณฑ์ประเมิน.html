@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สัปดาห์ที่ 8 — สอบกลางภาค: Design Portfolio ส่วนที่ 1 &amp; เกณฑ์ประเมิน | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== โทนสีสอบกลางภาค : อำพัน (Amber) ===== */
+  :root{
+    --ch:#a5701d;--ch-dark:#7c5214;--ch-soft:#f6ead2;--ch-softer:#fbf5e9;
+    --accent:#2e7d6b;--gold:#d9a441;--ink:#22303a;--muted:#5f7079;
+    --bg:#faf7f0;--card:#ffffff;--line:#ecdcc0;--ok:#2e8b57;--warn:#c0492f;
+    --shadow:0 2px 16px rgba(124,82,20,.10);--th:'Sarabun',sans-serif;--head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:16px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(124,82,20,.08)}
+  .toc-inner{max-width:1020px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:48px 24px 54px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(46,125,107,.18)}
+  .hero-inner{max-width:1020px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.0rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.08rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.06rem;opacity:.95;max-width:730px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1020px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.16rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#f6efe0;border-color:var(--ch)} .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)} .box-warn .bh{color:var(--warn)}
+  .box-key{background:#eaf6f2;border-color:var(--accent)} .box-key .bh{color:#1f6e5b}
+  .box-ok{background:#eaf6ef;border-color:var(--ok)} .box-ok .bh{color:#1f6e44}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:560px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:10px 13px;text-align:left;font-family:var(--head)}
+  tbody td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+  tbody th{background:var(--ch-soft);color:var(--ch-dark);text-align:left;padding:10px 13px;border-top:1px solid var(--line);font-family:var(--head);font-weight:600;vertical-align:top}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}li{margin:5px 0}
+  .lead-q{font-size:1.1rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .phase{border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden}
+  .phase>.ph-head{background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:700;padding:10px 16px;display:flex;align-items:center;gap:10px}
+  .phase>.ph-head .ch-no{background:var(--ch);color:#fff;font-size:.78rem;padding:2px 9px;border-radius:20px;font-weight:600}
+  .phase .ph-body{padding:6px 16px 12px}
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  .timeline{position:relative;margin:18px 0 4px;border-left:3px solid var(--ch-soft);padding-left:22px}
+  .tl-item{position:relative;padding:9px 0}
+  .tl-item::before{content:"";position:absolute;left:-30px;top:14px;width:15px;height:15px;border-radius:50%;background:var(--ch);border:3px solid #fff;box-shadow:0 0 0 2px var(--ch-soft)}
+  .tl-item .tt{font-family:var(--head);font-weight:700;color:var(--ch-dark)}
+  .tl-item .tm{display:inline-block;background:var(--accent);color:#fff;font-size:.76rem;font-weight:600;padding:1px 9px;border-radius:20px;margin-left:6px}
+  .tl-item .td{font-size:.93rem;color:var(--muted)}
+
+  .dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .dd{border-radius:12px;padding:14px 16px}
+  .dd h4{margin:0 0 8px}
+  .dd.do{background:#eaf6ef;border:1px solid #bfe3cf}.dd.do h4{color:#1f6e44}
+  .dd.dont{background:#fdeeea;border:1px solid #f4cdc2}.dd.dont h4{color:var(--warn)}
+  .dd ul{margin:0 0 0 1.2em;font-size:.93rem}
+  @media(max-width:560px){.dd-grid{grid-template-columns:1fr}}
+
+  .lvl{display:inline-block;font-size:.74rem;font-weight:600;padding:2px 8px;border-radius:5px;color:#fff}
+  .l4{background:#2e8b57}.l3{background:#2f86d6}.l2{background:#d9a441}.l1{background:#c0492f}
+  .rubric td{font-size:.9rem}.rubric .wt{font-family:var(--head);font-weight:700;color:var(--ch-dark);white-space:nowrap}
+  .scoreband{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+  .scoreband .sb{flex:1;min-width:150px;border-radius:10px;padding:11px 14px;color:#fff;font-size:.9rem}
+  .scoreband .sb b{font-family:var(--head);font-size:1.05rem;display:block}
+
+  footer{background:var(--ch-dark);color:#fff;padding:30px 24px;margin-top:10px}
+  .foot-inner{max-width:1020px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px 20px;text-decoration:none;color:#fff}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.8rem;opacity:.8}.nav-link .nm{font-size:1.03rem;font-weight:700;font-family:var(--head)}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:18px;font-size:.86rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){.hero{padding:34px 18px 44px}.hero h1{font-size:1.5rem}section{padding:22px 18px}.toc nav{display:none}}
+  @media print{body{background:#fff;font-size:14px}.toc{position:static}.toc nav{display:none}.hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}.box,table,.phase,.dd-grid{break-inside:avoid}footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}}
+</style>
+</head>
+<body>
+
+<div class="toc"><div class="toc-inner">
+  <span class="toc-badge">สัปดาห์ที่ 8</span>
+  <nav>
+    <a href="#overview">ภาพรวม</a>
+    <a href="#portfolio">องค์ประกอบ Portfolio ส่วนที่ 1</a>
+    <a href="#present">วิธีนำเสนอ</a>
+    <a href="#rubric">เกณฑ์ประเมิน (Rubric)</a>
+    <a href="#aol">การเก็บหลักฐาน</a>
+    <a href="#checklist">เช็กลิสต์</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="hero-inner">
+  <span class="ch-tag">สอบกลางภาค · Midterm</span>
+  <h1>การนำเสนอ Design Portfolio (ส่วนที่ 1)</h1>
+  <div class="en">Midterm Presentation — Research &amp; Structure (บท 1–6)</div>
+  <p class="lead">คู่มือสำหรับสัปดาห์ที่ 8 — นำเสนอผลงานสะสมครึ่งแรกของวิชา ตั้งแต่การเข้าใจปัญหา วิจัยผู้ใช้ สร้าง Persona/Journey จนถึงโครงสร้างและการไหลของหน้าจอ (Sitemap/User Flow) เพื่อตรวจสอบว่ากลุ่ม “เข้าใจผู้ใช้และวางโครงถูกต้อง” ก่อนเข้าสู่เฟสออกแบบหน้าจอ</p>
+  <div class="hero-pills">
+    <span class="pill"><b>รายวิชา:</b> 00921502</span>
+    <span class="pill"><b>ครอบคลุม:</b> CLO1–CLO5</span>
+    <span class="pill"><b>ครอบคลุมบท:</b> 1–6</span>
+    <span class="pill"><b>กรณีศึกษา:</b> แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <span class="pill"><b>คะแนน:</b> 100 (น้ำหนักสอบกลางภาค)</span>
+  </div>
+</div></header>
+
+<main>
+
+<!-- ===== AoL ===== -->
+<section id="aol0"><div style="border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:15px 20px;background:#eaf6f2;margin:0">
+  <div style="font-family:var(--head);font-weight:700;color:#1f6e5b;font-size:1.05rem;margin-bottom:6px">🎓 ผลลัพธ์การเรียนรู้ที่การสอบกลางภาครับผิดชอบ</div>
+  <p style="margin:.3em 0">สอบกลางภาคเป็นหลักฐานสะสมกลางทาง (formative-summative) ของ <b>CLO1–CLO5</b> ทั้งหมด และตอบ <b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p>
+</div></section>
+
+<!-- ===== ภาพรวม ===== -->
+<section id="overview">
+  <div class="sec-head"><div class="sec-ic">📝</div><h2>ภาพรวมการสอบกลางภาค</h2></div>
+  <p class="lead-q">“ครึ่งแรกของการออกแบบไม่ใช่การทำให้สวย แต่คือการพิสูจน์ว่าเราแก้ปัญหาที่ถูกข้อ ให้กับคนที่เข้าใจจริง”</p>
+  <p>สอบกลางภาคคือการนำเสนอ <b>Design Portfolio ส่วนที่ 1 (Research &amp; Structure)</b> ที่สะสมจากบท 1–6 พร้อมโครงสร้างของแอป (Sitemap/User Flow) โดยใช้กรณีศึกษาหลัก “เว็บแอปพลิเคชันค้นหาสัตว์เลี้ยงหาย” เป้าหมายคือตรวจสอบว่ากลุ่ม <b>เข้าใจผู้ใช้และวางโครงถูกต้องก่อน</b> เข้าสู่เฟสออกแบบหน้าจอในครึ่งหลัง</p>
+  <div class="box box-think">
+    <div class="bh"><span class="ic">🧭</span> 3 สิ่งที่กรรมการมองหา</div>
+    <b>1) อ้างอิงข้อมูลจริง</b> — Persona/Journey มาจากการวิจัย ไม่ใช่การเดา &nbsp; <b>2) นิยามปัญหาคม</b> — Problem Statement + HMW ชัดและยึดผู้ใช้ &nbsp; <b>3) โครงสร้างสมเหตุสมผล</b> — Sitemap/Flow สอดคล้อง mental model และต่อยอดจากโอกาสใน Journey Map
+  </div>
+</section>
+
+<!-- ===== องค์ประกอบ Portfolio ส่วนที่ 1 ===== -->
+<section id="portfolio">
+  <div class="sec-head"><div class="sec-ic">📁</div><h2>1. องค์ประกอบของ Design Portfolio ส่วนที่ 1</h2></div>
+  <p>จัดเรียงตามลำดับกระบวนการ (บท 1–6) เพื่อเล่าเป็นเรื่องราว ติ๊กเพื่อตรวจความครบถ้วน</p>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 1–2</span> เฟส 1 · เข้าใจปัญหาและวางกระบวนการ</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="m1"><label for="m1"><b>Problem Statement</b> — ปัญหาชัดเจน ยึดผู้ใช้เป็นศูนย์กลาง</label></li>
+      <li><input type="checkbox" id="m2"><label for="m2"><b>คำถาม How Might We</b> และ <b>แผนกระบวนการ Design Thinking</b> ของทีม</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 3–5</span> เฟส 2 · วิจัยและเข้าใจผู้ใช้</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="m3"><label for="m3"><b>วิธีและผลการวิจัยผู้ใช้</b> (สัมภาษณ์/สังเกต) พร้อม insight สำคัญ และหลักฐาน (ใบยินยอม/บันทึก)</label></li>
+      <li><input type="checkbox" id="m4"><label for="m4"><b>Persona</b> อย่างน้อย 2 คน อ้างอิงข้อมูลจริง</label></li>
+      <li><input type="checkbox" id="m5"><label for="m5"><b>Empathy Map</b> ของ persona หลัก</label></li>
+      <li><input type="checkbox" id="m6"><label for="m6"><b>User Journey Map</b> พร้อมเส้นกราฟอารมณ์ และ pain points/โอกาส</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 6</span> เฟส 3 · โครงสร้างและการไหล</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="m7"><label for="m7"><b>Sitemap</b> ฉบับเต็ม แสดงหน้าจอและลำดับชั้น</label></li>
+      <li><input type="checkbox" id="m8"><label for="m8"><b>User Flow</b> อย่างน้อย 2 งาน (รวม “แจ้งสัตว์หาย”) ครบจุดตัดสินใจ</label></li>
+      <li><input type="checkbox" id="m9"><label for="m9"><b>ตารางเชื่อมโยง</b> โอกาสจาก Journey Map → หน้าจอใน Sitemap</label></li>
+    </ul></div>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">💡</span> เคล็ดลับการจัดเล่ม (ส่วนที่ 1)</div>
+    เปิดด้วยหน้าสรุปโปรเจกต์ 1 หน้า, ใส่ “Golden Thread” ให้เห็นว่าแต่ละเฟสต่อยอดกัน (Problem → Research → Persona/Journey → Sitemap/Flow) และปิดด้วย “แผนต่อยอดสู่ครึ่งหลัง” (จะออกแบบ UI/Prototype อย่างไร)
+  </div>
+</section>
+
+<!-- ===== วิธีนำเสนอ ===== -->
+<section id="present">
+  <div class="sec-head"><div class="sec-ic">🎤</div><h2>2. วิธีการนำเสนอที่ดี</h2></div>
+  <h3><span style="color:var(--accent)">2.1</span> โครงสร้างการนำเสนอที่แนะนำ (8–10 นาที)</h3>
+  <p>นำเสนอแบบ “เล่าเรื่อง” ตามเส้นทางของผู้ใช้ ไม่ไล่อ่านทีละสไลด์</p>
+  <div class="timeline">
+    <div class="tl-item"><span class="tt">เปิด: ปัญหา &amp; ความสำคัญ</span><span class="tm">1 นาที</span><div class="td">เล่าสถานการณ์จริงของผู้ใช้ (เจ้าของที่ทำสัตว์เลี้ยงหาย) ให้กรรมการอินกับปัญหา</div></div>
+    <div class="tl-item"><span class="tt">ผู้ใช้ &amp; Insight</span><span class="tm">3 นาที</span><div class="td">สรุปการวิจัย → Persona/Empathy → Journey Map เน้น “ค้นพบอะไร” และ pain points หลัก</div></div>
+    <div class="tl-item"><span class="tt">โครงสร้าง &amp; การไหล</span><span class="tm">2–3 นาที</span><div class="td">แสดง Sitemap และ User Flow ว่าจัดระเบียบอย่างไรและทำไม (โยงกับโอกาสจาก Journey Map)</div></div>
+    <div class="tl-item"><span class="tt">สรุป &amp; แผนต่อยอด</span><span class="tm">1–2 นาที</span><div class="td">สรุปสิ่งที่ค้นพบ และแผนของครึ่งหลัง (UI/Style/Prototype/Test)</div></div>
+    <div class="tl-item"><span class="tt">ถาม–ตอบ (Q&amp;A)</span><span class="tm">3–5 นาที</span><div class="td">ตอบคำถามกรรมการ โดยอ้างอิงข้อมูลวิจัยที่มี</div></div>
+  </div>
+
+  <h3><span style="color:var(--accent)">2.2</span> ควรทำ / ควรเลี่ยง</h3>
+  <div class="dd-grid">
+    <div class="dd do"><h4>✅ ควรทำ</h4><ul>
+      <li>ซ้อมจับเวลาให้พอดี แบ่งหน้าที่ในทีมชัดเจน</li>
+      <li>เล่าเป็นเรื่องราวโดยมี persona เป็นตัวเอก</li>
+      <li>อ้างอิง “ข้อมูลจริง” เบื้องหลังทุกการตัดสินใจ</li>
+      <li>เตรียมหลักฐานวิจัย (บันทึกสัมภาษณ์/ผลสังเกต) ไว้ตอบคำถาม</li>
+    </ul></div>
+    <div class="dd dont"><h4>⛔ ควรเลี่ยง</h4><ul>
+      <li>อ่านสไลด์คำต่อคำ หรือใส่ตัวอักษรแน่นจอ</li>
+      <li>โชว์ทุกชิ้นงานโดยไม่เล่าความเชื่อมโยง (ขาด Golden Thread)</li>
+      <li>นำเสนอ Persona/Journey ที่ “เดาเอง” ไม่มีข้อมูลรองรับ</li>
+      <li>ข้ามโครงสร้าง (Sitemap/Flow) เพราะเป็นหัวใจของส่วนที่ 1</li>
+    </ul></div>
+  </div>
+  <div class="box box-ok">
+    <div class="bh"><span class="ic">🗣️</span> เทคนิครับมือคำถาม</div>
+    ฟังคำถามให้จบ · ทวนสั้น ๆ เพื่อยืนยันความเข้าใจ · ตอบโดยอ้างอิงข้อมูล/ผลวิจัย · หากไม่ทราบให้ตอบตรง ๆ และบอกว่าจะหาคำตอบอย่างไร
+  </div>
+</section>
+
+<!-- ===== Rubric ===== -->
+<section id="rubric">
+  <div class="sec-head"><div class="sec-ic">📊</div><h2>3. เกณฑ์การให้คะแนน (Rubric)</h2></div>
+  <p>คะแนนเต็ม <b>100 คะแนน</b> ประเมินจาก 4 เกณฑ์ที่เชื่อมกับ CLO1–CLO5 แต่ละเกณฑ์ให้คะแนนตามระดับคุณภาพ 4 ระดับ แล้วถ่วงน้ำหนัก</p>
+  <h4>ระดับคุณภาพ</h4>
+  <div class="scoreband">
+    <div class="sb" style="background:#2e8b57"><b>ดีเยี่ยม (4)</b>ครบถ้วน ลึก อ้างอิงข้อมูลชัด เกินคาด</div>
+    <div class="sb" style="background:#2f86d6"><b>ดี (3)</b>ครบตามกำหนด มีเหตุผล มีจุดบกพร่องเล็กน้อย</div>
+    <div class="sb" style="background:#d9a441"><b>พอใช้ (2)</b>มีองค์ประกอบหลักแต่ไม่ครบ/ตื้น</div>
+    <div class="sb" style="background:#c0492f"><b>ต้องปรับปรุง (1)</b>ขาดองค์ประกอบสำคัญ หรือไม่อ้างอิงข้อมูล</div>
+  </div>
+
+  <h4>ตารางเกณฑ์การประเมิน</h4>
+  <div class="table-wrap"><table class="rubric">
+    <thead><tr><th>เกณฑ์การประเมิน</th><th>CLO</th><th>น้ำหนัก</th><th>ดีเยี่ยม (4)</th><th>ต้องปรับปรุง (1)</th></tr></thead>
+    <tbody>
+      <tr><th>1. การวิจัยและเข้าใจผู้ใช้<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Research, Persona, Empathy, Journey)</span></th><td>CLO3, 4</td><td class="wt">35%</td><td>วิจัยเป็นระบบ Persona/Journey อ้างอิงข้อมูลจริง มี insight คม</td><td>ไม่มีข้อมูลวิจัย หรือ persona มาจากการเดา</td></tr>
+      <tr><th>2. การนิยามปัญหาและกระบวนการ<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Problem Statement, HMW, Design Thinking)</span></th><td>CLO1, 2</td><td class="wt">20%</td><td>ปัญหาคม HMW เปิดกว้างมีทิศทาง มีแผนกระบวนการชัด</td><td>ปัญหากว้าง/เป็นทางแก้ ไม่มีแผน</td></tr>
+      <tr><th>3. โครงสร้างและการไหล<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Sitemap, User Flow)</span></th><td>CLO5</td><td class="wt">25%</td><td>Sitemap/Flow สอดคล้อง mental model ครบจุดตัดสินใจ ต่อยอดจาก Journey</td><td>โครงสร้างสับสน ไม่มี flow หรือไม่ครบ</td></tr>
+      <tr><th>4. การนำเสนอและความต่อเนื่อง<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Storytelling, Golden Thread, Q&amp;A)</span></th><td>CLO1–5</td><td class="wt">20%</td><td>เล่าเรื่องชัด ทุกเฟสร้อยเรียงกัน ตอบคำถามมั่นใจด้วยข้อมูล</td><td>ชิ้นงานกระจัดกระจาย อ่านสไลด์ ตอบไม่ได้</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.9rem;color:var(--muted)">คะแนนแต่ละเกณฑ์ = (ระดับที่ได้ ÷ 4) × น้ำหนัก แล้วรวมทุกเกณฑ์เป็นคะแนนเต็ม 100</p>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🧮</span> ตัวอย่างการคำนวณ</div>
+    เกณฑ์ที่ 1 (น้ำหนัก 35%) ได้ระดับ “ดี (3)” → (3 ÷ 4) × 35 = <b>26.25 คะแนน</b> &nbsp;|&nbsp; เกณฑ์ที่ 3 (น้ำหนัก 25%) ได้ “ดีเยี่ยม (4)” → (4 ÷ 4) × 25 = <b>25 คะแนน</b>
+  </div>
+  <h4>การแปลผลคะแนนรวม</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>ช่วงคะแนน</th><th>ระดับ</th><th>ความหมาย</th></tr></thead>
+    <tbody>
+      <tr><td>80–100</td><td><span class="lvl l4">ดีเยี่ยม</span></td><td>เข้าใจผู้ใช้ลึก โครงสร้างพร้อมต่อยอดสู่การออกแบบหน้าจอ</td></tr>
+      <tr><td>70–79</td><td><span class="lvl l3">ดี</span></td><td>ครบตามเกณฑ์ มีจุดปรับปรุงเล็กน้อย</td></tr>
+      <tr><td>60–69</td><td><span class="lvl l2">พอใช้</span></td><td>มีองค์ประกอบหลักแต่ขาดความลึกหรือความต่อเนื่อง</td></tr>
+      <tr><td>ต่ำกว่า 60</td><td><span class="lvl l1">ต้องปรับปรุง</span></td><td>ขาดข้อมูลวิจัยหรือโครงสร้างสำคัญ ควรทบทวนก่อนครึ่งหลัง</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚖️</span> หมายเหตุการประเมิน</div>
+    คะแนนชิ้นงานเป็นของกลุ่ม แต่ “การนำเสนอและการตอบคำถาม” อาจพิจารณารายบุคคล สมาชิกทุกคนควรเข้าใจงานทุกส่วนและตอบคำถามในส่วนที่รับผิดชอบได้
+  </div>
+</section>
+
+<!-- ===== AoL / evidence ===== -->
+<section id="aol">
+  <div class="sec-head"><div class="sec-ic">🧾</div><h2>4. การตอบ CLO และการเก็บหลักฐาน (Assurance of Learning)</h2></div>
+  <p>สอบกลางภาคเป็นหลักฐานสะสมกลางทางของ <b>CLO1–CLO5</b>:</p>
+  <ul>
+    <li><b>Portfolio ส่วนที่ 1 (บท 1–6):</b> หลักฐานการบรรลุ CLO1 (HCI/UX-UI), CLO2 (Design Thinking), CLO3 (วิจัย/Persona/Empathy), CLO4 (Journey Map), CLO5 (IA/User Flow)</li>
+    <li><b>การนำเสนอ + การตอบคำถาม:</b> การบูรณาการและการสื่อสาร ครอบคลุม CLO1–5</li>
+  </ul>
+  <p><b>สรุปการเก็บหลักฐานเพื่อตรวจสอบ (มคอ.5 / AUN-QA):</b></p>
+  <ul>
+    <li>เก็บไฟล์ Portfolio ส่วนที่ 1 (PDF) + สไลด์นำเสนอ ของทุกกลุ่ม</li>
+    <li>เก็บใบให้คะแนนตาม rubric รายกลุ่ม และคะแนนการนำเสนอ/ตอบคำถามรายบุคคล</li>
+    <li>เก็บตัวอย่างงาน “ดี / ปานกลาง / ต้องปรับปรุง” อย่างน้อยระดับละ 1 ชิ้น (benchmark)</li>
+    <li>บันทึกคะแนนลงตารางสรุปการบรรลุ CLO1–CLO5 (CLO attainment) เพื่อรายงานผลกลางภาค</li>
+  </ul>
+</section>
+
+<!-- ===== เช็กลิสต์ ===== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>5. เช็กลิสต์ก่อนวันสอบกลางภาค</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบก่อนวันนำเสนอ (สถานะจะถูกบันทึกในเครื่อง)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="f1"><label for="f1">Portfolio ส่วนที่ 1 ครบ 3 เฟส (บท 1–6) จัดเรียงเป็นเรื่องเดียวกัน</label></li>
+    <li><input type="checkbox" id="f2"><label for="f2">Persona/Journey อ้างอิงข้อมูลวิจัยจริง พร้อมหลักฐานประกอบ</label></li>
+    <li><input type="checkbox" id="f3"><label for="f3">มี Sitemap + User Flow อย่างน้อย 2 งาน และตารางเชื่อมโยงโอกาส→หน้าจอ</label></li>
+    <li><input type="checkbox" id="f4"><label for="f4">สไลด์กระชับ เน้นเล่าเรื่อง ไม่ยัดตัวอักษรแน่น</label></li>
+    <li><input type="checkbox" id="f5"><label for="f5">ซ้อมจับเวลาให้อยู่ในกรอบ 8–10 นาที และแบ่งหน้าที่ในทีม</label></li>
+    <li><input type="checkbox" id="f6"><label for="f6">เตรียมหลักฐานวิจัยและคำตอบสำหรับคำถามที่คาดว่าจะถูกถาม</label></li>
+    <li><input type="checkbox" id="f7"><label for="f7">ส่งไฟล์ Portfolio ส่วนที่ 1 (PDF) ตามกำหนด</label></li>
+  </ul>
+</section>
+
+</main>
+
+<footer><div class="foot-inner">
+  <div class="nav-links">
+    <a class="nav-link prev" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html"><div style="font-size:1.4rem">←</div><div><div class="lbl">ทบทวนก่อนสอบ</div><div class="nm">บทที่ 6 · สถาปัตยกรรมข้อมูลและ User Flow</div></div></a>
+    <a class="nav-link next" href="บทที่7_หลักการออกแบบUIและการจัดวาง.html"><div style="font-size:1.4rem">→</div><div><div class="lbl">หลังสอบกลางภาค เริ่มเฟส UI</div><div class="nm">บทที่ 7 · หลักการออกแบบ UI และการจัดวาง</div></div></a>
+  </div>
+  <div class="foot-meta">เอกสารประกอบการเรียน · 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้ · สอบกลางภาค (สัปดาห์ที่ 8)<br>คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569</div>
+</div></footer>
+
+<script>
+(function(){try{var b=document.querySelectorAll('input[type=checkbox]');b.forEach(function(x){var k='mid_'+x.id;if(localStorage.getItem(k)==='1')x.checked=true;x.addEventListener('change',function(){localStorage.setItem(k,x.checked?'1':'0');});});}catch(e){}})();
+</script>
+</body></html>

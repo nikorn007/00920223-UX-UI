@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 7 — หลักการออกแบบ UI และการจัดวาง | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 7 : ไวน์แดง (Wine) ===== */
+  :root{
+    --ch:#a8324a;
+    --ch-dark:#7d2236;
+    --ch-soft:#f8e2e8;
+    --ch-softer:#fcf2f5;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#fdf7f8;
+    --card:#ffffff;
+    --line:#efd0d8;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(125,34,54,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(125,34,54,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.12rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#f7e8ec;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 7</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 7 · Chapter 7 · เริ่มเฟสออกแบบ UI</span>
+    <h1>หลักการออกแบบ UI และการจัดวาง</h1>
+    <div class="en">UI Design Principles &amp; Layout</div>
+    <p class="lead">เริ่มเปลี่ยนโครงสร้างให้กลายเป็นหน้าจอที่มองเห็นได้ — เรียนรู้หลักการ Gestalt การสร้างลำดับชั้นการมองเห็น และระบบกริดเพื่อจัดวางองค์ประกอบให้ผู้ใช้เข้าใจง่ายและสบายตา</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO6</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 9 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO6</b> — ประยุกต์หลักการออกแบบส่วนติดต่อผู้ใช้ — ทฤษฎีสี การจัดวางองค์ประกอบ และการใช้ตัวอักษร</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายหลักการ Gestalt</b> (proximity, similarity, closure, continuity, figure-ground) และผลต่อการรับรู้ของผู้ใช้
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>สร้างลำดับชั้นการมองเห็น (Visual Hierarchy)</b> ด้วยขนาด น้ำหนัก ความตัดกัน และตำแหน่ง เพื่อนำสายตาผู้ใช้
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>ประยุกต์ระบบกริด (Grid System)</b> และการจัดแนว (alignment) เพื่อจัดวางองค์ประกอบอย่างเป็นระเบียบ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>ใช้พื้นที่ว่าง (whitespace) และการเว้นระยะ (spacing)</b> อย่างมีจุดมุ่งหมายเพื่อเพิ่มความอ่านง่าย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>ออกแบบการจัดวางหน้าจอของกรณีศึกษา</b> โดยใช้หลักการข้างต้นกับหน้า “แจ้งสัตว์เลี้ยงหาย” และ “รายละเอียดประกาศ”
+    <div class="obj-meta"><span class="tagm tag-clo">CLO6</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ถ้าทุกอย่างบนหน้าจอเด่นเท่ากันหมด ก็เท่ากับไม่มีอะไรเด่นเลย” — เมื่อมีองค์ประกอบมากมายบนหน้าจอ เราจะบอกผู้ใช้อย่างไรว่าควรมองอะไรก่อน?</p>
+
+  <p>หลังจากผ่านการสอบกลางภาค (สัปดาห์ที่ 8) เราได้โครงสร้างของแอปครบแล้ว ทั้ง Sitemap และ User Flow จากบทที่ 6 ตอนนี้ถึงเวลาเปลี่ยน “โครงสร้างที่มองไม่เห็น” ให้กลายเป็น “หน้าจอที่มองเห็นได้” บทนี้เป็นก้าวแรกของเฟสออกแบบส่วนติดต่อ (UI) โดยเน้นหลักการพื้นฐานของการจัดวางองค์ประกอบ</p>
+
+  <p>การออกแบบ UI ที่ดีไม่ใช่แค่ “ทำให้สวย” แต่คือการใช้หลักการทางการรับรู้ (perception) เพื่อนำสายตาและลดภาระทางความคิดของผู้ใช้ บทนี้จะปูพื้นฐานก่อนลงรายละเอียดเรื่องสีและตัวอักษรในบทที่ 8</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    บนหน้า “แจ้งสัตว์เลี้ยงหาย” ของพิม สิ่งใดควรเด่นที่สุด? ปุ่มยืนยันแจ้งหาย หรือช่องกรอกชื่อสัตว์ หรือโลโก้แอป? การตอบคำถามนี้คือจุดเริ่มต้นของการสร้างลำดับชั้นการมองเห็น
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 -->
+  <h3><span class="nm">2.1</span> จากโครงสร้างสู่หน้าจอ</h3>
+  <p>การออกแบบส่วนติดต่อผู้ใช้ (UI Design) คือการกำหนดว่าองค์ประกอบต่าง ๆ บนหน้าจอ — ข้อความ ปุ่ม รูปภาพ ช่องกรอก — จะถูก “จัดวาง” และ “สื่อสารด้วยภาพ” อย่างไร เป้าหมายคือทำให้ผู้ใช้เข้าใจได้ทันทีว่าอะไรสำคัญ อะไรกดได้ และควรทำอะไรต่อ บทนี้เน้นหลักการ 3 กลุ่ม: หลักการ Gestalt, ลำดับชั้นการมองเห็น และระบบกริด</p>
+
+  <!-- 2.2 Gestalt -->
+  <h3><span class="nm">2.2</span> หลักการ Gestalt — สมองจัดกลุ่มสิ่งที่เห็นอย่างไร</h3>
+  <p><b>Gestalt</b> เป็นทฤษฎีจิตวิทยาการรับรู้ที่อธิบายว่ามนุษย์มีแนวโน้มมองสิ่งต่าง ๆ เป็น “กลุ่มก้อน” โดยอัตโนมัติ นักออกแบบใช้หลักการนี้จัดองค์ประกอบให้สื่อความสัมพันธ์โดยไม่ต้องมีคำอธิบาย หลักการสำคัญมีดังนี้</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="หลักการ Gestalt 4 แบบ">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- proximity -->
+        <text x="85" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Proximity</text>
+        <text x="85" y="178" font-size="12" fill="#5e6b78">ความใกล้ = กลุ่มเดียวกัน</text>
+        <g fill="#a8324a"><circle cx="55" cy="70" r="8"/><circle cx="80" cy="70" r="8"/><circle cx="55" cy="95" r="8"/><circle cx="80" cy="95" r="8"/><circle cx="110" cy="120" r="8"/><circle cx="135" cy="120" r="8"/><circle cx="110" cy="145" r="8"/><circle cx="135" cy="145" r="8"/></g>
+        <!-- similarity -->
+        <text x="245" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Similarity</text>
+        <text x="245" y="178" font-size="12" fill="#5e6b78">รูป/สีเหมือน = พวกเดียวกัน</text>
+        <g><circle cx="205" cy="75" r="8" fill="#a8324a"/><circle cx="235" cy="75" r="8" fill="#e08a3c"/><circle cx="265" cy="75" r="8" fill="#a8324a"/><circle cx="295" cy="75" r="8" fill="#e08a3c"/>
+           <circle cx="205" cy="105" r="8" fill="#a8324a"/><circle cx="235" cy="105" r="8" fill="#e08a3c"/><circle cx="265" cy="105" r="8" fill="#a8324a"/><circle cx="295" cy="105" r="8" fill="#e08a3c"/>
+           <circle cx="205" cy="135" r="8" fill="#a8324a"/><circle cx="235" cy="135" r="8" fill="#e08a3c"/><circle cx="265" cy="135" r="8" fill="#a8324a"/><circle cx="295" cy="135" r="8" fill="#e08a3c"/></g>
+        <!-- closure -->
+        <text x="425" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Closure</text>
+        <text x="425" y="178" font-size="12" fill="#5e6b78">สมองเติมเต็มรูปที่ขาด</text>
+        <path d="M425 60 A45 45 0 1 1 395 75" fill="none" stroke="#a8324a" stroke-width="9" stroke-linecap="round"/>
+        <!-- continuity -->
+        <text x="590" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Continuity</text>
+        <text x="590" y="178" font-size="12" fill="#5e6b78">ตามองตามเส้นต่อเนื่อง</text>
+        <path d="M535 135 Q590 60 645 135" fill="none" stroke="#a8324a" stroke-width="4"/>
+        <g fill="#e08a3c"><circle cx="535" cy="135" r="6"/><circle cx="562" cy="95" r="6"/><circle cx="590" cy="78" r="6"/><circle cx="618" cy="95" r="6"/><circle cx="645" cy="135" r="6"/></g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.1</b> หลักการ Gestalt 4 แบบที่ใช้บ่อยในการออกแบบ UI</figcaption>
+  </figure>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <p style="margin:0"><b>Proximity:</b> วางช่อง “ชื่อสัตว์” “ลักษณะเด่น” “สถานที่หาย” ไว้ชิดกันเป็นกลุ่ม “ข้อมูลสัตว์” แยกจากกลุ่ม “ข้อมูลผู้แจ้ง” &nbsp; <b>Similarity:</b> ปุ่มหลัก (แจ้งหาย) ใช้สีเดียวกันทั้งแอปเพื่อให้ผู้ใช้จำได้ว่า “สีนี้คือกดได้”</p>
+  </div>
+
+  <!-- 2.3 visual hierarchy -->
+  <h3><span class="nm">2.3</span> ลำดับชั้นการมองเห็น (Visual Hierarchy)</h3>
+  <p><b>Visual Hierarchy</b> คือการจัดองค์ประกอบให้สื่อ “ลำดับความสำคัญ” ผ่านการมองเห็น เพื่อนำสายตาผู้ใช้ไปยังสิ่งที่สำคัญที่สุดก่อน เครื่องมือหลักในการสร้างลำดับชั้น ได้แก่ <b>ขนาด</b> (ใหญ่ = สำคัญ), <b>น้ำหนัก/ความหนา</b>, <b>ความตัดกัน (contrast)</b>, <b>สี</b>, และ <b>ตำแหน่ง</b> (บน/ซ้ายมักถูกเห็นก่อน)</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ตัวอย่างลำดับชั้นการมองเห็นบนหน้าจอ">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- phone frame -->
+        <rect x="170" y="14" width="220" height="252" rx="18" fill="#fff" stroke="#a8324a" stroke-width="2"/>
+        <!-- level 1 title -->
+        <text x="190" y="62" font-size="22" font-weight="700" fill="#7d2236">แจ้งสัตว์หาย</text>
+        <rect x="455" y="44" width="20" height="20" rx="4" fill="#a8324a"/><text x="488" y="59" font-size="12" fill="#7d2236">①</text>
+        <!-- level 2 subtitle -->
+        <text x="190" y="92" font-size="14" font-weight="600" fill="#444">กรอกข้อมูลสัตว์ของคุณ</text>
+        <rect x="455" y="80" width="20" height="20" rx="4" fill="#cf7d92"/><text x="488" y="95" font-size="12" fill="#7d2236">②</text>
+        <!-- body fields -->
+        <rect x="190" y="108" width="180" height="22" rx="5" fill="#f2e6ea"/>
+        <rect x="190" y="138" width="180" height="22" rx="5" fill="#f2e6ea"/>
+        <rect x="190" y="168" width="180" height="22" rx="5" fill="#f2e6ea"/>
+        <text x="488" y="145" font-size="12" fill="#7d2236">③</text>
+        <rect x="455" y="130" width="20" height="20" rx="4" fill="#ecd6dd"/>
+        <!-- primary button -->
+        <rect x="190" y="208" width="180" height="38" rx="9" fill="#a8324a"/><text x="280" y="232" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">ยืนยันแจ้งหาย</text>
+        <rect x="455" y="216" width="20" height="20" rx="4" fill="#e08a3c"/><text x="488" y="231" font-size="12" fill="#a8631d">①</text>
+        <!-- legend -->
+        <text x="20" y="120" font-size="12.5" fill="#5e6b78">① เด่นสุด</text>
+        <text x="20" y="142" font-size="12.5" fill="#5e6b78">② รองลงมา</text>
+        <text x="20" y="164" font-size="12.5" fill="#5e6b78">③ รายละเอียด</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.2</b> ลำดับชั้นการมองเห็น: หัวเรื่องและปุ่มหลักเด่นสุด (①) รองด้วยหัวข้อย่อย (②) และช่องกรอกที่เป็นรายละเอียด (③)</figcaption>
+  </figure>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    บนหน้าหนึ่ง ๆ ควรมี “จุดเด่นหลัก” เพียงไม่กี่จุด ถ้าทำให้ทุกอย่างเด่น (ใช้ตัวหนา สีจัด ขนาดใหญ่ไปหมด) ผลคือผู้ใช้จะสับสนและไม่รู้ว่าควรมองหรือกดอะไรก่อน
+  </div>
+
+  <!-- 2.4 grid -->
+  <h3><span class="nm">2.4</span> ระบบกริดและการจัดแนว (Grid &amp; Alignment)</h3>
+  <p><b>ระบบกริด (Grid System)</b> คือโครงเส้นที่มองไม่เห็นซึ่งช่วยจัดวางองค์ประกอบให้เป็นระเบียบและสม่ำเสมอ องค์ประกอบของกริดได้แก่ <b>คอลัมน์ (columns)</b>, <b>ช่องว่างระหว่างคอลัมน์ (gutter)</b> และ <b>ขอบ (margin)</b> การวางองค์ประกอบให้ “จัดแนว” (alignment) ตรงกับกริด ทำให้หน้าจอดูสะอาดและเป็นมืออาชีพ</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ระบบกริด คอลัมน์ gutter และ margin">
+      <g font-family="'Sarabun',sans-serif">
+        <rect x="40" y="30" width="480" height="180" rx="8" fill="#fff" stroke="#a8324a" stroke-width="1.5"/>
+        <!-- margins guide -->
+        <rect x="70" y="30" width="420" height="180" fill="none" stroke="#e08a3c" stroke-width="1" stroke-dasharray="4 3"/>
+        <!-- 4 columns -->
+        <g fill="#f8e2e8" stroke="#a8324a" stroke-width="1">
+          <rect x="70" y="50" width="90" height="140"/>
+          <rect x="180" y="50" width="90" height="140"/>
+          <rect x="290" y="50" width="90" height="140"/>
+          <rect x="400" y="50" width="90" height="140"/>
+        </g>
+        <text x="115" y="124" text-anchor="middle" font-size="13" fill="#7d2236">คอลัมน์</text>
+        <!-- gutter callout -->
+        <line x1="160" y1="225" x2="180" y2="225" stroke="#7d2236" stroke-width="1.5"/>
+        <text x="200" y="229" font-size="11.5" fill="#7d2236">gutter</text>
+        <!-- margin callout -->
+        <line x1="40" y1="225" x2="70" y2="225" stroke="#e08a3c" stroke-width="1.5"/>
+        <text x="95" y="229" font-size="11.5" fill="#a8631d" text-anchor="middle">margin</text>
+        <text x="280" y="20" text-anchor="middle" font-size="13.5" font-weight="700" fill="#7d2236">กริด 4 คอลัมน์ (เหมาะกับมือถือ/แท็บเล็ต)</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.3</b> องค์ประกอบของระบบกริด: คอลัมน์ ช่องว่างระหว่างคอลัมน์ (gutter) และขอบ (margin)</figcaption>
+  </figure>
+
+  <p>นอกจากกริดแล้ว <b>พื้นที่ว่าง (whitespace)</b> หรือพื้นที่ที่ไม่มีองค์ประกอบใด ๆ ก็มีบทบาทสำคัญ — ช่วยจัดกลุ่ม (ทำงานร่วมกับ proximity) ลดความอึดอัด และเพิ่มความอ่านง่าย พื้นที่ว่างไม่ใช่ “พื้นที่เสียเปล่า” แต่เป็นเครื่องมือออกแบบ</p>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>จัดวางไม่อิงกริด</b> องค์ประกอบเยื้องกันเล็กน้อยทำให้หน้าจอดูรก ไม่เป็นระเบียบ</li>
+      <li><b>ยัดข้อมูลแน่นเกินไป</b> ไม่มีพื้นที่ว่าง ทำให้ผู้ใช้รู้สึกอึดอัดและอ่านยาก</li>
+      <li><b>ไม่มีลำดับชั้น</b> ทุกอย่างขนาดและน้ำหนักเท่ากัน ผู้ใช้ไม่รู้ว่าควรเริ่มตรงไหน</li>
+    </ul>
+  </div>
+
+  <!-- 2.5 more UI principles -->
+  <h3><span class="nm">2.5</span> หลักการออกแบบ UI เพิ่มเติม</h3>
+  <p>นอกจาก Gestalt ลำดับชั้น และกริดแล้ว ยังมีหลักการสำคัญอีกชุดที่นักออกแบบใช้เป็นประจำ กลุ่มแรกคือ <b>หลักการ C.R.A.P</b> ซึ่งเป็นแกนของการจัดองค์ประกอบภาพ</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>หลักการ C.R.A.P</th><th>ความหมาย</th><th>ตัวอย่างในแอปค้นหาสัตว์เลี้ยงหาย</th></tr></thead>
+      <tbody>
+        <tr><td><b>Contrast</b><br>ความตัดกัน</td><td>ทำให้องค์ประกอบสำคัญแตกต่างชัดเจน เพื่อดึงสายตา</td><td>ปุ่ม “แจ้งหาย” สีเข้มตัดกับพื้นหลังขาว มองเห็นทันที</td></tr>
+        <tr><td><b>Repetition</b><br>การซ้ำ</td><td>ใช้รูปแบบ/สไตล์ซ้ำเพื่อสร้างความสม่ำเสมอและเอกภาพ</td><td>ปุ่มหลักหน้าตาเหมือนกันทุกหน้า ผู้ใช้จึงจำได้</td></tr>
+        <tr><td><b>Alignment</b><br>การจัดแนว</td><td>จัดองค์ประกอบให้อยู่ในแนวเดียวกัน หน้าจอดูเป็นระเบียบ</td><td>ช่องกรอกในฟอร์มชิดซ้ายแนวเดียวกันทั้งหมด</td></tr>
+        <tr><td><b>Proximity</b><br>ความใกล้ชิด</td><td>จัดสิ่งที่เกี่ยวข้องกันไว้ใกล้กัน (สอดคล้อง Gestalt)</td><td>รวม “ชื่อสัตว์–ลักษณะ–รูป” เป็นกลุ่มข้อมูลสัตว์เดียว</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>กลุ่มที่สองคือ “กฎ” ทางการออกแบบปฏิสัมพันธ์ที่ช่วยให้หน้าจอใช้งานง่ายและสื่อสารได้ดี</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Affordance และ Fitts Law">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <!-- affordance -->
+        <text x="155" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Affordance — รูปลักษณ์บอกว่ากดได้</text>
+        <rect x="40" y="50" width="100" height="40" rx="9" fill="#a8324a"/><text x="90" y="75" font-size="13" fill="#fff" font-weight="700">ยืนยัน</text>
+        <text x="90" y="110" font-size="11.5" fill="#2e8b57">✓ มีพื้น/มุมโค้ง ดูกดได้</text>
+        <text x="225" y="75" font-size="13" fill="#9aa7b3">ยืนยัน</text>
+        <text x="225" y="110" font-size="11.5" fill="#c0492f">✗ ข้อความเปล่า ไม่รู้ว่ากดได้</text>
+        <!-- divider -->
+        <line x1="320" y1="40" x2="320" y2="150" stroke="#efd0d8" stroke-width="1.5"/>
+        <!-- fitts -->
+        <text x="470" y="24" font-size="13.5" font-weight="700" fill="#7d2236">Fitts’s Law — เป้าใหญ่/ใกล้ แตะง่าย</text>
+        <rect x="360" y="52" width="110" height="46" rx="9" fill="#a8324a"/><text x="415" y="80" font-size="14" fill="#fff" font-weight="700">ปุ่มหลัก</text>
+        <rect x="500" y="62" width="60" height="26" rx="6" fill="#cf9aa6"/><text x="530" y="79" font-size="11" fill="#fff">เล็ก</text>
+        <text x="415" y="118" font-size="11.5" fill="#2e8b57">✓ แตะนิ้วง่าย</text>
+        <text x="530" y="108" font-size="11.5" fill="#c0492f">✗ แตะพลาดง่าย</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.4</b> Affordance (รูปลักษณ์สื่อว่ากดได้) และ Fitts’s Law (เป้าหมายใหญ่และเข้าถึงง่ายแตะได้สะดวกกว่า)</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>กฎ/หลักการ</th><th>ความหมาย</th><th>ตัวอย่างในแอป</th></tr></thead>
+      <tbody>
+        <tr><td><b>Consistency</b><br>ความสม่ำเสมอ</td><td>ใช้รูปแบบเดียวกันทั้งระบบ ลดการเรียนรู้ใหม่</td><td>ไอคอนและปุ่มหน้าตาเหมือนกันทุกหน้า</td></tr>
+        <tr><td><b>Affordance &amp; Signifier</b></td><td>รูปลักษณ์ขององค์ประกอบบอกว่าทำอะไรได้</td><td>ปุ่มมีพื้นและเงาให้รู้ว่ากดได้ ช่องกรอกมีกรอบ</td></tr>
+        <tr><td><b>Feedback</b><br>การตอบสนอง</td><td>ระบบตอบกลับทุกการกระทำของผู้ใช้</td><td>กดแจ้งหายแล้วขึ้นข้อความ “แจ้งสำเร็จ”</td></tr>
+        <tr><td><b>Hick’s Law</b></td><td>ยิ่งตัวเลือกมาก ผู้ใช้ยิ่งตัดสินใจช้า</td><td>เมนูหลักจำกัดเพียง 5 กลุ่ม (จากบทที่ 6)</td></tr>
+        <tr><td><b>Fitts’s Law</b></td><td>เป้าหมายที่ใหญ่และใกล้ แตะได้ง่ายและเร็วกว่า</td><td>ปุ่มหลักขนาดใหญ่ วางในตำแหน่งที่นิ้วเอื้อมถึง</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> เชื่อมโยงกับบทที่ 1</div>
+    หลักการเหล่านี้คือเครื่องมือที่ทำให้แนวคิด Usability และ mental model (บทที่ 1) เกิดขึ้นจริงบนหน้าจอ เช่น Affordance ช่วยเรื่อง Learnability และ Feedback ช่วยลด Errors
+  </div>
+
+  <!-- 2.6 worked examples -->
+  <h3><span class="nm">2.6</span> ตัวอย่างการจัดวางหน้าเว็บ 3 หน้า (จาก Sitemap)</h3>
+  <p>เพื่อให้เห็นภาพการนำหลักการทั้งหมดมาใช้จริง เราเลือก 3 หน้าจาก Sitemap ของแอปค้นหาสัตว์เลี้ยงหาย (บทที่ 6) มาแสดงเป็นโครงร่างการจัดวาง (wireframe) พร้อมอธิบายว่าแต่ละหน้าสอดคล้องกับหลักการออกแบบอย่างไร</p>
+
+  <!-- ===== หน้า 1: Home ===== -->
+  <h4>หน้าที่ 1 · หน้าแรก (Home)</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 250 440" style="max-width:260px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="wireframe หน้าแรก">
+      <g font-family="'Sarabun',sans-serif">
+        <rect x="10" y="10" width="230" height="420" rx="18" fill="#fff" stroke="#a8324a" stroke-width="2"/>
+        <!-- app bar -->
+        <rect x="22" y="24" width="60" height="18" rx="4" fill="#f2e6ea"/><text x="30" y="38" font-size="11" fill="#7d2236">โลโก้</text>
+        <circle cx="218" cy="33" r="9" fill="#f2e6ea"/><text x="218" y="37" font-size="10" text-anchor="middle">🔔</text>
+        <!-- primary CTA -->
+        <rect x="22" y="56" width="206" height="48" rx="10" fill="#a8324a"/><text x="125" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">＋ แจ้งสัตว์เลี้ยงหาย</text>
+        <!-- secondary -->
+        <rect x="22" y="112" width="206" height="36" rx="9" fill="#fff" stroke="#a8324a" stroke-width="1.5"/><text x="125" y="135" text-anchor="middle" font-size="13" fill="#a8324a">แจ้งพบสัตว์จร</text>
+        <!-- search -->
+        <rect x="22" y="158" width="206" height="28" rx="8" fill="#f2e6ea"/><text x="34" y="177" font-size="11.5" fill="#8a93a0">🔍 ค้นหาประกาศ...</text>
+        <!-- section label -->
+        <text x="22" y="208" font-size="12.5" font-weight="700" fill="#7d2236">ประกาศล่าสุด</text>
+        <!-- grid 2x2 -->
+        <g fill="#f2e6ea">
+          <rect x="22" y="218" width="100" height="74" rx="8"/><rect x="128" y="218" width="100" height="74" rx="8"/>
+          <rect x="22" y="300" width="100" height="74" rx="8"/><rect x="128" y="300" width="100" height="74" rx="8"/>
+        </g>
+        <!-- bottom nav -->
+        <rect x="10" y="392" width="230" height="38" rx="0" fill="#fbf2f5"/>
+        <g text-anchor="middle" font-size="13">
+          <text x="42" y="416">📣</text><text x="92" y="416">🔍</text><text x="135" y="416">🔔</text><text x="178" y="416">👤</text><text x="218" y="416">❓</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.5</b> โครงร่างหน้าแรก — ปุ่ม “แจ้งสัตว์หาย” เป็นจุดเด่นหลัก และเมนูหลัก 5 กลุ่มอยู่แถบล่าง</figcaption>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>หลักการ</th><th>นำมาใช้ในหน้านี้อย่างไร</th></tr></thead>
+      <tbody>
+        <tr><td><b>ลำดับชั้นการมองเห็น</b></td><td>ปุ่ม “แจ้งสัตว์หาย” ใหญ่และสีเข้มสุด = เด่นลำดับ 1 (งานเร่งด่วนที่สุดของผู้ใช้)</td></tr>
+        <tr><td><b>Gestalt — Similarity</b></td><td>ไอคอนแถบเมนูล่างใช้สไตล์เดียวกัน สื่อว่าเป็นกลุ่มเมนูเดียวกัน</td></tr>
+        <tr><td><b>Gestalt — Proximity</b></td><td>การ์ดประกาศวางชิดกันเป็นกลุ่ม “ประกาศล่าสุด” แยกจากปุ่มด้านบน</td></tr>
+        <tr><td><b>กริด</b></td><td>การ์ดประกาศจัดเป็นกริด 2 คอลัมน์เท่ากัน ดูเป็นระเบียบ</td></tr>
+        <tr><td><b>Hick’s Law</b></td><td>เมนูหลักจำกัด 5 กลุ่ม (จาก Sitemap) ลดภาระการตัดสินใจ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== หน้า 2: Report Lost ===== -->
+  <h4>หน้าที่ 2 · แจ้งสัตว์เลี้ยงหาย (ฟอร์ม)</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 250 440" style="max-width:260px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="wireframe หน้าแจ้งสัตว์หาย">
+      <g font-family="'Sarabun',sans-serif">
+        <rect x="10" y="10" width="230" height="420" rx="18" fill="#fff" stroke="#a8324a" stroke-width="2"/>
+        <!-- app bar -->
+        <text x="24" y="36" font-size="14" fill="#7d2236">←</text><text x="125" y="36" text-anchor="middle" font-size="13.5" font-weight="700" fill="#7d2236">แจ้งสัตว์เลี้ยงหาย</text>
+        <line x1="10" y1="48" x2="240" y2="48" stroke="#efd0d8"/>
+        <!-- group 1 -->
+        <text x="24" y="70" font-size="11.5" font-weight="700" fill="#a8324a">ข้อมูลสัตว์</text>
+        <rect x="24" y="78" width="202" height="24" rx="6" fill="#f2e6ea"/>
+        <rect x="24" y="108" width="202" height="24" rx="6" fill="#f2e6ea"/>
+        <!-- group 2 -->
+        <text x="24" y="156" font-size="11.5" font-weight="700" fill="#a8324a">สถานที่ที่หาย</text>
+        <rect x="24" y="164" width="202" height="24" rx="6" fill="#f2e6ea"/>
+        <rect x="24" y="194" width="202" height="54" rx="6" fill="#eef2f6"/><text x="125" y="225" text-anchor="middle" font-size="11" fill="#8a93a0">🗺️ แผนที่</text>
+        <!-- group 3 -->
+        <text x="24" y="272" font-size="11.5" font-weight="700" fill="#a8324a">ข้อมูลผู้แจ้ง</text>
+        <rect x="24" y="280" width="202" height="24" rx="6" fill="#f2e6ea"/>
+        <!-- primary button -->
+        <rect x="24" y="372" width="202" height="44" rx="10" fill="#a8324a"/><text x="125" y="400" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">ยืนยันแจ้งหาย</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.6</b> โครงร่างหน้าแจ้งสัตว์หาย — ช่องกรอกจัดเป็น 3 กลุ่ม และปุ่มยืนยันเด่นอยู่ด้านล่าง</figcaption>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>หลักการ</th><th>นำมาใช้ในหน้านี้อย่างไร</th></tr></thead>
+      <tbody>
+        <tr><td><b>Gestalt — Proximity</b></td><td>ช่องกรอกแบ่งเป็น 3 กลุ่มชัดเจน (ข้อมูลสัตว์ / สถานที่ / ผู้แจ้ง) ด้วยระยะห่าง</td></tr>
+        <tr><td><b>Alignment (C.R.A.P)</b></td><td>ทุกช่องกรอกชิดซ้ายแนวเดียวกัน หน้าจอดูเป็นระเบียบ อ่านไล่ลงง่าย</td></tr>
+        <tr><td><b>ลำดับชั้น</b></td><td>หัวเรื่องบนสุดและปุ่ม “ยืนยันแจ้งหาย” เด่นสุด บอกชัดว่าจบขั้นตอนที่ปุ่มนี้</td></tr>
+        <tr><td><b>Whitespace</b></td><td>เว้นระยะระหว่างกลุ่มฟิลด์ ลดความอึดอัดและช่วยจัดกลุ่ม</td></tr>
+        <tr><td><b>Affordance &amp; Fitts</b></td><td>ปุ่มยืนยันมีพื้นชัดและขนาดใหญ่เต็มความกว้าง แตะง่าย</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== หน้า 3: Post Detail ===== -->
+  <h4>หน้าที่ 3 · รายละเอียดประกาศ</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 250 440" style="max-width:260px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="wireframe หน้ารายละเอียดประกาศ">
+      <g font-family="'Sarabun',sans-serif">
+        <rect x="10" y="10" width="230" height="420" rx="18" fill="#fff" stroke="#a8324a" stroke-width="2"/>
+        <!-- app bar -->
+        <text x="24" y="36" font-size="14" fill="#7d2236">←</text>
+        <text x="200" y="36" font-size="13" fill="#7d2236">↗</text><text x="222" y="36" font-size="13" fill="#7d2236">⋮</text>
+        <!-- big image (figure-ground) -->
+        <rect x="22" y="48" width="206" height="120" rx="8" fill="#eef2f6"/><text x="125" y="112" text-anchor="middle" font-size="12" fill="#8a93a0">🐕 รูปสัตว์</text>
+        <!-- name + status -->
+        <text x="24" y="190" font-size="16" font-weight="700" fill="#7d2236">น้องดำ</text>
+        <rect x="150" y="176" width="78" height="20" rx="10" fill="#c0492f"/><text x="189" y="190" text-anchor="middle" font-size="11" fill="#fff">สถานะ: หาย</text>
+        <!-- info group -->
+        <rect x="24" y="204" width="202" height="46" rx="7" fill="#fbf2f5"/><text x="34" y="222" font-size="11" fill="#5e6b78">พันธุ์ · สี · จุดเด่น</text><text x="34" y="240" font-size="11" fill="#5e6b78">หายที่: ซอย 5 เมื่อวานนี้</text>
+        <!-- map -->
+        <rect x="24" y="258" width="202" height="50" rx="7" fill="#eef2f6"/><text x="125" y="288" text-anchor="middle" font-size="11" fill="#8a93a0">🗺️ จุดที่พบเห็นล่าสุด</text>
+        <!-- actions group -->
+        <rect x="24" y="324" width="202" height="42" rx="10" fill="#a8324a"/><text x="125" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">ส่งเบาะแส</text>
+        <rect x="24" y="374" width="98" height="36" rx="9" fill="#fff" stroke="#a8324a" stroke-width="1.5"/><text x="73" y="397" text-anchor="middle" font-size="12" fill="#a8324a">แชต</text>
+        <rect x="128" y="374" width="98" height="36" rx="9" fill="#fff" stroke="#a8324a" stroke-width="1.5"/><text x="177" y="397" text-anchor="middle" font-size="12" fill="#a8324a">โทร</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 7.7</b> โครงร่างหน้ารายละเอียดประกาศ — รูปและชื่อสัตว์เด่นบนสุด ปุ่ม “ส่งเบาะแส” เป็น CTA หลัก</figcaption>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>หลักการ</th><th>นำมาใช้ในหน้านี้อย่างไร</th></tr></thead>
+      <tbody>
+        <tr><td><b>Gestalt — Figure/Ground</b></td><td>รูปสัตว์ขนาดใหญ่อยู่บนสุด แยกออกจากพื้นหลังชัด เป็นจุดสนใจแรก</td></tr>
+        <tr><td><b>ลำดับชั้น + Contrast</b></td><td>ชื่อสัตว์ตัวใหญ่ + ป้ายสถานะ “หาย” สีแดงตัดกัน บอกสถานะทันที</td></tr>
+        <tr><td><b>Gestalt — Proximity</b></td><td>ข้อมูลสัตว์รวมเป็นกล่องเดียว และปุ่มการกระทำรวมเป็นกลุ่มด้านล่าง</td></tr>
+        <tr><td><b>Gestalt — Similarity</b></td><td>ปุ่มรอง (แชต/โทร) ใช้สไตล์ outline เหมือนกัน สื่อว่าระดับเดียวกัน</td></tr>
+        <tr><td><b>ลำดับชั้นของปุ่ม</b></td><td>“ส่งเบาะแส” เป็นปุ่มทึบ (เด่นสุด) ส่วนแชต/โทรเป็นปุ่มรอง</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: กริดและการจัดวางด้วย CSS</h4>
+  <p>หลักการกริดและการจัดวางในบทนี้แปลงเป็นโค้ดได้โดยตรงด้วย CSS Grid และ Flexbox ซึ่งเป็นเครื่องมือมาตรฐานของการพัฒนาเว็บสมัยใหม่</p>
+  <pre><span class="cm">/* จัดวางการ์ดประกาศด้วยกริด พร้อม gutter และ margin */</span>
+.container {
+  max-width: <span class="st">960px</span>;        <span class="cm">/* margin ซ้าย-ขวาอัตโนมัติ */</span>
+  margin: <span class="st">0 auto</span>;
+  padding: <span class="st">0 16px</span>;          <span class="cm">/* ขอบ (margin) ภายใน */</span>
+}
+.post-grid {
+  display: <span class="ky">grid</span>;
+  grid-template-columns: <span class="ky">repeat</span>(4, 1fr);  <span class="cm">/* 4 คอลัมน์ */</span>
+  gap: <span class="st">16px</span>;                <span class="cm">/* gutter ระหว่างคอลัมน์ */</span>
+}</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">หลังการสอบกลางภาค เรามี <b>Sitemap และ User Flow</b> จาก <b>บทที่ 6</b> ซึ่งบอกว่ามีหน้าจออะไรและผู้ใช้เดินอย่างไร บทนี้นำหน้าจอเหล่านั้น (เช่น “แจ้งสัตว์หาย”, “รายละเอียดประกาศ”) มาเริ่มออกแบบการจัดวางองค์ประกอบด้วยหลักการ Gestalt, ลำดับชั้น และกริด</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">เมื่อวางโครงการจัดวางได้แล้ว <b>บทที่ 8: ทฤษฎีสีและการใช้ตัวอักษร</b> จะเพิ่ม “ภาษาภาพ” ให้หน้าจอ — เลือกสีและตัวอักษรที่เสริมลำดับชั้นและบุคลิกของแอป</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li>การออกแบบ UI คือการจัดวางและสื่อสารองค์ประกอบด้วยภาพ เพื่อให้ผู้ใช้เข้าใจและลดภาระทางความคิด</li>
+    <li><b>หลักการ Gestalt</b> (proximity, similarity, closure, continuity) อธิบายว่าสมองจัดกลุ่มสิ่งที่เห็นอย่างไร</li>
+    <li><b>ลำดับชั้นการมองเห็น</b> สร้างด้วยขนาด น้ำหนัก ความตัดกัน สี และตำแหน่ง — แต่ละหน้าควรมีจุดเด่นหลักไม่กี่จุด</li>
+    <li><b>ระบบกริด</b> (คอลัมน์ gutter margin) และการจัดแนว ทำให้หน้าจอเป็นระเบียบ</li>
+    <li><b>พื้นที่ว่าง (whitespace)</b> เป็นเครื่องมือออกแบบ ช่วยจัดกลุ่มและเพิ่มความอ่านง่าย ไม่ใช่พื้นที่เสียเปล่า</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">หลักการ Gestalt แบบ Proximity และ Similarity ต่างกันอย่างไร ยกตัวอย่างการใช้ในแอปจริง</div>
+    <div class="rq">เครื่องมือใดบ้างที่ใช้สร้างลำดับชั้นการมองเห็น และเหตุใด “ทำให้ทุกอย่างเด่น” จึงเป็นปัญหา</div>
+    <div class="rq">องค์ประกอบของระบบกริดมีอะไรบ้าง และการจัดแนว (alignment) ช่วยให้หน้าจอดีขึ้นอย่างไร</div>
+    <div class="rq">พื้นที่ว่าง (whitespace) มีประโยชน์อย่างไร และทำงานร่วมกับหลักการ proximity อย่างไร</div>
+    <div class="rq">จากหน้า “รายละเอียดประกาศ” ของแอป จงระบุว่าองค์ประกอบใดควรเด่นเป็นลำดับ 1, 2, 3</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มเดิม โดยใช้กระดาษกริด/Figma ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “จัดกลุ่มด้วย Gestalt”</span> <span class="min">(10 นาที)</span><br>พิจารณาหน้าจอตัวอย่างที่จัดวางไม่ดีที่กำหนดให้ ช่วยกันในกลุ่มชี้ว่าใช้หลักการ Gestalt ใดปรับปรุงได้บ้าง</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวน Gestalt, visual hierarchy, กริด และ whitespace แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">วิเคราะห์ลำดับชั้น</span> <span class="min">(20 นาที)</span><br>เลือกหน้าจอ 1 หน้าจาก Sitemap แล้วระบุว่าองค์ประกอบใดควรเป็นลำดับ 1, 2, 3</li>
+    <li><span class="t">ตั้งกริดและร่างการจัดวาง</span> <span class="min">(30 นาที)</span><br>วาดกริด (เช่น 4 คอลัมน์) แล้วจัดวางองค์ประกอบของหน้า “แจ้งสัตว์หาย” ให้อิงกริด</li>
+    <li><span class="t">ปรับลำดับชั้นและพื้นที่ว่าง</span> <span class="min">(25 นาที)</span><br>ปรับขนาด/น้ำหนัก/ระยะห่าง เพื่อให้ปุ่มหลักและหัวเรื่องเด่นตามที่ตั้งใจ</li>
+    <li><span class="t">Peer Review</span> <span class="min">(20 นาที)</span><br>สลับกับอีกกลุ่ม ถามว่า “สายตามองไปที่ใดก่อน” เพื่อตรวจว่าลำดับชั้นได้ผลจริง</li>
+    <li><span class="t">สรุป</span> <span class="min">(10 นาที)</span><br>ร่วมกันสรุปสิ่งที่ได้เรียนรู้ และทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 7)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 10</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “การจัดวางหน้าจอด้วยหลักการ UI”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 7 ของ Design Portfolio (เริ่มเฟส UI) ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>ผังลำดับชั้นการมองเห็น</b> ของ 2 หน้าจอหลัก (เช่น แจ้งสัตว์หาย, รายละเอียดประกาศ) ระบุองค์ประกอบลำดับ 1–3</li>
+      <li><b>ร่างการจัดวางบนกริด</b> ของทั้ง 2 หน้าจอ แสดงคอลัมน์/gutter/margin ที่ใช้</li>
+      <li><b>คำอธิบายการใช้หลักการ Gestalt</b> อย่างน้อย 2 หลักการ พร้อมชี้จุดที่ใช้บนหน้าจอ</li>
+      <li><b>หมายเหตุการใช้พื้นที่ว่าง</b> ว่าใช้จัดกลุ่มหรือเน้นองค์ประกอบใด</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: หลักการใดเปลี่ยนการจัดวางของกลุ่มมากที่สุด</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความชัดเจนของลำดับชั้น (30%) · การจัดวางอิงกริด (25%) · การใช้ Gestalt/whitespace (25%) · การสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">ทำผังลำดับชั้นการมองเห็นของ 2 หน้าจอ ระบุองค์ประกอบลำดับ 1–3</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">ร่างการจัดวางบนกริด แสดงคอลัมน์/gutter/margin</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">องค์ประกอบจัดแนวตรงกับกริดอย่างสม่ำเสมอ</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">อธิบายการใช้หลักการ Gestalt อย่างน้อย 2 หลักการ</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">มีหมายเหตุการใช้พื้นที่ว่าง (whitespace)</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">มีจุดเด่นหลักชัดเจน ไม่ทำให้ทุกอย่างเด่นเท่ากัน</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">เขียนส่วนสะท้อนคิด และบันทึกเป็นไฟล์ PDF <code class="inl">A7_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 10</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่6_สถาปัตยกรรมข้อมูลและUserFlow.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 6 · สถาปัตยกรรมข้อมูลและ User Flow</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่8_ทฤษฎีสีและการใช้ตัวอักษร.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 8 · ทฤษฎีสีและการใช้ตัวอักษร</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch7_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

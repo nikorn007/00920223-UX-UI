@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 3 — การวิจัยผู้ใช้ (User Research) | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 3 : ม่วง (Violet) ===== */
+  :root{
+    --ch:#7b4ec9;
+    --ch-dark:#5a32a3;
+    --ch-soft:#eee7fb;
+    --ch-softer:#f7f3fd;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f8f6fc;
+    --card:#ffffff;
+    --line:#e3d9f3;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(90,50,163,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(90,50,163,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.15rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.15rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.45rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#f1ecfa;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  /* ===== question bank ===== */
+  .qgroup{margin:16px 0}
+  .qgroup .gt{display:inline-block;background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600;font-size:.9rem;padding:4px 12px;border-radius:7px;margin-bottom:8px}
+  .qlist{counter-reset:q;list-style:none;margin-left:0}
+  .qlist li{position:relative;padding:7px 0 7px 36px;border-bottom:1px dashed var(--line)}
+  .qlist li:last-child{border:none}
+  .qlist li::before{counter-increment:q;content:"Q" counter(q);position:absolute;left:0;top:7px;font-family:var(--head);font-weight:600;font-size:.8rem;color:var(--ch);background:var(--ch-softer);padding:1px 6px;border-radius:5px}
+  .qlist .hint{display:block;font-size:.85rem;color:var(--muted);font-style:italic}
+
+  /* likert */
+  .likert{width:100%;border-collapse:collapse;font-size:.9rem;margin:10px 0}
+  .likert td,.likert th{border:1px solid var(--line);padding:7px 6px;text-align:center}
+  .likert th{background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600}
+  .likert td:first-child{text-align:left;background:var(--ch-softer)}
+  .opt{display:inline-block;width:15px;height:15px;border:2px solid var(--ch);border-radius:50%;vertical-align:middle}
+  .opt.sq{border-radius:3px}
+
+  /* ===== form documents ===== */
+  .doc-form{border:1.5px solid var(--ch-dark);border-radius:10px;padding:0;margin:20px 0;overflow:hidden;background:#fff}
+  .doc-form .df-head{background:var(--ch-dark);color:#fff;padding:12px 18px}
+  .doc-form .df-head .ttl{font-family:var(--head);font-weight:700;font-size:1.05rem}
+  .doc-form .df-head .sub{font-size:.85rem;opacity:.85}
+  .doc-form .df-body{padding:16px 18px}
+  .df-row{margin:11px 0;font-size:.95rem}
+  .df-row .lb{font-weight:600;color:var(--ch-dark)}
+  .fill{border-bottom:1.4px dotted #8a93a0;min-width:120px;display:inline-block;padding:0 6px}
+  .fill.lg{display:block;min-height:1.6em}
+  .write-lines{border:1px dashed var(--line);border-radius:8px;height:78px;margin-top:6px;background:repeating-linear-gradient(transparent,transparent 25px,var(--line) 25px,var(--line) 26px)}
+  .df-check{display:flex;align-items:flex-start;gap:9px;margin:7px 0;font-size:.95rem}
+  .df-check .bx{flex-shrink:0;width:17px;height:17px;border:1.6px solid var(--ch-dark);border-radius:3px;margin-top:3px}
+  .df-note{font-size:.85rem;color:var(--muted);margin-top:4px}
+  .sign-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px}
+  .sign-row .s{flex:1;min-width:180px;text-align:center}
+  .sign-row .s .ln{border-bottom:1.4px dotted #8a93a0;height:30px;margin-bottom:5px}
+  .sign-row .s .cap{font-size:.85rem;color:var(--muted)}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.08rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.6rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.2rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table,.doc-form,.qgroup{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 3</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 3 · Chapter 3</span>
+    <h1>การวิจัยผู้ใช้</h1>
+    <div class="en">User Research</div>
+    <p class="lead">ลงมือทำขั้น Empathize จริง — เรียนรู้วิธีเก็บข้อมูลจากผู้ใช้อย่างเป็นระบบ ทั้งการสัมภาษณ์ แบบสอบถาม และการสังเกต พร้อมหลักการตั้งคำถามที่ดีและจริยธรรมการวิจัย เพื่อให้ได้ข้อมูลที่นำไปออกแบบได้จริง</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO3</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 3 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply · Analyze</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO3</b> — ดำเนินการวิจัยผู้ใช้ และวิเคราะห์ข้อมูลเพื่อสร้าง Persona และ Empathy Map</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายความสำคัญและประเภทของการวิจัยผู้ใช้</b> ทั้งเชิงคุณภาพ/ปริมาณ และเชิงทัศนคติ/พฤติกรรม
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>เลือกวิธีเก็บข้อมูลที่เหมาะสม</b> (สัมภาษณ์ แบบสอบถาม การสังเกต) ให้สอดคล้องกับคำถามวิจัย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>ออกแบบแนวคำถามสัมภาษณ์ (interview guide)</b> ที่เป็นคำถามปลายเปิดและหลีกเลี่ยงคำถามชี้นำ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>ดำเนินการเก็บข้อมูลและจดบันทึก</b> อย่างมีระบบ พร้อมวิเคราะห์ความน่าเชื่อถือของข้อมูลเบื้องต้น
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>ปฏิบัติตามหลักจริยธรรมการวิจัย</b> เช่น การขอความยินยอม การรักษาความเป็นส่วนตัว ในการเก็บข้อมูลผู้ใช้ของแอปค้นหาสัตว์เลี้ยงหาย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO3</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ผู้ใช้มักบอกเราไม่ได้ว่าเขาต้องการอะไร แต่พฤติกรรมของเขาบอกเราได้เสมอ” — ถ้าเช่นนั้น เราควร ‘ถาม’ อะไร และควร ‘สังเกต’ อะไร จึงจะเข้าใจผู้ใช้ได้จริง?</p>
+
+  <p>ในบทที่ 2 เราวางแผนกระบวนการและตั้งคำถาม How Might We ไว้แล้ว แต่คำถามเหล่านั้นยังตั้งอยู่บน “ข้อสันนิษฐาน” ของทีม บทนี้คือก้าวสำคัญที่เปลี่ยนข้อสันนิษฐานให้เป็น “หลักฐาน” ด้วยการ <b>วิจัยผู้ใช้ (User Research)</b> ซึ่งเป็นการลงมือทำขั้น Empathize อย่างเป็นระบบ</p>
+
+  <p>การวิจัยผู้ใช้ที่ดีช่วยให้เราออกแบบจากความจริง ไม่ใช่จากการเดา ลดความเสี่ยงในการสร้างฟีเจอร์ที่ไม่มีใครใช้ และเป็นรากฐานของชิ้นงานต่อ ๆ ไป เช่น Persona และ Journey Map</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    ถ้าจะออกแบบ “แอปค้นหาสัตว์เลี้ยงหาย” เราควรไปคุยกับใคร? เฉพาะเจ้าของที่สัตว์หายหรือไม่ หรือควรคุยกับผู้พบเห็นสัตว์จร เจ้าหน้าที่มูลนิธิ และคนที่เคยช่วยตามหาด้วย? การเลือก “คนที่จะวิจัย” สำคัญพอ ๆ กับการเลือก “คำถามที่จะถาม”
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 -->
+  <h3><span class="nm">2.1</span> การวิจัยผู้ใช้คืออะไร และเหตุใดจึงสำคัญ</h3>
+  <p><b>การวิจัยผู้ใช้ (User Research)</b> คือกระบวนการเก็บและวิเคราะห์ข้อมูลเกี่ยวกับผู้ใช้เป้าหมายอย่างเป็นระบบ เพื่อทำความเข้าใจความต้องการ พฤติกรรม แรงจูงใจ และบริบทการใช้งานจริง ข้อมูลที่ได้จะถูกใช้เป็นพื้นฐานในการตัดสินใจออกแบบ แทนที่จะออกแบบตามความเห็นส่วนตัวหรือการคาดเดา</p>
+  <p>การวิจัยผู้ใช้แบ่งช่วงเวลาได้เป็นการวิจัยก่อนออกแบบ (เพื่อค้นพบความต้องการ) และการวิจัยระหว่าง/หลังออกแบบ (เพื่อประเมินงาน) บทนี้เน้นการวิจัยเพื่อ “ค้นพบ” (discovery research) ที่ใช้ในขั้น Empathize</p>
+
+  <!-- 2.2 types matrix -->
+  <h3><span class="nm">2.2</span> ประเภทของการวิจัยผู้ใช้</h3>
+  <p>เราจำแนกวิธีวิจัยได้ด้วย 2 แกน แกนแนวตั้งคือ <b>ทัศนคติ (Attitudinal — สิ่งที่ผู้ใช้พูด)</b> เทียบกับ <b>พฤติกรรม (Behavioral — สิ่งที่ผู้ใช้ทำ)</b> และแกนแนวนอนคือ <b>เชิงคุณภาพ (Qualitative — ทำไม/อย่างไร)</b> เทียบกับ <b>เชิงปริมาณ (Quantitative — เท่าไร/กี่คน)</b></p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="แผนภาพ 2 แกนของวิธีวิจัยผู้ใช้">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- axes -->
+        <line x1="300" y1="40" x2="300" y2="340" stroke="#9aa7b3" stroke-width="2"/>
+        <line x1="60" y1="190" x2="540" y2="190" stroke="#9aa7b3" stroke-width="2"/>
+        <!-- axis labels -->
+        <text x="300" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#5a32a3">ทัศนคติ (สิ่งที่พูด)</text>
+        <text x="300" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#5a32a3">พฤติกรรม (สิ่งที่ทำ)</text>
+        <text x="64" y="180" text-anchor="start" font-size="14" font-weight="700" fill="#a8631d">เชิงคุณภาพ</text>
+        <text x="536" y="180" text-anchor="end" font-size="14" font-weight="700" fill="#a8631d">เชิงปริมาณ</text>
+        <!-- methods bubbles -->
+        <g>
+          <ellipse cx="175" cy="110" rx="86" ry="34" fill="#eee7fb" stroke="#7b4ec9" stroke-width="2"/>
+          <text x="175" y="106" text-anchor="middle" font-size="14.5" font-weight="700" fill="#5a32a3">สัมภาษณ์</text>
+          <text x="175" y="126" text-anchor="middle" font-size="12.5" fill="#5e6b78">Interview</text>
+        </g>
+        <g>
+          <ellipse cx="425" cy="110" rx="86" ry="34" fill="#fff6e9" stroke="#e08a3c" stroke-width="2"/>
+          <text x="425" y="106" text-anchor="middle" font-size="14.5" font-weight="700" fill="#a8631d">แบบสอบถาม</text>
+          <text x="425" y="126" text-anchor="middle" font-size="12.5" fill="#5e6b78">Survey</text>
+        </g>
+        <g>
+          <ellipse cx="175" cy="270" rx="86" ry="34" fill="#eee7fb" stroke="#7b4ec9" stroke-width="2"/>
+          <text x="175" y="266" text-anchor="middle" font-size="14.5" font-weight="700" fill="#5a32a3">การสังเกต</text>
+          <text x="175" y="286" text-anchor="middle" font-size="12.5" fill="#5e6b78">Observation</text>
+        </g>
+        <g>
+          <ellipse cx="425" cy="270" rx="86" ry="34" fill="#eef2f6" stroke="#5e6b78" stroke-width="2"/>
+          <text x="425" y="266" text-anchor="middle" font-size="14.5" font-weight="700" fill="#41505c">Analytics</text>
+          <text x="425" y="286" text-anchor="middle" font-size="12.5" fill="#5e6b78">ข้อมูลการใช้งานจริง</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 3.1</b> แผนภาพ 2 แกนช่วยเลือกวิธีวิจัย — แต่ละวิธีตอบคำถามคนละแบบ จึงมักใช้ร่วมกัน</figcaption>
+  </figure>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    “สิ่งที่ผู้ใช้พูด” กับ “สิ่งที่ผู้ใช้ทำ” มักไม่ตรงกัน เช่น ผู้ใช้บอกว่าจะอ่านนโยบายความเป็นส่วนตัวทุกครั้ง แต่พฤติกรรมจริงคือกดข้ามทันที การวิจัยที่ดีจึงควรผสานทั้งการ “ถาม” และการ “สังเกต”
+  </div>
+
+  <!-- 2.3 methods -->
+  <h3><span class="nm">2.3</span> วิธีเก็บข้อมูลหลัก 3 วิธี</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>วิธี</th><th>เหมาะกับ</th><th>ข้อดี</th><th>ข้อจำกัด</th></tr></thead>
+      <tbody>
+        <tr><td><b>สัมภาษณ์</b><br>Interview</td><td>เข้าใจเหตุผล แรงจูงใจ และเรื่องราวเชิงลึก</td><td>ได้ข้อมูลลึก ถามต่อยอดได้</td><td>ใช้เวลามาก กลุ่มตัวอย่างน้อย</td></tr>
+        <tr><td><b>แบบสอบถาม</b><br>Survey</td><td>วัดความเห็น/ความถี่จากคนจำนวนมาก</td><td>เก็บข้อมูลได้กว้าง รวดเร็ว</td><td>ถามต่อยอดไม่ได้ เสี่ยงเข้าใจคำถามคลาดเคลื่อน</td></tr>
+        <tr><td><b>การสังเกต</b><br>Observation</td><td>เห็นพฤติกรรมจริงในบริบทการใช้งาน</td><td>เห็นสิ่งที่ผู้ใช้ทำจริง ไม่ใช่แค่ที่พูด</td><td>ตีความได้หลายทาง ผู้ถูกสังเกตอาจเปลี่ยนพฤติกรรม</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: แอปค้นหาสัตว์เลี้ยงหาย</span>
+    <ul style="margin:0">
+      <li><b>สัมภาษณ์:</b> คุยกับเจ้าของ 5 คนที่เคยทำสัตว์หาย ว่าวันแรกเขาทำอะไร รู้สึกอย่างไร และติดขัดตรงไหน</li>
+      <li><b>แบบสอบถาม:</b> ส่งแบบสอบถามถามคนเลี้ยงสัตว์ 100 คน ว่าเคยเจอปัญหานี้บ่อยแค่ไหน และใช้ช่องทางใดตามหา</li>
+      <li><b>การสังเกต:</b> สังเกตว่าคนโพสต์ตามหาสัตว์ในกลุ่มเฟซบุ๊กชุมชนอย่างไร ใส่ข้อมูลอะไรบ้าง</li>
+    </ul>
+  </div>
+
+  <!-- 2.4 question design -->
+  <h3><span class="nm">2.4</span> การออกแบบคำถามที่ดี</h3>
+  <p>คุณภาพของข้อมูลขึ้นอยู่กับคุณภาพของคำถาม หลักสำคัญคือใช้ <b>คำถามปลายเปิด (open-ended)</b> ที่ให้ผู้ใช้เล่าเรื่อง และหลีกเลี่ยง <b>คำถามชี้นำ (leading question)</b> ที่ฝังคำตอบที่เราอยากได้ไว้ในคำถาม</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="เปรียบเทียบคำถามชี้นำกับคำถามปลายเปิด">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- bad -->
+        <rect x="20" y="30" width="270" height="140" rx="12" fill="#fdf2ee" stroke="#c0492f" stroke-width="2"/>
+        <text x="40" y="58" font-size="15" font-weight="700" fill="#c0492f">❌ คำถามชี้นำ</text>
+        <text x="40" y="86" font-size="13.5" fill="#41505c">“คุณคงคิดว่าแอปนี้</text>
+        <text x="40" y="106" font-size="13.5" fill="#41505c">ใช้ง่ายมากใช่ไหม?”</text>
+        <text x="40" y="138" font-size="12.5" fill="#8a5046">→ ผู้ตอบมักเห็นด้วยตามที่</text>
+        <text x="40" y="156" font-size="12.5" fill="#8a5046">เราชี้นำ ทำให้ข้อมูลบิดเบือน</text>
+        <!-- good -->
+        <rect x="330" y="30" width="270" height="140" rx="12" fill="#eee7fb" stroke="#7b4ec9" stroke-width="2"/>
+        <text x="350" y="58" font-size="15" font-weight="700" fill="#5a32a3">✅ คำถามปลายเปิด</text>
+        <text x="350" y="86" font-size="13.5" fill="#41505c">“ช่วยเล่าให้ฟังหน่อยว่า</text>
+        <text x="350" y="106" font-size="13.5" fill="#41505c">คุณใช้แอปนี้อย่างไรบ้าง?”</text>
+        <text x="350" y="138" font-size="12.5" fill="#5a32a3">→ ผู้ตอบเล่าตามประสบการณ์</text>
+        <text x="350" y="156" font-size="12.5" fill="#5a32a3">จริง ได้ข้อมูลที่เชื่อถือได้</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 3.2</b> คำถามปลายเปิดเปิดพื้นที่ให้ผู้ใช้เล่าเรื่อง ส่วนคำถามชี้นำฝังคำตอบที่เราอยากได้ไว้</figcaption>
+  </figure>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>คำถามชี้นำ:</b> “แอปนี้ดีกว่าของเดิมใช่ไหม?” — ควรถาม “คุณเปรียบเทียบแอปนี้กับวิธีเดิมอย่างไร?”</li>
+      <li><b>ถามสมมติฐานอนาคต:</b> “ถ้ามีฟีเจอร์นี้คุณจะใช้ไหม?” — ผู้ใช้ตอบเกินจริง ควรถามจากพฤติกรรมที่ผ่านมา</li>
+      <li><b>ถามหลายเรื่องในประโยคเดียว</b> (double-barreled) ทำให้ผู้ตอบสับสนว่าตอบเรื่องใด</li>
+    </ul>
+  </div>
+
+  <!-- 2.5 ethics -->
+  <h3><span class="nm">2.5</span> จริยธรรมในการวิจัยผู้ใช้</h3>
+  <p>การเก็บข้อมูลจากคนต้องคำนึงถึงสิทธิและความปลอดภัยของผู้เข้าร่วมเสมอ หลักจริยธรรมพื้นฐาน ได้แก่ การขอ <b>ความยินยอมโดยได้รับข้อมูล (informed consent)</b> การเข้าร่วม <b>โดยสมัครใจ</b> การ <b>รักษาความเป็นส่วนตัว</b> ของข้อมูล และการ <b>เก็บข้อมูลเท่าที่จำเป็น</b> โดยเฉพาะแอปค้นหาสัตว์เลี้ยงหายที่อาจเกี่ยวข้องกับข้อมูลตำแหน่งและเบอร์ติดต่อของผู้ใช้</p>
+
+  <!-- 2.6 คลังตัวอย่างคำถาม -->
+  <h3><span class="nm">2.6</span> คลังตัวอย่างคำถามทั้ง 3 วิธี (กรณีศึกษาแอปค้นหาสัตว์เลี้ยงหาย)</h3>
+  <p>ส่วนนี้รวบรวมตัวอย่างคำถามที่นักศึกษานำไปปรับใช้กับโปรเจกต์ได้ทันที โดยอ้างอิงกรณีศึกษาหลักของวิชา ให้สังเกตว่าคำถามถูกออกแบบให้เป็น “ปลายเปิด” และเรียงจากกว้างไปลึก</p>
+
+  <!-- 2.6.1 interview -->
+  <h4>ก. ตัวอย่างชุดคำถามสัมภาษณ์ (Interview Guide)</h4>
+  <div class="gt-ex" style="margin-bottom:8px"><span class="tag">กลุ่มเป้าหมาย: เจ้าของที่เคยทำสัตว์เลี้ยงหาย</span></div>
+
+  <div class="qgroup">
+    <span class="gt">① คำถามอุ่นเครื่อง (Warm-up) — สร้างความคุ้นเคย</span>
+    <ol class="qlist">
+      <li>ช่วยเล่าให้ฟังหน่อยว่าคุณเลี้ยงสัตว์อะไรบ้าง และเลี้ยงมานานแค่ไหนแล้ว<span class="hint">เปิดบทสนทนาด้วยเรื่องที่ผู้ตอบเล่าได้สบาย ๆ</span></li>
+      <li>ปกติสัตว์เลี้ยงของคุณใช้ชีวิตประจำวันอย่างไรบ้าง</li>
+    </ol>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">② คำถามเกี่ยวกับประสบการณ์จริง (Experience) — เจาะเหตุการณ์ที่ผ่านมา</span>
+    <ol class="qlist">
+      <li>ช่วยเล่าเหตุการณ์ครั้งที่สัตว์เลี้ยงของคุณหายให้ฟังตั้งแต่ต้นได้ไหม<span class="hint">ให้ผู้ตอบเล่าเป็นเรื่องราว (storytelling) อย่าขัดจังหวะ</span></li>
+      <li>ตอนที่รู้ว่าสัตว์หาย สิ่งแรกที่คุณทำคืออะไร</li>
+      <li>หลังจากนั้นคุณทำอะไรต่อบ้าง ช่วยเล่าตามลำดับ</li>
+      <li>คุณใช้ช่องทางหรือเครื่องมืออะไรในการตามหาบ้าง<span class="hint">เช่น โซเชียลมีเดีย ป้ายประกาศ กลุ่มชุมชน</span></li>
+      <li>มีใครเข้ามาช่วยคุณตามหาบ้างไหม และช่วยอย่างไร</li>
+    </ol>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">③ คำถามเจาะ Pain Point — ค้นหาความติดขัดและความรู้สึก</span>
+    <ol class="qlist">
+      <li>ในกระบวนการตามหา ช่วงไหนที่คุณรู้สึกว่ายากหรือติดขัดที่สุด เพราะอะไร</li>
+      <li>มีอะไรที่คุณอยากทำแต่ทำไม่ได้ในตอนนั้นบ้าง</li>
+      <li>ตอนนั้นคุณรู้สึกอย่างไร และอะไรที่ช่วยให้คุณรู้สึกดีขึ้นบ้าง<span class="hint">เข้าใจมิติอารมณ์ ไม่ใช่แค่ขั้นตอน</span></li>
+      <li>ถ้าย้อนเวลากลับไปได้ คุณคิดว่าอะไรน่าจะช่วยให้ตามหาได้ง่ายขึ้น</li>
+    </ol>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">④ คำถามปิดท้าย (Wrap-up)</span>
+    <ol class="qlist">
+      <li>มีอะไรเกี่ยวกับเรื่องนี้ที่คุณอยากเล่าเพิ่มเติม แต่ผมยังไม่ได้ถามไหม<span class="hint">เปิดโอกาสให้ผู้ตอบเสริมสิ่งที่เราคาดไม่ถึง</span></li>
+      <li>ถ้าผมมีคำถามเพิ่มเติมภายหลัง จะติดต่อกลับได้ไหม</li>
+    </ol>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> เทคนิคถามต่อยอด (Probing)</div>
+    เมื่อผู้ตอบพูดสั้น ๆ ให้ถามต่อด้วยคำถามกลาง ๆ เช่น “ช่วยเล่าเพิ่มได้ไหม”, “ตอนนั้นเกิดอะไรขึ้น”, “ทำไมถึงเลือกทำแบบนั้น” เพื่อขุดข้อมูลลึกขึ้นโดยไม่ชี้นำ
+  </div>
+
+  <!-- 2.6.2 survey -->
+  <h4>ข. ตัวอย่างคำถามแบบสอบถาม (Survey) — พร้อมรูปแบบคำถามหลากชนิด</h4>
+  <div class="gt-ex" style="margin-bottom:8px"><span class="tag">กลุ่มเป้าหมาย: ผู้เลี้ยงสัตว์ทั่วไป (เก็บข้อมูลเชิงปริมาณ)</span></div>
+
+  <div class="qgroup">
+    <span class="gt">เลือกตอบข้อเดียว (Single choice)</span>
+    <p style="margin:6px 0"><b>1.</b> คุณเคยมีประสบการณ์สัตว์เลี้ยงหายหรือไม่</p>
+    <div class="df-check"><span class="bx"></span> เคย และตามกลับมาได้</div>
+    <div class="df-check"><span class="bx"></span> เคย แต่ยังตามไม่พบ</div>
+    <div class="df-check"><span class="bx"></span> ไม่เคย</div>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">เลือกได้หลายข้อ (Multiple choice)</span>
+    <p style="margin:6px 0"><b>2.</b> หากสัตว์เลี้ยงหาย คุณจะใช้ช่องทางใดในการตามหา (เลือกได้มากกว่า 1)</p>
+    <div class="df-check"><span class="bx"></span> โพสต์ในกลุ่ม/เพจชุมชนบนโซเชียลมีเดีย</div>
+    <div class="df-check"><span class="bx"></span> ติดป้ายประกาศตามจุดต่าง ๆ</div>
+    <div class="df-check"><span class="bx"></span> สอบถามเพื่อนบ้าน/ร้านค้าใกล้บ้าน</div>
+    <div class="df-check"><span class="bx"></span> ติดต่อมูลนิธิหรือคลินิกสัตว์</div>
+    <div class="df-check"><span class="bx"></span> อื่น ๆ โปรดระบุ <span class="fill" style="min-width:160px">&nbsp;</span></div>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">มาตรประเมินค่า (Likert Scale 1–5)</span>
+    <p style="margin:6px 0"><b>3.</b> โปรดให้ระดับความเห็นต่อข้อความต่อไปนี้</p>
+    <div class="table-wrap">
+      <table class="likert">
+        <thead><tr><th style="width:42%">ข้อความ</th><th>ไม่เห็นด้วยอย่างยิ่ง</th><th>ไม่เห็นด้วย</th><th>เฉย ๆ</th><th>เห็นด้วย</th><th>เห็นด้วยอย่างยิ่ง</th></tr></thead>
+        <tbody>
+          <tr><td>การตามหาสัตว์เลี้ยงที่หายเป็นเรื่องยากสำหรับฉัน</td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td></tr>
+          <tr><td>ฉันอยากได้แอปที่ช่วยกระจายข่าวสัตว์หายได้เร็ว</td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td><td><span class="opt"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="qgroup">
+    <span class="gt">ปลายเปิด (Open-ended) และข้อมูลประชากร</span>
+    <p style="margin:6px 0"><b>4.</b> สิ่งที่ยากที่สุดเมื่อต้องตามหาสัตว์เลี้ยงที่หายคืออะไร <span class="fill" style="min-width:240px">&nbsp;</span></p>
+    <p style="margin:6px 0"><b>5.</b> ช่วงอายุของคุณ:
+      <span class="df-check" style="display:inline-flex"><span class="bx" style="border-radius:50%"></span> ต่ำกว่า 20</span> &nbsp;
+      <span class="df-check" style="display:inline-flex"><span class="bx" style="border-radius:50%"></span> 20–35</span> &nbsp;
+      <span class="df-check" style="display:inline-flex"><span class="bx" style="border-radius:50%"></span> 36–50</span> &nbsp;
+      <span class="df-check" style="display:inline-flex"><span class="bx" style="border-radius:50%"></span> มากกว่า 50</span>
+    </p>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อควรระวังในการทำแบบสอบถาม</div>
+    เรียงจากคำถามง่ายไปยาก, ถามข้อมูลส่วนตัวไว้ท้ายสุด, หนึ่งคำถามถามเรื่องเดียว, และทดสอบแบบสอบถามกับคน 2–3 คนก่อนแจกจริงเพื่อหาคำถามที่กำกวม
+  </div>
+
+  <!-- 2.6.3 observation -->
+  <h4>ค. ตัวอย่างประเด็นการสังเกต (Observation Guide)</h4>
+  <p>การสังเกตเน้น “บันทึกสิ่งที่เห็น” แยกจาก “การตีความ” ตัวอย่างประเด็นที่ควรสังเกตเมื่อดูผู้ใช้โพสต์ตามหาสัตว์ในกลุ่มชุมชนออนไลน์ หรือทดลองใช้ต้นแบบ:</p>
+  <div class="qgroup">
+    <span class="gt">ประเด็นที่ควรจับตา</span>
+    <ol class="qlist">
+      <li>ผู้ใช้เริ่มต้นจากตรงไหน และใช้เวลานานเท่าใดกว่าจะลงมือโพสต์/แจ้งหาย</li>
+      <li>ข้อมูลอะไรบ้างที่ผู้ใช้ใส่ลงไป (รูป, สถานที่, เบอร์ติดต่อ, ลักษณะเด่น) และลำดับการกรอก</li>
+      <li>จุดที่ผู้ใช้ลังเล หยุดคิด หรือย้อนกลับไปแก้ไข</li>
+      <li>สีหน้า/คำพูดที่แสดงความสับสนหรือหงุดหงิด (think-aloud)</li>
+      <li>สิ่งที่ผู้ใช้พยายามทำแต่ระบบไม่รองรับ</li>
+    </ol>
+  </div>
+
+  <!-- ===== แบบฟอร์มเอกสาร ===== -->
+  <h3><span class="nm">2.7</span> แบบฟอร์มเอกสารสำหรับลงเก็บข้อมูลภาคสนาม</h3>
+  <p>นักศึกษาสามารถพิมพ์แบบฟอร์มต่อไปนี้ไปใช้จริงในการเก็บข้อมูล (ใช้ฟังก์ชันพิมพ์ของเบราว์เซอร์) ฟอร์มถูกออกแบบให้กรอกด้วยมือได้สะดวก</p>
+
+  <!-- form 1: consent -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 1 · หนังสือขอความยินยอมเข้าร่วมการวิจัย</div><div class="sub">Informed Consent Form — โครงการออกแบบแอปค้นหาสัตว์เลี้ยงหาย</div></div>
+    <div class="df-body">
+      <p style="margin-top:0;font-size:.95rem">ข้าพเจ้าได้รับคำอธิบายเกี่ยวกับวัตถุประสงค์ของการสัมภาษณ์/สังเกตเพื่อการเรียนในรายวิชา 00921502 แล้ว และยินยอมเข้าร่วมโดยสมัครใจ</p>
+      <div class="df-check"><span class="bx"></span> ยินยอมให้เก็บข้อมูลจากการสัมภาษณ์/สังเกตเพื่อใช้ในการเรียนเท่านั้น</div>
+      <div class="df-check"><span class="bx"></span> ยินยอมให้บันทึกเสียง/ภาพระหว่างการสัมภาษณ์</div>
+      <div class="df-check"><span class="bx"></span> รับทราบว่าสามารถยุติการเข้าร่วมได้ทุกเมื่อโดยไม่มีผลกระทบใด ๆ</div>
+      <div class="df-check"><span class="bx"></span> รับทราบว่าข้อมูลจะถูกเก็บเป็นความลับและใช้รหัสแทนชื่อจริง</div>
+      <div class="df-row"><span class="lb">รหัสผู้เข้าร่วม (กรอกโดยผู้วิจัย):</span> <span class="fill">P-______</span> &nbsp;&nbsp; <span class="lb">วันที่:</span> <span class="fill">____ / ____ / ______</span></div>
+      <div class="sign-row">
+        <div class="s"><div class="ln"></div><div class="cap">ลายมือชื่อผู้เข้าร่วม</div></div>
+        <div class="s"><div class="ln"></div><div class="cap">ลายมือชื่อผู้วิจัย (นักศึกษา)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- form 2: interview note -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 2 · ใบบันทึกการสัมภาษณ์</div><div class="sub">Interview Note Sheet</div></div>
+    <div class="df-body">
+      <div class="df-row"><span class="lb">รหัสผู้ให้สัมภาษณ์:</span> <span class="fill">P-______</span> &nbsp; <span class="lb">บทบาท/กลุ่ม:</span> <span class="fill" style="min-width:180px">&nbsp;</span></div>
+      <div class="df-row"><span class="lb">วันที่/เวลา:</span> <span class="fill" style="min-width:130px">&nbsp;</span> &nbsp; <span class="lb">ผู้สัมภาษณ์:</span> <span class="fill" style="min-width:140px">&nbsp;</span> &nbsp; <span class="lb">ผู้จดบันทึก:</span> <span class="fill" style="min-width:120px">&nbsp;</span></div>
+      <div class="df-row"><span class="lb">บันทึกคำตอบสำคัญ / คำพูดอ้างอิง (Quotes):</span><div class="write-lines"></div></div>
+      <div class="df-row"><span class="lb">Pain Points ที่พบ:</span><div class="write-lines" style="height:52px"></div></div>
+      <div class="df-row"><span class="lb">ข้อสังเกต/อารมณ์ของผู้ตอบ:</span><div class="write-lines" style="height:52px"></div></div>
+      <div class="df-note">* แยก “สิ่งที่ผู้ตอบพูดจริง” ออกจาก “การตีความของผู้วิจัย” อย่างชัดเจน</div>
+    </div>
+  </div>
+
+  <!-- form 3: observation -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 3 · ใบบันทึกการสังเกต</div><div class="sub">Observation Recording Sheet</div></div>
+    <div class="df-body">
+      <div class="df-row"><span class="lb">บริบท/สถานการณ์ที่สังเกต:</span> <span class="fill lg">&nbsp;</span></div>
+      <div class="df-row"><span class="lb">วันที่/เวลา:</span> <span class="fill" style="min-width:130px">&nbsp;</span> &nbsp; <span class="lb">รหัสผู้ถูกสังเกต:</span> <span class="fill">P-______</span></div>
+      <div class="table-wrap" style="margin-top:8px">
+        <table>
+          <thead><tr><th style="width:30%">สิ่งที่เห็น (Fact)</th><th style="width:35%">การตีความ (Interpretation)</th><th style="width:35%">คำถามที่เกิดขึ้น</th></tr></thead>
+          <tbody>
+            <tr><td style="height:46px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td style="height:46px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td style="height:46px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="df-note">* ช่อง “สิ่งที่เห็น” จดเฉพาะข้อเท็จจริงที่สังเกตได้ ไม่ใส่ความเห็น เพื่อลดอคติในการเก็บข้อมูล</div>
+    </div>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: การจัดเก็บข้อมูลวิจัยอย่างมีโครงสร้าง</h4>
+  <p>ข้อมูลดิบจากการสัมภาษณ์ควรถูกจัดเก็บอย่างมีโครงสร้างเพื่อให้นำไปวิเคราะห์และส่งต่อได้ง่าย ตัวอย่างการบันทึกผลสัมภาษณ์เป็นข้อมูลแบบมีโครงสร้าง ซึ่งเป็นทักษะที่เชื่อมกับการออกแบบฐานข้อมูลในวิชาพัฒนาเว็บ</p>
+  <pre><span class="cm">// บันทึกผลสัมภาษณ์ผู้ใช้ 1 ราย (ไม่เก็บข้อมูลระบุตัวตนเกินจำเป็น)</span>
+<span class="ky">const</span> interview = {
+  participantId: <span class="st">"P03"</span>,            <span class="cm">// ใช้รหัสแทนชื่อจริง เพื่อความเป็นส่วนตัว</span>
+  role: <span class="st">"เจ้าของสุนัขที่เคยทำหาย"</span>,
+  consentGiven: <span class="ky">true</span>,
+  quotes: [
+    <span class="st">"วันแรกที่หาย ฉันไม่รู้จะเริ่มตรงไหนเลย"</span>,
+    <span class="st">"โพสต์ในกลุ่มหมู่บ้านแต่คนเห็นช้ามาก"</span>
+  ],
+  painPoints: [<span class="st">"เริ่มต้นไม่ถูก"</span>, <span class="st">"กระจายข่าวช้า"</span>]
+};</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0">ใน <b>บทที่ 2</b> นักศึกษาได้ <b>คำถาม How Might We</b> และ <b>แผนกระบวนการ</b> ซึ่งกำหนดว่าขั้น Empathize ต้องทำในสัปดาห์นี้ บทนี้จึงนำคำถาม HMW มาแปลงเป็น “คำถามวิจัย” และออกแบบเครื่องมือเก็บข้อมูลจริง</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป</h4>
+      <p style="margin:0">ข้อมูลดิบและบทสัมภาษณ์ที่เก็บได้ในบทนี้ จะถูกนำไป <b>สังเคราะห์</b> ใน <b>บทที่ 4: Persona และ Empathy Map</b> เพื่อสร้างตัวแทนกลุ่มผู้ใช้ที่จับต้องได้จากข้อมูลจริง</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li><b>การวิจัยผู้ใช้</b> เปลี่ยนข้อสันนิษฐานให้เป็นหลักฐาน เป็นรากฐานของการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง</li>
+    <li>จำแนกวิธีวิจัยได้ด้วย 2 แกน: <b>ทัศนคติ–พฤติกรรม</b> และ <b>เชิงคุณภาพ–เชิงปริมาณ</b></li>
+    <li>วิธีเก็บข้อมูลหลัก 3 วิธี: <b>สัมภาษณ์</b> (ลึก), <b>แบบสอบถาม</b> (กว้าง), <b>การสังเกต</b> (พฤติกรรมจริง) มักใช้ร่วมกัน</li>
+    <li>คำถามที่ดีเป็น <b>ปลายเปิด</b> และหลีกเลี่ยง <b>คำถามชี้นำ</b> รวมถึงคำถามเชิงสมมติอนาคต</li>
+    <li><b>จริยธรรม</b> — ขอความยินยอม สมัครใจ รักษาความเป็นส่วนตัว และเก็บข้อมูลเท่าที่จำเป็น</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">เหตุใด “สิ่งที่ผู้ใช้พูด” กับ “สิ่งที่ผู้ใช้ทำ” จึงอาจไม่ตรงกัน และมีผลต่อการเลือกวิธีวิจัยอย่างไร</div>
+    <div class="rq">เปรียบเทียบข้อดีและข้อจำกัดของการสัมภาษณ์กับแบบสอบถาม พร้อมยกตัวอย่างคำถามวิจัยที่เหมาะกับแต่ละวิธี</div>
+    <div class="rq">จงแก้คำถามชี้นำต่อไปนี้ให้เป็นคำถามปลายเปิด: “แอปค้นหาสัตว์เลี้ยงหายช่วยให้คุณสบายใจขึ้นมากใช่ไหม?”</div>
+    <div class="rq">ยกตัวอย่างหลักจริยธรรม 3 ข้อที่ต้องคำนึงเมื่อสัมภาษณ์เจ้าของที่เพิ่งทำสัตว์เลี้ยงหาย</div>
+    <div class="rq">หากมีเวลาจำกัด นักศึกษาจะออกแบบการวิจัยผสม (สัมภาษณ์ + สังเกต) สำหรับแอปนี้อย่างไร</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ทำเป็นกลุ่มเดิม โดยใช้กระดาษ/Google Form ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “จับผิดคำถามชี้นำ”</span> <span class="min">(10 นาที)</span><br>พิจารณาคำถามตัวอย่าง 5 ข้อที่กำหนดให้ ช่วยกันในกลุ่มชี้ว่าข้อใดเป็นคำถามชี้นำ แล้วแก้ให้ดีขึ้น</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวนประเภทการวิจัย วิธีเก็บข้อมูล หลักการตั้งคำถาม และจริยธรรม แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">แปลง HMW เป็นคำถามวิจัย</span> <span class="min">(15 นาที)</span><br>นำคำถาม How Might We จากบทที่ 2 มาแตกเป็นคำถามวิจัยที่อยากรู้คำตอบ</li>
+    <li><span class="t">ออกแบบ Interview Guide</span> <span class="min">(25 นาที)</span><br>ร่างแนวคำถามสัมภาษณ์ 6–8 ข้อ จัดลำดับจากกว้างไปลึก พร้อมแบบฟอร์มขอความยินยอม</li>
+    <li><span class="t">Role-play สัมภาษณ์</span> <span class="min">(25 นาที)</span><br>จับคู่สลับบทบาทผู้สัมภาษณ์/ผู้ถูกสัมภาษณ์ ฝึกถามและจดบันทึก แล้วให้ feedback กัน</li>
+    <li><span class="t">ร่างแบบสอบถามสั้น</span> <span class="min">(20 นาที)</span><br>ออกแบบแบบสอบถาม 5 ข้อ เพื่อเก็บข้อมูลเชิงปริมาณเสริมจากการสัมภาษณ์</li>
+    <li><span class="t">Peer Review &amp; สรุป</span> <span class="min">(10 นาที)</span><br>สลับ Interview Guide กับอีกกลุ่ม ตรวจหาคำถามชี้นำ แล้วร่วมสรุปและทบทวนโจทย์งานที่ต้องส่ง</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 3)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 4</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “แผนวิจัยผู้ใช้ &amp; ผลการเก็บข้อมูลเบื้องต้น”</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 3 ของ Design Portfolio ต่อยอดจากบทที่ 2 ส่งเป็นไฟล์ PDF 3–4 หน้า ประกอบด้วย:</p>
+    <ol>
+      <li><b>คำถามวิจัย</b> 3–5 ข้อ ที่แปลงมาจากคำถาม How Might We</li>
+      <li><b>Interview Guide</b> 6–8 ข้อ (คำถามปลายเปิด) พร้อมแบบฟอร์มขอความยินยอม</li>
+      <li><b>แบบสอบถามสั้น</b> 5 ข้อ สำหรับเก็บข้อมูลเชิงปริมาณ</li>
+      <li><b>ผลการสัมภาษณ์จริงอย่างน้อย 2 ราย</b> (จดบันทึกหรือถอดคำพูด ใช้รหัสแทนชื่อจริง) พร้อมระบุประเด็น pain point ที่พบ</li>
+      <li><b>สะท้อนคิด (Reflection)</b> 3–5 บรรทัด: ข้อมูลที่ได้ต่างจากที่กลุ่มสันนิษฐานไว้อย่างไร</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> คุณภาพของคำถาม (ปลายเปิด ไม่ชี้นำ) (30%) · ความเหมาะสมของวิธีวิจัย (20%) · คุณภาพการเก็บ/บันทึกข้อมูล (30%) · จริยธรรมและการสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">เขียนคำถามวิจัย 3–5 ข้อ ที่เชื่อมโยงกับคำถาม How Might We</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">Interview Guide เป็นคำถามปลายเปิด จัดลำดับจากกว้างไปลึก</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">ตรวจแล้วว่าไม่มีคำถามชี้นำหรือคำถามถามหลายเรื่องในข้อเดียว</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">มีแบบฟอร์มขอความยินยอม และใช้รหัสแทนชื่อจริงของผู้ให้สัมภาษณ์</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">สัมภาษณ์จริงอย่างน้อย 2 ราย พร้อมบันทึกและระบุ pain point</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">เขียนส่วนสะท้อนคิด (Reflection) 3–5 บรรทัด</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อตามรูปแบบ <code class="inl">A3_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">ส่งก่อนเวลาเริ่มคาบสัปดาห์ที่ 4</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่2_กระบวนการคิดเชิงออกแบบ.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 2 · กระบวนการคิดเชิงออกแบบ</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่4_PersonaและEmpathyMap.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 4 · Persona และ Empathy Map</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch3_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

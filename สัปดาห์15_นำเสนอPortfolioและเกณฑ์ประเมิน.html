@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สัปดาห์ที่ 15 — การนำเสนอ Design Portfolio &amp; เกณฑ์ประเมิน | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== โทนสีระดับรายวิชา (เดียวกับแผนการสอน) ===== */
+  :root{
+    --ch:#1f5673;
+    --ch-dark:#143b50;
+    --ch-soft:#e3eef3;
+    --ch-softer:#f1f7f9;
+    --accent:#e07a5f;
+    --gold:#d9a441;
+    --ink:#22303a;
+    --muted:#5f7079;
+    --bg:#f4f7f9;
+    --card:#ffffff;
+    --line:#dde6eb;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --shadow:0 2px 16px rgba(20,59,80,.09);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:16px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(20,59,80,.07)}
+  .toc-inner{max-width:1020px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:48px 24px 54px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(217,164,65,.16)}
+  .hero-inner{max-width:1020px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.1rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:720px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1020px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.16rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#eef5f8;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fbf3e4;border-color:var(--gold)}
+  .box-key .bh{color:#9a6f12}
+  .box-ok{background:#eaf6ef;border-color:var(--ok)}
+  .box-ok .bh{color:#1f6e44}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:560px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:10px 13px;text-align:left;font-family:var(--head)}
+  tbody td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+  tbody th{background:var(--ch-soft);color:var(--ch-dark);text-align:left;padding:10px 13px;border-top:1px solid var(--line);font-family:var(--head);font-weight:600;vertical-align:top}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.1rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  /* phase block for portfolio components */
+  .phase{border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden}
+  .phase>.ph-head{background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:700;padding:10px 16px;display:flex;align-items:center;gap:10px}
+  .phase>.ph-head .ch-no{background:var(--ch);color:#fff;font-size:.78rem;padding:2px 9px;border-radius:20px;font-weight:600}
+  .phase .ph-body{padding:6px 16px 12px}
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* presentation timeline */
+  .timeline{position:relative;margin:18px 0 4px;border-left:3px solid var(--ch-soft);padding-left:22px}
+  .tl-item{position:relative;padding:9px 0}
+  .tl-item::before{content:"";position:absolute;left:-30px;top:14px;width:15px;height:15px;border-radius:50%;background:var(--ch);border:3px solid #fff;box-shadow:0 0 0 2px var(--ch-soft)}
+  .tl-item .tt{font-family:var(--head);font-weight:700;color:var(--ch-dark)}
+  .tl-item .tm{display:inline-block;background:var(--accent);color:#fff;font-size:.76rem;font-weight:600;padding:1px 9px;border-radius:20px;margin-left:6px}
+  .tl-item .td{font-size:.93rem;color:var(--muted)}
+
+  /* do / dont */
+  .dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .dd{border-radius:12px;padding:14px 16px}
+  .dd h4{margin:0 0 8px}
+  .dd.do{background:#eaf6ef;border:1px solid #bfe3cf}
+  .dd.do h4{color:#1f6e44}
+  .dd.dont{background:#fdeeea;border:1px solid #f4cdc2}
+  .dd.dont h4{color:var(--warn)}
+  .dd ul{margin:0 0 0 1.2em;font-size:.93rem}
+  @media(max-width:560px){.dd-grid{grid-template-columns:1fr}}
+
+  /* rubric */
+  .lvl{display:inline-block;font-size:.74rem;font-weight:600;padding:2px 8px;border-radius:5px;color:#fff}
+  .l4{background:#2e8b57}.l3{background:#2f86d6}.l2{background:#d9a441}.l1{background:#c0492f}
+  .rubric td{font-size:.9rem}
+  .rubric .wt{font-family:var(--head);font-weight:700;color:var(--ch-dark);white-space:nowrap}
+  .scoreband{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+  .scoreband .sb{flex:1;min-width:150px;border-radius:10px;padding:11px 14px;color:#fff;font-size:.9rem}
+  .scoreband .sb b{font-family:var(--head);font-size:1.05rem;display:block}
+
+  footer{background:var(--ch-dark);color:#fff;padding:32px 24px;margin-top:10px}
+  .foot-inner{max-width:1020px;margin:0 auto}
+  .nav-link{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px 20px;text-decoration:none;color:#fff;max-width:380px}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .foot-meta{text-align:center;margin-top:20px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 44px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:14px}
+    .toc{position:static}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .box,table,.phase,.dd-grid{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-link{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">สัปดาห์ที่ 15</span>
+    <nav>
+      <a href="#overview">ภาพรวม</a>
+      <a href="#portfolio">องค์ประกอบ Portfolio</a>
+      <a href="#present">วิธีนำเสนอ</a>
+      <a href="#rubric">เกณฑ์ประเมิน (Rubric)</a>
+      <a href="#checklist">เช็กลิสต์สุดท้าย</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">สอบปลายภาค · Final Presentation</span>
+    <h1>การนำเสนอ Design Portfolio &amp; Prototype</h1>
+    <div class="en">Final Design Portfolio &amp; Prototype Presentation</div>
+    <p class="lead">คู่มือสำหรับสัปดาห์ที่ 15 — สรุปว่า Portfolio ฉบับสมบูรณ์ต้องมีอะไรบ้าง นำเสนออย่างไรให้น่าสนใจและมืออาชีพ และจะถูกประเมินด้วยเกณฑ์ (rubric) แบบใด เพื่อให้นักศึกษาเตรียมตัวได้อย่างมั่นใจ</p>
+    <div class="hero-pills">
+      <span class="pill"><b>รายวิชา:</b> 00921502</span>
+      <span class="pill"><b>ครอบคลุม:</b> CLO1–CLO8</span>
+      <span class="pill"><b>กรณีศึกษา:</b> แอปค้นหาสัตว์เลี้ยงหาย</span>
+      <span class="pill"><b>คะแนน:</b> 100 (น้ำหนักสอบปลายภาค)</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="aol-box"><div style="border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:15px 20px;background:#fbf3e4;margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:#9a6f12;font-size:1.05rem;margin-bottom:8px">🧾 การตอบ CLO1–CLO8 และการเก็บหลักฐาน (Assurance of Learning)</div><p style="margin:.3em 0">การสอบปลายภาค (นำเสนอ Design Portfolio เต็ม + Prototype) เป็นหลักฐานสรุปรวบยอด (summative) ของทั้งวิชา ตอบ <b>PLO2</b> ผ่านการบรรลุ CLO ต่อไปนี้:</p><ul style="margin:.2em 0 .6em 1.3em"><li><b>Design Portfolio (ชิ้นงานสะสมบท 1–10):</b> หลักฐานการบรรลุ CLO1–CLO7 (วิจัยผู้ใช้ → Persona/Journey → IA/Flow → UI/Style → Prototype)</li><li><b>รายงานผลประเมิน Usability + แผนปรับปรุง:</b> หลักฐานการบรรลุ CLO8</li><li><b>การนำเสนอและการตอบคำถาม:</b> การบูรณาการและการสื่อสาร ครอบคลุมทุก CLO</li></ul><p style="margin:.3em 0"><b>สรุปการเก็บหลักฐานเพื่อตรวจสอบ (มคอ.5 / AUN-QA):</b></p><ul style="margin:.2em 0 0 1.3em"><li>เก็บไฟล์ Portfolio (PDF) + ลิงก์/ไฟล์ Prototype + สไลด์นำเสนอ ของทุกกลุ่ม</li><li>เก็บใบให้คะแนนตาม rubric รายกลุ่ม และคะแนนการนำเสนอ/ตอบคำถามรายบุคคล</li><li>บันทึกภาพ/วิดีโอการนำเสนอเป็นหลักฐาน</li><li>ทำตารางสรุปการบรรลุ CLO1–CLO8 ทั้งวิชา (CLO attainment) เพื่อรายงาน มคอ.5 / AUN-QA</li></ul></div></section>
+
+
+<!-- ===================== ภาพรวม ===================== -->
+<section id="overview">
+  <div class="sec-head"><div class="sec-ic">🎓</div><h2>ภาพรวมการสอบปลายภาค</h2></div>
+  <p class="lead-q">“Portfolio ที่ดีไม่ได้โชว์แค่ ‘ผลงานสวย’ แต่เล่าให้เห็นว่าทุกการตัดสินใจออกแบบมาจากความเข้าใจผู้ใช้”</p>
+  <p>การสอบปลายภาคคือการนำเสนอ <b>Design Portfolio ฉบับสมบูรณ์</b> ที่สะสมตลอด 14 สัปดาห์ พร้อม <b>ต้นแบบที่กดได้จริง (Interactive Prototype)</b> โดยใช้กรณีศึกษาหลักของวิชา “เว็บแอปพลิเคชันค้นหาสัตว์เลี้ยงหาย” การนำเสนอนี้วัดผลลัพธ์การเรียนรู้ทั้ง 8 ข้อ (CLO1–CLO8) ผ่านชิ้นงานและการสื่อสาร</p>
+  <div class="box box-think">
+    <div class="bh"><span class="ic">🧭</span> 3 สิ่งที่กรรมการมองหา</div>
+    <b>1) กระบวนการ</b> — เห็นเส้นทางจากปัญหา → ผู้ใช้ → โครงสร้าง → หน้าจอ → ทดสอบ &nbsp; <b>2) เหตุผล</b> — อธิบายได้ว่าทำไมถึงออกแบบเช่นนั้น (อ้างอิงข้อมูลจริง) &nbsp; <b>3) ความต่อเนื่อง</b> — ชิ้นงานทุกบทร้อยเรียงเป็นเรื่องเดียวกัน (Golden Thread)
+  </div>
+</section>
+
+<!-- ===================== องค์ประกอบ Portfolio ===================== -->
+<section id="portfolio">
+  <div class="sec-head"><div class="sec-ic">📁</div><h2>1. องค์ประกอบของ Design Portfolio ฉบับสมบูรณ์</h2></div>
+  <p>Portfolio ควรจัดเรียงตาม “ลำดับของกระบวนการออกแบบ” เพื่อเล่าเป็นเรื่องราว แบ่งเป็น 6 เฟส (ครอบคลุมบทที่ 1–10) ติ๊กเพื่อตรวจสอบความครบถ้วนได้</p>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 1–2</span> เฟส 1 · เข้าใจปัญหาและวางกระบวนการ</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p1"><label for="p1"><b>Problem Statement</b> ของแอป — ปัญหาชัดเจน ยึดผู้ใช้เป็นศูนย์กลาง</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><b>คำถาม How Might We</b> และแผนกระบวนการ Design Thinking ของทีม</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 3–5</span> เฟส 2 · วิจัยและเข้าใจผู้ใช้</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p3"><label for="p3"><b>วิธีและผลการวิจัยผู้ใช้</b> (สัมภาษณ์/สังเกต) พร้อม insight สำคัญ</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><b>Persona</b> อย่างน้อย 2 คน อ้างอิงข้อมูลจริง</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><b>Empathy Map</b> ของ persona หลัก</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><b>User Journey Map</b> พร้อมเส้นกราฟอารมณ์ และ pain points/โอกาส</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 6</span> เฟส 3 · โครงสร้างและการไหล</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p7"><label for="p7"><b>Sitemap</b> ฉบับเต็ม แสดงหน้าจอและลำดับชั้น</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><b>User Flow</b> อย่างน้อย 2 งาน (รวม “แจ้งสัตว์หาย”) ครบจุดตัดสินใจ</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 7–8</span> เฟส 4 · การออกแบบส่วนติดต่อ (UI)</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p9"><label for="p9"><b>หลักการจัดวาง</b> — ลำดับชั้น/กริดของหน้าจอหลัก</label></li>
+      <li><input type="checkbox" id="p10"><label for="p10"><b>Style Guide</b> — ชุดสี (พร้อมผล contrast) และระบบตัวอักษร (type scale)</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 9</span> เฟส 5 · ต้นแบบ (Prototype)</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p11"><label for="p11"><b>Wireframe</b> ของหน้าจอหลัก</label></li>
+      <li><input type="checkbox" id="p12"><label for="p12"><b>Hi-fi Interactive Prototype</b> ที่กดเล่นได้ตาม flow หลัก</label></li>
+      <li><input type="checkbox" id="p13"><label for="p13"><b>สถานะหน้าจอ</b> (empty/loading/error/success) และตัวอย่างโค้ด 1 องค์ประกอบ</label></li>
+    </ul></div>
+  </div>
+
+  <div class="phase">
+    <div class="ph-head"><span class="ch-no">บท 10</span> เฟส 6 · การประเมินและปรับปรุง</div>
+    <div class="ph-body"><ul class="checklist">
+      <li><input type="checkbox" id="p14"><label for="p14"><b>ผลการประเมิน</b> (Heuristic Evaluation + Usability Testing พร้อมตัวชี้วัด)</label></li>
+      <li><input type="checkbox" id="p15"><label for="p15"><b>ตารางปัญหา + severity</b> และ <b>แผนปรับปรุง</b> (before/after ถ้ามี)</label></li>
+      <li><input type="checkbox" id="p16"><label for="p16"><b>สะท้อนคิด (Reflection)</b> บทเรียนตลอดกระบวนการ</label></li>
+    </ul></div>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">💡</span> เคล็ดลับการจัดเล่ม</div>
+    เปิดด้วยหน้าสรุป (cover + สารบัญ + ภาพรวมโปรเจกต์ 1 หน้า), ใส่ “Golden Thread” ให้เห็นว่าแต่ละเฟสต่อยอดกัน, และปิดด้วยผลการทดสอบ+สิ่งที่จะพัฒนาต่อ — เล่มควรอ่านรู้เรื่องแม้ไม่มีคนนำเสนอ
+  </div>
+</section>
+
+<!-- ===================== วิธีนำเสนอ ===================== -->
+<section id="present">
+  <div class="sec-head"><div class="sec-ic">🎤</div><h2>2. วิธีการนำเสนอที่ดี</h2></div>
+
+  <h3><span class="nm">2.1</span> โครงสร้างการนำเสนอที่แนะนำ (12–15 นาที)</h3>
+  <p>นำเสนอแบบ “เล่าเรื่อง” (storytelling) ตามเส้นทางของผู้ใช้ ไม่ใช่ไล่อ่านทีละสไลด์ จัดสรรเวลาดังนี้</p>
+  <div class="timeline">
+    <div class="tl-item"><span class="tt">เปิด: ปัญหา &amp; ความสำคัญ</span><span class="tm">1 นาที</span><div class="td">เล่าสถานการณ์จริงของผู้ใช้ (เช่น เจ้าของที่ทำสัตว์เลี้ยงหาย) ให้กรรมการ “อิน” กับปัญหา</div></div>
+    <div class="tl-item"><span class="tt">ผู้ใช้ &amp; Insight</span><span class="tm">2–3 นาที</span><div class="td">สรุปการวิจัย → Persona/Journey → insight ที่นำไปสู่การออกแบบ (เน้น “ค้นพบอะไร”)</div></div>
+    <div class="tl-item"><span class="tt">โครงสร้าง &amp; การไหล</span><span class="tm">1–2 นาที</span><div class="td">แสดง Sitemap และ User Flow สั้น ๆ ว่าจัดระเบียบอย่างไรและทำไม</div></div>
+    <div class="tl-item"><span class="tt">การออกแบบ UI &amp; Style</span><span class="tm">1–2 นาที</span><div class="td">โชว์ชุดสี/ตัวอักษร และเหตุผลที่เลือก (เชื่อมกับอารมณ์ของผู้ใช้)</div></div>
+    <div class="tl-item"><span class="tt">สาธิต Prototype สด (Demo)</span><span class="tm">3–4 นาที</span><div class="td">กดเล่นจริงตาม flow “แจ้งสัตว์หาย” — ส่วนนี้สำคัญที่สุด เตรียมให้ลื่นไหล</div></div>
+    <div class="tl-item"><span class="tt">ผลทดสอบ &amp; การปรับปรุง</span><span class="tm">2 นาที</span><div class="td">เล่าปัญหาที่พบจากผู้ใช้ ความรุนแรง และสิ่งที่แก้ (before/after)</div></div>
+    <div class="tl-item"><span class="tt">สรุป &amp; บทเรียน</span><span class="tm">1 นาที</span><div class="td">สรุปคุณค่าที่ส่งให้ผู้ใช้ และสิ่งที่จะพัฒนาต่อ</div></div>
+    <div class="tl-item"><span class="tt">ถาม–ตอบ (Q&amp;A)</span><span class="tm">3–5 นาที</span><div class="td">ตอบคำถามกรรมการอย่างมั่นใจและตรงประเด็น</div></div>
+  </div>
+
+  <h3><span class="nm">2.2</span> ทักษะการนำเสนอ — ควรทำ / ควรเลี่ยง</h3>
+  <div class="dd-grid">
+    <div class="dd do">
+      <h4>✅ ควรทำ</h4>
+      <ul>
+        <li>ซ้อมจับเวลาให้พอดี และแบ่งหน้าที่ในทีมชัดเจน</li>
+        <li>เล่าเป็นเรื่องราวโดยมี persona เป็นตัวเอก</li>
+        <li>อธิบาย “เหตุผล” เบื้องหลังการออกแบบ ด้วยข้อมูลจริง</li>
+        <li>สบตาผู้ฟัง พูดด้วยน้ำเสียงมั่นใจ</li>
+        <li>เตรียม prototype สำรอง (วิดีโอ/ภาพ) เผื่ออินเทอร์เน็ตมีปัญหา</li>
+        <li>สรุปประเด็นสำคัญในแต่ละช่วงก่อนเปลี่ยนหัวข้อ</li>
+      </ul>
+    </div>
+    <div class="dd dont">
+      <h4>⛔ ควรเลี่ยง</h4>
+      <ul>
+        <li>อ่านสไลด์คำต่อคำ หรือหันหลังให้ผู้ฟัง</li>
+        <li>ใส่ตัวอักษรแน่นเต็มสไลด์จนอ่านไม่ทัน</li>
+        <li>โชว์ทุกชิ้นงานโดยไม่เล่าความเชื่อมโยง</li>
+        <li>เกินเวลา หรือรวบ demo จนกรรมการไม่เห็น flow</li>
+        <li>ตอบคำถามแบบกลบเกลื่อน — หากไม่รู้ ให้ตอบตรง ๆ</li>
+        <li>โทษเครื่องมือ/เวลา แทนการรับผิดชอบงาน</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box box-ok">
+    <div class="bh"><span class="ic">🗣️</span> เทคนิครับมือคำถาม (Q&amp;A)</div>
+    ฟังคำถามให้จบก่อนตอบ · ทวนคำถามสั้น ๆ เพื่อยืนยันความเข้าใจ · ตอบโดยอ้างอิงข้อมูล/ผลทดสอบที่มี · ถ้าไม่ทราบให้ยอมรับและบอกว่าจะหาคำตอบอย่างไร — ความซื่อสัตย์ทางวิชาการสำคัญกว่าการเดา
+  </div>
+</section>
+
+<!-- ===================== Rubric ===================== -->
+<section id="rubric">
+  <div class="sec-head"><div class="sec-ic">📊</div><h2>3. เกณฑ์การให้คะแนน (Rubric)</h2></div>
+  <p>คะแนนเต็ม <b>100 คะแนน</b> ประเมินจาก 7 เกณฑ์ที่เชื่อมโยงกับ CLO ของรายวิชา แต่ละเกณฑ์ให้คะแนนตามระดับคุณภาพ 4 ระดับ แล้วถ่วงน้ำหนักตามสัดส่วน</p>
+
+  <h4>ระดับคุณภาพ (Performance Levels)</h4>
+  <div class="scoreband">
+    <div class="sb" style="background:#2e8b57"><b>ดีเยี่ยม (4)</b>ครบถ้วน ลึกซึ้ง มีเหตุผลและอ้างอิงข้อมูลชัดเจน เกินความคาดหวัง</div>
+    <div class="sb" style="background:#2f86d6"><b>ดี (3)</b>ครบตามที่กำหนด มีเหตุผลรองรับ มีจุดบกพร่องเล็กน้อย</div>
+    <div class="sb" style="background:#d9a441"><b>พอใช้ (2)</b>มีองค์ประกอบหลักแต่ไม่ครบ/ตื้น ขาดเหตุผลบางส่วน</div>
+    <div class="sb" style="background:#c0492f"><b>ต้องปรับปรุง (1)</b>ขาดองค์ประกอบสำคัญ หรือไม่อ้างอิงข้อมูล</div>
+  </div>
+
+  <h4>ตารางเกณฑ์การประเมิน</h4>
+  <div class="table-wrap">
+    <table class="rubric">
+      <thead><tr><th>เกณฑ์การประเมิน</th><th>CLO</th><th>น้ำหนัก</th><th>ดีเยี่ยม (4)</th><th>ต้องปรับปรุง (1)</th></tr></thead>
+      <tbody>
+        <tr>
+          <th>1. การวิจัยและเข้าใจผู้ใช้<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Research, Persona, Empathy, Journey)</span></th>
+          <td>CLO3, 4</td><td class="wt">20%</td>
+          <td>วิจัยเป็นระบบ Persona/Journey อ้างอิงข้อมูลจริง มี insight คม</td>
+          <td>ไม่มีข้อมูลวิจัย หรือ persona มาจากการเดา</td>
+        </tr>
+        <tr>
+          <th>2. โครงสร้างและการไหล<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(IA, Sitemap, User Flow)</span></th>
+          <td>CLO5</td><td class="wt">15%</td>
+          <td>Sitemap/Flow สอดคล้อง mental model ครบจุดตัดสินใจ</td>
+          <td>โครงสร้างสับสน ไม่มี flow หรือไม่ครบ</td>
+        </tr>
+        <tr>
+          <th>3. การออกแบบส่วนติดต่อ (UI)<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Layout, สี, ตัวอักษร, Style Guide)</span></th>
+          <td>CLO6</td><td class="wt">15%</td>
+          <td>ลำดับชั้นชัด ชุดสี/ตัวอักษรกลมกลืน ผ่าน contrast</td>
+          <td>จัดวางรก สี/ตัวอักษรไม่เป็นระบบ อ่านยาก</td>
+        </tr>
+        <tr>
+          <th>4. ต้นแบบที่โต้ตอบได้<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Prototype, flow, states)</span></th>
+          <td>CLO7</td><td class="wt">20%</td>
+          <td>Hi-fi กดได้ลื่น ครบ flow หลักและสถานะหน้าจอ</td>
+          <td>เป็นภาพนิ่ง กดไม่ได้ หรือ flow ไม่ครบ</td>
+        </tr>
+        <tr>
+          <th>5. การประเมินและปรับปรุง<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Usability eval, severity, iterate)</span></th>
+          <td>CLO8</td><td class="wt">15%</td>
+          <td>ทดสอบกับผู้ใช้จริง วิเคราะห์+จัดลำดับความรุนแรง และปรับปรุง</td>
+          <td>ไม่มีการประเมิน หรือไม่นำผลไปปรับปรุง</td>
+        </tr>
+        <tr>
+          <th>6. การนำเสนอและการสื่อสาร<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Storytelling, demo, Q&amp;A)</span></th>
+          <td>CLO1–8</td><td class="wt">10%</td>
+          <td>เล่าเรื่องชัด คุมเวลา demo ลื่น ตอบคำถามมั่นใจ</td>
+          <td>อ่านสไลด์ เกินเวลา ตอบคำถามไม่ได้</td>
+        </tr>
+        <tr>
+          <th>7. ความต่อเนื่องและความครบถ้วน<br><span style="font-weight:400;font-size:.85rem;color:var(--muted)">(Golden Thread, ความสมบูรณ์ของเล่ม)</span></th>
+          <td>CLO1–8</td><td class="wt">5%</td>
+          <td>ทุกเฟสร้อยเรียงเป็นเรื่องเดียว เล่มสมบูรณ์อ่านรู้เรื่อง</td>
+          <td>ชิ้นงานกระจัดกระจาย ไม่เชื่อมโยงกัน</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.9rem;color:var(--muted)">หมายเหตุ: ระดับ “ดี (3)” และ “พอใช้ (2)” อยู่ระหว่างคำอธิบายสองคอลัมน์ข้างต้น — ดี = ครบตามกำหนดมีจุดบกพร่องเล็กน้อย, พอใช้ = มีองค์ประกอบหลักแต่ไม่ครบ/ตื้น</p>
+
+  <h4>วิธีคำนวณคะแนน</h4>
+  <p>คะแนนแต่ละเกณฑ์ = (ระดับที่ได้ ÷ 4) × น้ำหนัก แล้วรวมทุกเกณฑ์เป็นคะแนนเต็ม 100</p>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🧮</span> ตัวอย่างการคำนวณ</div>
+    เกณฑ์ที่ 1 (น้ำหนัก 20%) ได้ระดับ “ดี (3)” → (3 ÷ 4) × 20 = <b>15 คะแนน</b> &nbsp;|&nbsp; เกณฑ์ที่ 4 (น้ำหนัก 20%) ได้ระดับ “ดีเยี่ยม (4)” → (4 ÷ 4) × 20 = <b>20 คะแนน</b> &nbsp; ทำเช่นนี้ทุกเกณฑ์แล้วรวมกัน
+  </div>
+
+  <h4>การแปลผลคะแนนรวม</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ช่วงคะแนน</th><th>ระดับ</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>80–100</td><td><span class="lvl l4">ดีเยี่ยม</span></td><td>กระบวนการครบถ้วน มีเหตุผลและพร้อมต่อยอดสู่การพัฒนาจริง</td></tr>
+        <tr><td>70–79</td><td><span class="lvl l3">ดี</span></td><td>ครบตามเกณฑ์ มีจุดปรับปรุงเล็กน้อย</td></tr>
+        <tr><td>60–69</td><td><span class="lvl l2">พอใช้</span></td><td>มีองค์ประกอบหลักแต่ขาดความลึกหรือความต่อเนื่อง</td></tr>
+        <tr><td>ต่ำกว่า 60</td><td><span class="lvl l1">ต้องปรับปรุง</span></td><td>ขาดองค์ประกอบสำคัญ ควรทบทวนกระบวนการ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚖️</span> หมายเหตุการประเมินกลุ่ม/รายบุคคล</div>
+    คะแนนชิ้นงานเป็นของกลุ่ม แต่คะแนน “การนำเสนอและการตอบคำถาม” อาจพิจารณารายบุคคล สมาชิกทุกคนควรเข้าใจงานทุกส่วนและพร้อมตอบคำถามในส่วนที่รับผิดชอบ
+  </div>
+</section>
+
+<!-- ===================== เช็กลิสต์สุดท้าย ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>4. เช็กลิสต์ก่อนวันนำเสนอ</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนวันสอบปลายภาค (สถานะจะถูกบันทึกในเครื่อง)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="f1"><label for="f1">Design Portfolio ครบทั้ง 6 เฟส (บท 1–10) จัดเรียงเป็นเรื่องเดียวกัน</label></li>
+    <li><input type="checkbox" id="f2"><label for="f2">Prototype กดเล่นได้จริง และเตรียมไฟล์สำรอง (วิดีโอ/ภาพ) เผื่อฉุกเฉิน</label></li>
+    <li><input type="checkbox" id="f3"><label for="f3">มีผลการทดสอบ usability + severity + แผนปรับปรุง</label></li>
+    <li><input type="checkbox" id="f4"><label for="f4">สไลด์กระชับ เน้นเล่าเรื่อง ไม่ยัดตัวอักษรแน่น</label></li>
+    <li><input type="checkbox" id="f5"><label for="f5">ซ้อมจับเวลาให้อยู่ในกรอบ 12–15 นาที และแบ่งหน้าที่ในทีม</label></li>
+    <li><input type="checkbox" id="f6"><label for="f6">เตรียมคำตอบสำหรับคำถามที่คาดว่าจะถูกถาม</label></li>
+    <li><input type="checkbox" id="f7"><label for="f7">ตรวจอุปกรณ์: จอ/อินเทอร์เน็ต/ลิงก์ prototype ใช้งานได้</label></li>
+    <li><input type="checkbox" id="f8"><label for="f8">ส่งไฟล์ Portfolio (PDF) และลิงก์ prototype ตามกำหนด</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <a class="nav-link" href="บทที่10_UsabilityEvaluation.html">
+      <div style="font-size:1.5rem">←</div>
+      <div><div class="lbl">กลับไป</div><div class="nm">บทที่ 10 · การประเมินการใช้งานได้</div></div>
+    </a>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'final_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

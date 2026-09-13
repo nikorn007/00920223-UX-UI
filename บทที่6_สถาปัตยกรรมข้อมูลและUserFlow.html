@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 6 — สถาปัตยกรรมข้อมูลและการไหลของหน้าจอ | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 6 : เขียวป่า (Forest Green) ===== */
+  :root{
+    --ch:#2f8f4e;
+    --ch-dark:#1f6e3a;
+    --ch-soft:#e2f3e8;
+    --ch-softer:#f1faf4;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#f5fbf7;
+    --card:#ffffff;
+    --line:#d3ebda;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(31,110,58,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(31,110,58,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.12rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.18rem;margin:24px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.25rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#e8f5ec;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  /* ===== content cards demo ===== */
+  .cards-demo{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+  .ccard{background:#fff;border:1.5px solid var(--ch);border-radius:8px;padding:7px 13px;font-size:.9rem;color:var(--ch-dark);box-shadow:0 1px 4px rgba(31,110,58,.08);font-weight:500}
+  .ccard.feat{border-color:var(--accent);color:#a8631d;background:#fffaf2}
+  .cards-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin:6px 0 2px}
+  .cards-legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:14px;height:14px;border-radius:4px;border:1.5px solid}
+  .sw.n{border-color:var(--ch);background:#fff}
+  .sw.f{border-color:var(--accent);background:#fffaf2}
+
+  /* ===== grouped cards ===== */
+  .group-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin:16px 0}
+  .grp{border:1px solid var(--line);border-radius:12px;background:var(--ch-softer);padding:14px 16px}
+  .grp h5{font-family:var(--head);color:var(--ch-dark);font-size:1rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .grp .gnum{background:var(--ch);color:#fff;width:24px;height:24px;border-radius:6px;display:inline-grid;place-items:center;font-size:.85rem;font-weight:700;flex-shrink:0}
+  .grp .why{font-size:.86rem;color:var(--muted);margin:4px 0 9px;font-style:italic}
+  .grp .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .grp .chips .ccard{font-size:.82rem;padding:4px 9px}
+  .grp .sub{font-size:.82rem;color:#a8631d;margin-top:8px}
+
+  /* ===== sitemap tree ===== */
+  .sitemap-tree{font-size:.95rem;margin:16px 0;overflow-x:auto}
+  .sitemap-tree ul{list-style:none;margin:0 0 0 12px;padding-left:18px;border-left:2px solid var(--ch-soft)}
+  .sitemap-tree>ul{border-left:none;margin-left:0;padding-left:0}
+  .sitemap-tree li{margin:6px 0;position:relative}
+  .sitemap-tree .node{display:inline-block;background:#fff;border:1.5px solid var(--ch);color:var(--ch-dark);border-radius:7px;padding:3px 12px;font-weight:600}
+  .sitemap-tree .root>.node{background:var(--ch);color:#fff;border-color:var(--ch-dark)}
+  .sitemap-tree .leaf{border-color:#9cc9ab;color:#41505c;font-weight:400;background:#fbfdfc}
+  .sitemap-tree .act{border-style:dashed;border-color:var(--accent);color:#a8631d;background:#fffaf2;font-weight:400}
+  .tree-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.84rem;color:var(--muted);margin:4px 0 2px}
+  .tree-legend span{display:inline-flex;align-items:center;gap:6px}
+
+  /* ===== mermaid ===== */
+  .mer-wrap{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;margin:16px 0}
+  .mer-wrap .mtitle{font-family:var(--head);font-weight:600;color:var(--ch-dark);font-size:1rem;margin-bottom:6px}
+  .mermaid{text-align:center;font-family:var(--th)}
+  details.code{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+  details.code summary{cursor:pointer;font-family:var(--head);font-size:.88rem;color:var(--ch);font-weight:600}
+  details.code pre{margin:8px 0 0}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+  .wk-tag{display:inline-block;background:var(--ch-soft);color:var(--ch-dark);font-family:var(--head);font-weight:600;font-size:.82rem;padding:3px 11px;border-radius:7px;margin:14px 0 4px}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 6</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#summary">สรุป</a>
+      <a href="#review">คำถามทบทวน</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 6 · Chapter 6 · สัปดาห์ 6–7</span>
+    <h1>สถาปัตยกรรมข้อมูลและการไหลของหน้าจอ</h1>
+    <div class="en">Information Architecture &amp; User Flow</div>
+    <p class="lead">จัดระเบียบเนื้อหาและออกแบบเส้นทางการใช้งาน — เปลี่ยน “โอกาสในการออกแบบ” จากบทที่ 5 ให้กลายเป็นโครงสร้างของแอป (Sitemap) และลำดับการทำงานบนหน้าจอ (User Flow) ก่อนลงมือออกแบบหน้าจอจริง</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO5</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 6–7 (8 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Apply · Analyze</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO5</b> — ออกแบบสถาปัตยกรรมข้อมูล (Information Architecture) และการไหลของหน้าจอ (User Flow)</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายแนวคิดสถาปัตยกรรมข้อมูล (Information Architecture)</b> และความสำคัญต่อการค้นหาและเข้าใจเนื้อหา
+    <div class="obj-meta"><span class="tagm tag-clo">CLO5</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>ใช้เทคนิค Card Sorting</b> เพื่อจัดกลุ่มเนื้อหาตามแบบจำลองทางความคิด (mental model) ของผู้ใช้
+    <div class="obj-meta"><span class="tagm tag-clo">CLO5</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>ออกแบบ Sitemap</b> ที่แสดงโครงสร้างและลำดับชั้นของหน้าจอในระบบ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO5</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>เขียน User Flow และ Task Flow</b> ด้วยสัญลักษณ์ผังงานมาตรฐาน เพื่อแสดงลำดับการทำงานและจุดตัดสินใจ
+    <div class="obj-meta"><span class="tagm tag-clo">CLO5</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>วิเคราะห์ความสอดคล้องของโครงสร้างกับงานของผู้ใช้</b> โดยสร้าง Sitemap และ User Flow ของแอปค้นหาสัตว์เลี้ยงหาย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO5</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+
+  <p class="lead-q">“ถ้าห้องสมุดจัดหนังสือมั่ว ๆ ต่อให้มีหนังสือดีแค่ไหน ก็ไม่มีใครหาเจอ” — แอปก็เช่นกัน ถ้าเนื้อหาดีแต่จัดวางสับสน ผู้ใช้จะหาในสิ่งที่ต้องการไม่พบ แล้วเราจะ ‘จัดระเบียบ’ ให้ตรงกับวิธีคิดของผู้ใช้ได้อย่างไร?</p>
+
+  <p>ในบทที่ 5 เราค้นพบ “โอกาสในการออกแบบ” จาก journey map เช่น ฟอร์มแจ้งหายที่สั้น การรวมเบาะแสไว้ที่เดียว โอกาสเหล่านี้คือ “สิ่งที่แอปควรมี” แต่ยังเป็นรายการกระจัดกระจาย บทนี้จะนำมาจัดระเบียบให้เป็นโครงสร้างที่ชัดเจน ผ่านสองเครื่องมือ: <b>Information Architecture</b> (จัดเนื้อหาอยู่ที่ไหน) และ <b>User Flow</b> (ผู้ใช้เดินจากหน้าหนึ่งไปอีกหน้าอย่างไร)</p>
+
+  <p>นี่เป็นบทที่กินเวลา 2 สัปดาห์ และเป็นสะพานสำคัญจาก “การเข้าใจปัญหา” (บท 1–5) ไปสู่ “การลงมือออกแบบหน้าจอ” (บท 7 เป็นต้นไป) ผลงานในบทนี้ยังเป็นส่วนสำคัญของการสอบกลางภาค (สัปดาห์ที่ 8) ด้วย</p>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    ถ้าให้เพื่อน 5 คนช่วยจัดกลุ่มฟีเจอร์ของแอปค้นหาสัตว์เลี้ยงหาย เช่น “แจ้งหาย”, “แจ้งพบ”, “ดูประกาศ”, “แจ้งเตือน” พวกเขาจะจัดเหมือนหรือต่างกัน? ความต่างนั้นบอกอะไรเราเกี่ยวกับวิธีที่ควรออกแบบเมนู?
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 IA -->
+  <h3><span class="nm">2.1</span> Information Architecture คืออะไร</h3>
+  <p><b>สถาปัตยกรรมข้อมูล (Information Architecture — IA)</b> คือศาสตร์และศิลป์ของการจัดระเบียบ จัดโครงสร้าง และตั้งชื่อเนื้อหา เพื่อให้ผู้ใช้ค้นหาสิ่งที่ต้องการและเข้าใจว่าตนเองอยู่ที่ใดในระบบได้ง่าย IA ที่ดีจะสอดคล้องกับ <b>mental model</b> ของผู้ใช้ (จากบทที่ 1) องค์ประกอบหลักของ IA ได้แก่ ระบบการจัดระเบียบ (organization), ระบบการตั้งชื่อ (labeling), ระบบนำทาง (navigation) และระบบค้นหา (search)</p>
+
+  <!-- 2.2 card sorting -->
+  <h3><span class="nm">2.2</span> Card Sorting — จัดกลุ่มตามวิธีคิดของผู้ใช้</h3>
+  <p><b>Card Sorting</b> เป็นเทคนิคให้ผู้ใช้จัดกลุ่ม “การ์ด” ที่เขียนชื่อเนื้อหา/ฟีเจอร์ลงไป เพื่อค้นหาว่าผู้ใช้คาดหวังให้สิ่งเหล่านั้นถูกจัดกลุ่มอย่างไร แบ่งเป็น <b>Open card sorting</b> (ผู้ใช้ตั้งชื่อกลุ่มเอง) และ <b>Closed card sorting</b> (กำหนดกลุ่มไว้ให้แล้ว ผู้ใช้แค่จัดของลงกลุ่ม)</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="เทคนิค Card Sorting แบบเปิดและแบบปิด">
+      <g font-family="'Sarabun',sans-serif">
+        <!-- loose cards -->
+        <text x="80" y="30" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f6e3a">การ์ดเนื้อหา</text>
+        <g font-size="11.5" fill="#1f2733">
+          <rect x="20" y="44" width="120" height="26" rx="5" fill="#fff" stroke="#2f8f4e"/><text x="80" y="61" text-anchor="middle">แจ้งสัตว์หาย</text>
+          <rect x="20" y="78" width="120" height="26" rx="5" fill="#fff" stroke="#2f8f4e"/><text x="80" y="95" text-anchor="middle">แจ้งพบสัตว์</text>
+          <rect x="20" y="112" width="120" height="26" rx="5" fill="#fff" stroke="#2f8f4e"/><text x="80" y="129" text-anchor="middle">ดูประกาศ</text>
+          <rect x="20" y="146" width="120" height="26" rx="5" fill="#fff" stroke="#2f8f4e"/><text x="80" y="163" text-anchor="middle">การแจ้งเตือน</text>
+          <rect x="20" y="180" width="120" height="26" rx="5" fill="#fff" stroke="#2f8f4e"/><text x="80" y="197" text-anchor="middle">โปรไฟล์</text>
+        </g>
+        <path d="M148 125 L196 125" stroke="#5e6b78" stroke-width="2" marker-end="url(#a)"/>
+        <!-- open -->
+        <rect x="206" y="40" width="190" height="170" rx="10" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/>
+        <text x="301" y="62" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f6e3a">Open — ผู้ใช้ตั้งชื่อกลุ่มเอง</text>
+        <g font-size="11.5">
+          <rect x="222" y="78" width="158" height="54" rx="6" fill="#fff" stroke="#9cc9ab" stroke-dasharray="4 3"/>
+          <text x="301" y="96" text-anchor="middle" font-style="italic" fill="#1f6e3a">“สิ่งที่ฉันแจ้ง”</text>
+          <text x="301" y="118" text-anchor="middle" fill="#41505c">แจ้งหาย · แจ้งพบ</text>
+          <rect x="222" y="142" width="158" height="54" rx="6" fill="#fff" stroke="#9cc9ab" stroke-dasharray="4 3"/>
+          <text x="301" y="160" text-anchor="middle" font-style="italic" fill="#1f6e3a">“ติดตามข่าว”</text>
+          <text x="301" y="182" text-anchor="middle" fill="#41505c">ดูประกาศ · แจ้งเตือน</text>
+        </g>
+        <!-- closed -->
+        <rect x="430" y="40" width="190" height="170" rx="10" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.8"/>
+        <text x="525" y="62" text-anchor="middle" font-size="13.5" font-weight="700" fill="#a8631d">Closed — กำหนดกลุ่มไว้ให้</text>
+        <g font-size="11.5">
+          <rect x="446" y="78" width="158" height="54" rx="6" fill="#fff" stroke="#e6c08a"/>
+          <text x="525" y="96" text-anchor="middle" font-weight="700" fill="#a8631d">[ การแจ้ง ]</text>
+          <text x="525" y="118" text-anchor="middle" fill="#41505c">แจ้งหาย · แจ้งพบ</text>
+          <rect x="446" y="142" width="158" height="54" rx="6" fill="#fff" stroke="#e6c08a"/>
+          <text x="525" y="160" text-anchor="middle" font-weight="700" fill="#a8631d">[ บัญชีของฉัน ]</text>
+          <text x="525" y="182" text-anchor="middle" fill="#41505c">โปรไฟล์ · แจ้งเตือน</text>
+        </g>
+      </g>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#5e6b78"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 6.1</b> Card Sorting แบบเปิด (ผู้ใช้ตั้งชื่อกลุ่มเอง) เทียบกับแบบปิด (กำหนดกลุ่มไว้ให้)</figcaption>
+  </figure>
+
+  <h4>“การ์ดเนื้อหา” คืออะไร และควรเขียนชื่ออะไรลงไป</h4>
+  <p>การ์ดเนื้อหา (content card) แต่ละใบแทน <b>หนึ่งหน่วยเนื้อหาหรือหนึ่งฟังก์ชัน</b> ของระบบ — อาจเป็น “หน้าจอ”, “เนื้อหา/ข้อมูลที่ผู้ใช้ต้องการ” หรือ “การกระทำที่ผู้ใช้ทำได้” การ์ดเหล่านี้รวบรวมมาจาก 3 แหล่งหลัก: โอกาสในการออกแบบจาก journey map (บทที่ 5), ฟีเจอร์ที่ระบบจำเป็นต้องมี, และเนื้อหาที่ผู้ใช้คาดหวังจะเจอ การเขียนชื่อบนการ์ดให้ดีสำคัญมาก เพราะถ้าชื่อกำกวม ผลการจัดกลุ่มก็จะเชื่อถือไม่ได้</p>
+
+  <p>หลักการเขียนชื่อบนการ์ดเนื้อหามี 6 ข้อ:</p>
+  <ol>
+    <li><b>หนึ่งการ์ดหนึ่งความคิด (one concept per card)</b> — ห้ามรวมหลายเรื่องในใบเดียว เช่น อย่าเขียน “แจ้งหายและแจ้งพบ” ให้แยกเป็น 2 ใบ</li>
+    <li><b>ใช้คำของผู้ใช้ ไม่ใช่ศัพท์เทคนิคหรือศัพท์ภายในองค์กร</b> — เช่น ใช้ “แจ้งสัตว์เลี้ยงหาย” แทน “สร้าง Lost-Pet Record”</li>
+    <li><b>ระดับความละเอียดสม่ำเสมอ (consistent granularity)</b> — อย่าปนหัวข้อใหญ่ (เช่น “โปรไฟล์”) กับรายละเอียดเล็กมาก (เช่น “เปลี่ยนรูปโปรไฟล์”) ไว้ในชุดเดียวกัน</li>
+    <li><b>ใช้คำนามสำหรับเนื้อหา/หน้า และคำกริยาสำหรับการกระทำ</b> — เช่น เนื้อหา: “รายละเอียดประกาศ” (คำนาม) ส่วนการกระทำ: “ส่งเบาะแส” (คำกริยา)</li>
+    <li><b>ชื่อชัดเจนเข้าใจได้ทันที โดยไม่ต้องอธิบายเพิ่ม</b> — หลีกเลี่ยงคำกำกวมอย่าง “จัดการ” หรือ “อื่น ๆ”</li>
+    <li><b>หลีกเลี่ยงคำย่อและชื่อแบรนด์เฉพาะ</b> ที่ผู้เข้าร่วมอาจไม่คุ้นเคย</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>❌ ชื่อการ์ดที่ไม่ดี</th><th>✅ ปรับให้ดีขึ้น</th><th>เหตุผล</th></tr></thead>
+      <tbody>
+        <tr><td>จัดการสัตว์เลี้ยง</td><td>ประกาศของฉัน</td><td>“จัดการ” กำกวม ไม่บอกว่าทำอะไร</td></tr>
+        <tr><td>โมดูลแจ้งเตือน (Noti Module)</td><td>การแจ้งเตือนเมื่อมีสัตว์หายใกล้ฉัน</td><td>เลี่ยงศัพท์เทคนิค ใช้ภาษาผู้ใช้</td></tr>
+        <tr><td>แจ้งหาย + แนบรูป + เลือกพิกัด</td><td>แจ้งสัตว์เลี้ยงหาย</td><td>หนึ่งการ์ดควรมีหนึ่งความคิด</td></tr>
+        <tr><td>ข้อมูล</td><td>รายละเอียดประกาศสัตว์หาย</td><td>เจาะจงพอที่จะจัดกลุ่มได้</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 2.3 NEW SECTION: card set + grouping ===== -->
+  <h3><span class="nm">2.3</span> ตัวอย่างชุดการ์ดเนื้อหา และการจัดกลุ่มตามวิธีคิดผู้ใช้</h3>
+  <p>หัวข้อนี้แยกออกมาเป็นการเฉพาะ เพราะเป็นขั้นที่ลงรายละเอียดมากและเป็น “หัวใจ” ที่เชื่อมจากการรวบรวมการ์ด ไปสู่การได้โครงสร้าง (Sitemap) ในหัวข้อถัดไป เราจะเริ่มจากชุดการ์ดตั้งต้น แล้วดูว่าเมื่อให้ผู้ใช้จัดกลุ่ม (open card sorting) ผลลัพธ์จะออกมาอย่างไร และเหตุใดจึงตั้งชื่อกลุ่มเช่นนั้น</p>
+
+  <h4>ก. ชุดการ์ดเนื้อหาตั้งต้น (ก่อนจัดกลุ่ม)</h4>
+  <p>ด้านล่างเป็นชุดการ์ดตัวอย่างที่นักศึกษานำไปใช้ทำ card sorting ได้จริง โดยแยกสีระหว่าง “เนื้อหา/หน้า” (คำนาม) กับ “การกระทำ/ฟังก์ชัน” (คำกริยา)</p>
+  <div class="cards-legend">
+    <span><span class="sw n"></span> เนื้อหา/หน้า (คำนาม)</span>
+    <span><span class="sw f"></span> การกระทำ/ฟังก์ชัน (คำกริยา)</span>
+  </div>
+  <div class="cards-demo">
+    <span class="ccard feat">แจ้งสัตว์เลี้ยงหาย</span>
+    <span class="ccard feat">แจ้งพบสัตว์จร</span>
+    <span class="ccard">ประกาศสัตว์หายทั้งหมด</span>
+    <span class="ccard feat">ค้นหาตามพื้นที่</span>
+    <span class="ccard feat">กรองตามประเภทสัตว์</span>
+    <span class="ccard">รายละเอียดประกาศ</span>
+    <span class="ccard">รูปภาพสัตว์</span>
+    <span class="ccard">แผนที่จุดพบเห็นล่าสุด</span>
+    <span class="ccard feat">ส่งเบาะแส</span>
+    <span class="ccard feat">แชตกับเจ้าของ</span>
+    <span class="ccard feat">โทรหาเจ้าของ</span>
+    <span class="ccard">การแจ้งเตือนสัตว์หายใกล้ฉัน</span>
+    <span class="ccard feat">ตั้งค่ารัศมีแจ้งเตือน</span>
+    <span class="ccard">ประกาศของฉัน</span>
+    <span class="ccard feat">แก้ไขประกาศ</span>
+    <span class="ccard feat">ปิดประกาศ (เจอแล้ว)</span>
+    <span class="ccard">โปรไฟล์ผู้ใช้</span>
+    <span class="ccard feat">แก้ไขข้อมูลส่วนตัว</span>
+    <span class="ccard feat">เข้าสู่ระบบ</span>
+    <span class="ccard feat">สมัครสมาชิก</span>
+    <span class="ccard">ประวัติการแจ้ง</span>
+    <span class="ccard feat">บันทึก/ติดตามประกาศ</span>
+    <span class="ccard feat">แชร์ประกาศไปโซเชียล</span>
+    <span class="ccard feat">รายงานประกาศไม่เหมาะสม</span>
+    <span class="ccard">คำถามที่พบบ่อย (FAQ)</span>
+    <span class="ccard feat">ติดต่อทีมงาน</span>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    จำนวนการ์ดที่เหมาะสมสำหรับระบบขนาดกลางอยู่ที่ราว 30–60 ใบ — น้อยเกินไปจะได้ข้อมูลไม่พอ มากเกินไปจะทำให้ผู้เข้าร่วมเหนื่อยล้าและจัดกลุ่มไม่รอบคอบ
+  </div>
+
+  <h4>ข. ผลการจัดกลุ่มตามวิธีคิดของผู้ใช้ (จาก Open Card Sorting)</h4>
+  <p>เมื่อนำการ์ดทั้งหมดให้ผู้ใช้กลุ่มเป้าหมายช่วยจัดกลุ่ม ผลลัพธ์มักรวมตัวกันตาม “เป้าหมายหรืองาน” ที่ผู้ใช้คิดในใจ ไม่ใช่ตามโครงสร้างทางเทคนิค เราตั้งชื่อกลุ่มด้วยภาษาของผู้ใช้ และได้ 5 กลุ่มหลักดังนี้</p>
+
+  <div class="group-grid">
+    <div class="grp">
+      <h5><span class="gnum">1</span> แจ้งเรื่องสัตว์</h5>
+      <div class="why">ผู้ใช้มองว่าเป็น “การลงมือทำเมื่อมีเหตุ” — ทั้งของหายและพบเจอ จึงรวมไว้ด้วยกัน</div>
+      <div class="chips"><span class="ccard feat">แจ้งสัตว์เลี้ยงหาย</span><span class="ccard feat">แจ้งพบสัตว์จร</span></div>
+    </div>
+    <div class="grp">
+      <h5><span class="gnum">2</span> ค้นหา/ดูประกาศ</h5>
+      <div class="why">ผู้ใช้คิดเป็น “การหาและดูข้อมูล” ไม่ว่าจะตามหาของตนเองหรือช่วยดูให้คนอื่น</div>
+      <div class="chips"><span class="ccard">ประกาศสัตว์หายทั้งหมด</span><span class="ccard feat">ค้นหาตามพื้นที่</span><span class="ccard feat">กรองตามประเภทสัตว์</span><span class="ccard">รายละเอียดประกาศ</span><span class="ccard">รูปภาพสัตว์</span><span class="ccard">แผนที่จุดพบเห็นล่าสุด</span></div>
+      <div class="sub">+ การกระทำในหน้ารายละเอียด: ส่งเบาะแส · แชต/โทรหาเจ้าของ · แชร์ · รายงานประกาศ</div>
+    </div>
+    <div class="grp">
+      <h5><span class="gnum">3</span> การแจ้งเตือน</h5>
+      <div class="why">ผู้ใช้แยก “สิ่งที่ระบบส่งมาหาเรา” ออกจากสิ่งที่เราไปหาเอง อย่างชัดเจน</div>
+      <div class="chips"><span class="ccard">การแจ้งเตือนสัตว์หายใกล้ฉัน</span><span class="ccard feat">ตั้งค่ารัศมีแจ้งเตือน</span></div>
+    </div>
+    <div class="grp">
+      <h5><span class="gnum">4</span> บัญชีของฉัน</h5>
+      <div class="why">ผู้ใช้รวมทุกอย่างที่ “เป็นของฉัน / ฉันจัดการเอง” ไว้ในที่เดียว</div>
+      <div class="chips"><span class="ccard feat">เข้าสู่ระบบ</span><span class="ccard feat">สมัครสมาชิก</span><span class="ccard">โปรไฟล์ผู้ใช้</span><span class="ccard feat">แก้ไขข้อมูลส่วนตัว</span><span class="ccard">ประกาศของฉัน</span><span class="ccard feat">แก้ไขประกาศ</span><span class="ccard feat">ปิดประกาศ (เจอแล้ว)</span><span class="ccard feat">บันทึก/ติดตามประกาศ</span><span class="ccard">ประวัติการแจ้ง</span></div>
+    </div>
+    <div class="grp">
+      <h5><span class="gnum">5</span> ช่วยเหลือ</h5>
+      <div class="why">เนื้อหาสนับสนุนที่ไม่ใช่งานหลัก ผู้ใช้มักจัดไว้กลุ่มท้ายสุด</div>
+      <div class="chips"><span class="ccard">คำถามที่พบบ่อย (FAQ)</span><span class="ccard feat">ติดต่อทีมงาน</span></div>
+    </div>
+  </div>
+
+  <h4>ค. ทำไมตั้งชื่อกลุ่มแบบนี้ และจะนำไปทำอะไรต่อ</h4>
+  <p>ชื่อกลุ่มมาจาก “คำและเหตุผลที่ผู้ใช้ใช้จริง” ระหว่าง card sorting ไม่ใช่จากศัพท์เทคนิคของทีม กลุ่มเหล่านี้จะกลายเป็นเมนูหลัก (navigation) และโครงของ Sitemap ในขั้นถัดไป</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>กลุ่ม</th><th>ทำไมตั้งชื่อนี้</th><th>นำไปทำอะไรต่อ</th></tr></thead>
+      <tbody>
+        <tr><td><b>1. แจ้งเรื่องสัตว์</b></td><td>เป็นงานเร่งด่วนที่ผู้ใช้คิดถึงก่อนเมื่อมีเหตุ</td><td>เป็นปุ่ม/เมนูเด่นบนหน้าแรก เข้าถึงได้ใน 1 แตะ</td></tr>
+        <tr><td><b>2. ค้นหา/ดูประกาศ</b></td><td>เป็นพฤติกรรม “หาและดู” ที่ใช้บ่อย</td><td>เป็นแท็บหลัก พร้อมหน้ารายละเอียดและตัวกรอง</td></tr>
+        <tr><td><b>3. การแจ้งเตือน</b></td><td>เป็นข้อมูลที่ “วิ่งเข้าหาผู้ใช้” ต่างจากการค้นเอง</td><td>เป็นศูนย์การแจ้งเตือน + หน้าตั้งค่า</td></tr>
+        <tr><td><b>4. บัญชีของฉัน</b></td><td>รวมสิ่งที่ผู้ใช้เป็นเจ้าของและจัดการเอง</td><td>เป็นเมนูโปรไฟล์ รวมประกาศของฉันและการตั้งค่า</td></tr>
+        <tr><td><b>5. ช่วยเหลือ</b></td><td>เนื้อหาสนับสนุน ใช้ไม่บ่อย</td><td>เป็นเมนูรอง/ส่วนท้าย (footer)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💡</span> ข้อค้นพบสำคัญจาก Card Sorting</div>
+    ไม่ใช่ทุกการ์ดที่จะกลายเป็น “หน้า/เมนู” — การ์ดที่เป็นการกระทำ เช่น <i>ส่งเบาะแส</i>, <i>ตั้งค่ารัศมีแจ้งเตือน</i>, <i>แก้ไขประกาศ</i> มักกลายเป็น “ปุ่ม/ฟังก์ชันภายในหน้า” มากกว่าจะเป็นเมนูแยก การจัดกลุ่มช่วยให้เราเห็นว่าอะไรควรเป็นหน้า และอะไรควรเป็นการกระทำในหน้า ซึ่งเป็นวัตถุดิบโดยตรงของ Sitemap
+  </div>
+
+  <!-- 2.4 sitemap -->
+  <h3><span class="nm">2.4</span> Sitemap — โครงสร้างและลำดับชั้นของหน้าจอ</h3>
+  <p>ผลจาก card sorting จะถูกนำมาจัดเป็น <b>Sitemap</b> ซึ่งเป็นแผนผังต้นไม้ (tree) ที่แสดงหน้าจอทั้งหมดและความสัมพันธ์เชิงลำดับชั้น (hierarchy) ช่วยให้ทีมเห็นภาพรวมของระบบและวางระบบนำทาง (navigation) ได้</p>
+
+  <p>ผลการจัดกลุ่ม 5 กลุ่มในหัวข้อ 2.3 กลายเป็นเมนูหลัก (top-level navigation) และโครงของ Sitemap ภาพด้านล่างแสดงภาพรวม 5 เมนูหลัก ส่วนรายการเต็มทุกหน้าจอแสดงเป็นแผนผังต้นไม้ถัดจากภาพ</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ภาพรวม Sitemap 5 เมนูหลัก">
+      <g font-family="'Sarabun',sans-serif" font-size="12" text-anchor="middle">
+        <!-- root -->
+        <rect x="270" y="16" width="120" height="38" rx="8" fill="#2f8f4e" stroke="#1f6e3a"/>
+        <text x="330" y="40" fill="#fff" font-weight="700" font-size="13.5">หน้าแรก (Home)</text>
+        <!-- level 2 : 5 groups -->
+        <g>
+          <rect x="14" y="118" width="116" height="44" rx="8" fill="#e2f3e8" stroke="#2f8f4e"/><text x="72" y="138" fill="#1f6e3a" font-weight="600">แจ้งเรื่องสัตว์</text><text x="72" y="154" fill="#5e6b78" font-size="10">Report</text>
+          <rect x="142" y="118" width="116" height="44" rx="8" fill="#e2f3e8" stroke="#2f8f4e"/><text x="200" y="138" fill="#1f6e3a" font-weight="600">ค้นหา/ดูประกาศ</text><text x="200" y="154" fill="#5e6b78" font-size="10">Browse</text>
+          <rect x="270" y="118" width="120" height="44" rx="8" fill="#e2f3e8" stroke="#2f8f4e"/><text x="330" y="138" fill="#1f6e3a" font-weight="600">การแจ้งเตือน</text><text x="330" y="154" fill="#5e6b78" font-size="10">Alerts</text>
+          <rect x="402" y="118" width="116" height="44" rx="8" fill="#e2f3e8" stroke="#2f8f4e"/><text x="460" y="138" fill="#1f6e3a" font-weight="600">บัญชีของฉัน</text><text x="460" y="154" fill="#5e6b78" font-size="10">Account</text>
+          <rect x="530" y="118" width="116" height="44" rx="8" fill="#e2f3e8" stroke="#2f8f4e"/><text x="588" y="138" fill="#1f6e3a" font-weight="600">ช่วยเหลือ</text><text x="588" y="154" fill="#5e6b78" font-size="10">Help</text>
+        </g>
+        <!-- level 3 examples -->
+        <g font-size="11">
+          <rect x="142" y="206" width="116" height="32" rx="7" fill="#fff" stroke="#9cc9ab"/><text x="200" y="226" fill="#41505c">รายละเอียดประกาศ</text>
+          <rect x="402" y="206" width="116" height="32" rx="7" fill="#fff" stroke="#9cc9ab"/><text x="460" y="226" fill="#41505c">ประกาศของฉัน</text>
+        </g>
+        <!-- connectors -->
+        <g stroke="#9cc9ab" stroke-width="1.6" fill="none">
+          <path d="M330 54 L330 90 M72 90 L588 90"/>
+          <path d="M72 90 L72 118 M200 90 L200 118 M330 90 L330 118 M460 90 L460 118 M588 90 L588 118"/>
+          <path d="M200 162 L200 206 M460 162 L460 206"/>
+        </g>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 6.2</b> ภาพรวม Sitemap — 5 เมนูหลักที่ได้จากการจัดกลุ่มการ์ด (แสดงหน้าลูกบางส่วน)</figcaption>
+  </figure>
+
+  <h4>Sitemap ฉบับเต็มของแอปค้นหาสัตว์เลี้ยงหาย</h4>
+  <div class="tree-legend">
+    <span><span class="node" style="padding:1px 8px">กลุ่ม/เมนูหลัก</span></span>
+    <span><span class="node leaf" style="padding:1px 8px">หน้า (page)</span></span>
+    <span><span class="node act" style="padding:1px 8px">การกระทำในหน้า (action)</span></span>
+  </div>
+  <div class="sitemap-tree">
+    <ul>
+      <li class="root"><span class="node">หน้าแรก (Home)</span>
+        <ul>
+          <li><span class="node">1. แจ้งเรื่องสัตว์</span>
+            <ul>
+              <li><span class="node leaf">แจ้งสัตว์เลี้ยงหาย</span>
+                <ul><li><span class="node act">เลือก/ถ่ายรูปสัตว์</span></li><li><span class="node act">ระบุพิกัด/สถานที่</span></li></ul>
+              </li>
+              <li><span class="node leaf">แจ้งพบสัตว์จร</span></li>
+            </ul>
+          </li>
+          <li><span class="node">2. ค้นหา/ดูประกาศ</span>
+            <ul>
+              <li><span class="node leaf">ประกาศสัตว์หายทั้งหมด</span>
+                <ul><li><span class="node act">ค้นหาตามพื้นที่</span></li><li><span class="node act">กรองตามประเภทสัตว์</span></li></ul>
+              </li>
+              <li><span class="node leaf">แผนที่จุดพบเห็นล่าสุด</span></li>
+              <li><span class="node leaf">รายละเอียดประกาศ</span>
+                <ul>
+                  <li><span class="node leaf">รูปภาพสัตว์</span></li>
+                  <li><span class="node act">ส่งเบาะแส</span></li>
+                  <li><span class="node act">แชต/โทรหาเจ้าของ</span></li>
+                  <li><span class="node act">แชร์ประกาศไปโซเชียล</span></li>
+                  <li><span class="node act">รายงานประกาศไม่เหมาะสม</span></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><span class="node">3. การแจ้งเตือน</span>
+            <ul>
+              <li><span class="node leaf">การแจ้งเตือนสัตว์หายใกล้ฉัน</span></li>
+              <li><span class="node act">ตั้งค่ารัศมีแจ้งเตือน</span></li>
+            </ul>
+          </li>
+          <li><span class="node">4. บัญชีของฉัน</span>
+            <ul>
+              <li><span class="node leaf">เข้าสู่ระบบ / สมัครสมาชิก</span></li>
+              <li><span class="node leaf">โปรไฟล์ผู้ใช้</span>
+                <ul><li><span class="node act">แก้ไขข้อมูลส่วนตัว</span></li></ul>
+              </li>
+              <li><span class="node leaf">ประกาศของฉัน</span>
+                <ul><li><span class="node act">แก้ไขประกาศ</span></li><li><span class="node act">ปิดประกาศ (เจอแล้ว)</span></li></ul>
+              </li>
+              <li><span class="node leaf">บันทึก/ติดตามประกาศ</span></li>
+              <li><span class="node leaf">ประวัติการแจ้ง</span></li>
+            </ul>
+          </li>
+          <li><span class="node">5. ช่วยเหลือ</span>
+            <ul>
+              <li><span class="node leaf">คำถามที่พบบ่อย (FAQ)</span></li>
+              <li><span class="node leaf">ติดต่อทีมงาน</span></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: เชื่อมโยงโอกาสจากบทที่ 5 สู่โครงสร้าง</span>
+    <p style="margin:0">โอกาส “ฟอร์มแจ้งหายสั้น” → กลายเป็นหน้า <b>แจ้งสัตว์เลี้ยงหาย</b> &nbsp;|&nbsp; โอกาส “รวมเบาะแสไว้ที่เดียว” → กลายเป็นหน้า <b>รายละเอียดประกาศ</b> (พร้อมการกระทำ ส่งเบาะแส/ติดต่อ) &nbsp;|&nbsp; โอกาส “แจ้งเตือนคนใกล้เคียง” → กลายเป็นกลุ่ม <b>การแจ้งเตือน</b></p>
+  </div>
+
+  <!-- 2.5 user flow -->
+  <h3><span class="nm">2.5</span> User Flow และ Task Flow</h3>
+  <p>เมื่อรู้ว่ามีหน้าจออะไรบ้างแล้ว ขั้นต่อไปคือออกแบบ <b>User Flow</b> — เส้นทางที่ผู้ใช้เดินผ่านหน้าจอต่าง ๆ เพื่อทำงานหนึ่งให้สำเร็จ ส่วน <b>Task Flow</b> เน้นลำดับขั้นของงานเดียวที่ชัดเจน เราเขียนด้วยสัญลักษณ์ผังงาน (flowchart) มาตรฐาน</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 620 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="สัญลักษณ์ผังงานมาตรฐาน">
+      <g font-family="'Sarabun',sans-serif" font-size="12.5" text-anchor="middle">
+        <ellipse cx="80" cy="50" rx="56" ry="26" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/><text x="80" y="55" fill="#1f6e3a">เริ่ม/จบ</text>
+        <text x="80" y="100" fill="#5e6b78">Terminator</text>
+        <rect x="186" y="24" width="118" height="52" rx="6" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/><text x="245" y="55" fill="#1f6e3a">การกระทำ</text>
+        <text x="245" y="100" fill="#5e6b78">Process</text>
+        <polygon points="420,24 470,50 420,76 370,50" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.8"/><text x="420" y="55" fill="#a8631d">ตัดสินใจ</text>
+        <text x="420" y="100" fill="#5e6b78">Decision</text>
+        <line x1="510" y1="50" x2="586" y2="50" stroke="#2f8f4e" stroke-width="2.2" marker-end="url(#a)"/>
+        <text x="548" y="100" fill="#5e6b78">ทิศทาง</text>
+      </g>
+      <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2f8f4e"/></marker></defs>
+    </svg>
+    <figcaption><b>ภาพที่ 6.3</b> สัญลักษณ์ผังงานมาตรฐาน: วงรี (เริ่ม/จบ), สี่เหลี่ยม (การกระทำ), สี่เหลี่ยมข้าวหลามตัด (จุดตัดสินใจ)</figcaption>
+  </figure>
+
+  <h4>ตัวอย่าง User Flow: งาน “แจ้งสัตว์เลี้ยงหาย”</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 520 820" style="max-width:360px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="User Flow ของงานแจ้งสัตว์เลี้ยงหาย">
+      <g font-family="'Sarabun',sans-serif" font-size="13" text-anchor="middle">
+        <!-- start -->
+        <ellipse cx="200" cy="46" rx="82" ry="25" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="2"/><text x="200" y="51" fill="#1f6e3a" font-weight="600">เปิดแอป</text>
+        <!-- process 1 -->
+        <rect x="104" y="128" width="192" height="46" rx="7" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/><text x="200" y="156" fill="#1f6e3a">กดปุ่ม “แจ้งสัตว์หาย”</text>
+        <!-- decision login -->
+        <polygon points="200,241 290,288 200,335 110,288" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.8"/><text x="200" y="293" fill="#a8631d">ล็อกอินแล้ว?</text>
+        <!-- login branch -->
+        <rect x="336" y="265" width="160" height="46" rx="7" fill="#fff" stroke="#2f8f4e" stroke-width="1.6"/><text x="416" y="293" fill="#1f6e3a">เข้าสู่ระบบ/สมัคร</text>
+        <!-- process fill form -->
+        <rect x="96" y="392" width="208" height="58" rx="7" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/><text x="200" y="416" fill="#1f6e3a">กรอกข้อมูลสัตว์</text><text x="200" y="435" fill="#5e6b78" font-size="11.5">รูป · ลักษณะ · สถานที่</text>
+        <!-- decision valid -->
+        <polygon points="200,515 290,562 200,609 110,562" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.8"/><text x="200" y="567" fill="#a8631d">ข้อมูลครบ?</text>
+        <!-- process broadcast -->
+        <rect x="88" y="666" width="224" height="48" rx="7" fill="#e2f3e8" stroke="#2f8f4e" stroke-width="1.8"/><text x="200" y="695" fill="#1f6e3a">ระบบกระจายประกาศ</text>
+        <!-- end -->
+        <ellipse cx="200" cy="786" rx="96" ry="24" fill="#2f8f4e" stroke="#1f6e3a" stroke-width="2"/><text x="200" y="791" fill="#fff" font-weight="600">แจ้งสำเร็จ ✓</text>
+
+        <!-- main arrows -->
+        <g stroke="#2f8f4e" stroke-width="2.2" fill="none">
+          <path d="M200 71 L200 124" marker-end="url(#a)"/>
+          <path d="M200 174 L200 237" marker-end="url(#a)"/>
+          <path d="M200 335 L200 390" marker-end="url(#a)"/>
+          <path d="M200 450 L200 513" marker-end="url(#a)"/>
+          <path d="M200 609 L200 664" marker-end="url(#a)"/>
+          <path d="M200 714 L200 760" marker-end="url(#a)"/>
+        </g>
+        <!-- yes labels -->
+        <text x="212" y="368" fill="#1f6e3a" font-size="11.5" text-anchor="start">ใช่</text>
+        <text x="212" y="642" fill="#1f6e3a" font-size="11.5" text-anchor="start">ครบ</text>
+        <!-- login no branch -->
+        <path d="M290 288 L334 288" stroke="#e08a3c" stroke-width="2.2" fill="none" marker-end="url(#a2)"/>
+        <text x="312" y="280" fill="#a8631d" font-size="11.5">ยัง</text>
+        <path d="M416 311 C416 362 320 374 254 392" stroke="#e08a3c" stroke-width="2.2" fill="none" marker-end="url(#a2)"/>
+        <!-- valid no branch (loop back to form) -->
+        <path d="M110 562 C44 562 44 421 94 421" stroke="#c0492f" stroke-width="2.2" fill="none" marker-end="url(#a3)"/>
+        <text x="50" y="495" fill="#c0492f" font-size="11.5">ไม่ครบ</text>
+      </g>
+      <defs>
+        <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2f8f4e"/></marker>
+        <marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#e08a3c"/></marker>
+        <marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#c0492f"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>ภาพที่ 6.4</b> User Flow ของงาน “แจ้งสัตว์เลี้ยงหาย” แสดงจุดตัดสินใจ (ล็อกอิน, ตรวจความครบของข้อมูล) และเส้นทางย้อนกลับ</figcaption>
+  </figure>
+
+  <h4>ตัวอย่าง User Flow เพิ่มเติม (เขียนด้วย Mermaid)</h4>
+  <p><b>Mermaid</b> เป็นภาษาเขียนผังงานด้วยข้อความ (text-based diagram) ที่นิยมในงานพัฒนาเว็บ เพราะเก็บเป็นโค้ดในไฟล์โปรเจกต์และดูประวัติการแก้ไขได้ ด้านล่างเป็น user flow อีก 3 งานของกรณีศึกษา ทั้งภาพที่เรนเดอร์แล้วและโค้ดที่นักศึกษาคัดลอกไปใช้ได้ (กดดู “โค้ด Mermaid”)</p>
+
+  <!-- flow A: lost (mermaid version of fig 6.4) -->
+  <div class="mer-wrap">
+    <div class="mtitle">งานที่ 1 · แจ้งสัตว์เลี้ยงหาย (เวอร์ชัน Mermaid ของภาพ 6.4)</div>
+    <pre class="mermaid">flowchart TD
+  A(["เปิดแอป"]) --> B["กดปุ่ม แจ้งสัตว์หาย"]
+  B --> C{"ล็อกอินแล้ว?"}
+  C -->|ยัง| D["เข้าสู่ระบบ / สมัครสมาชิก"]
+  D --> E["กรอกข้อมูลสัตว์: รูป, ลักษณะ, สถานที่"]
+  C -->|ใช่| E
+  E --> F{"ข้อมูลครบ?"}
+  F -->|ไม่ครบ| E
+  F -->|ครบ| G["ระบบกระจายประกาศไปคนใกล้เคียง"]
+  G --> H(["แจ้งสำเร็จ"])</pre>
+    <details class="code"><summary>ดูโค้ด Mermaid</summary>
+<pre>flowchart TD
+  A(["เปิดแอป"]) --&gt; B["กดปุ่ม แจ้งสัตว์หาย"]
+  B --&gt; C{"ล็อกอินแล้ว?"}
+  C --&gt;|ยัง| D["เข้าสู่ระบบ / สมัครสมาชิก"]
+  D --&gt; E["กรอกข้อมูลสัตว์: รูป, ลักษณะ, สถานที่"]
+  C --&gt;|ใช่| E
+  E --&gt; F{"ข้อมูลครบ?"}
+  F --&gt;|ไม่ครบ| E
+  F --&gt;|ครบ| G["ระบบกระจายประกาศไปคนใกล้เคียง"]
+  G --&gt; H(["แจ้งสำเร็จ"])</pre>
+    </details>
+  </div>
+
+  <!-- flow B: report found -->
+  <div class="mer-wrap">
+    <div class="mtitle">งานที่ 2 · แจ้งพบสัตว์จร</div>
+    <pre class="mermaid">flowchart TD
+  A(["เปิดแอป"]) --> B["กดปุ่ม แจ้งพบสัตว์"]
+  B --> C{"ล็อกอินแล้ว?"}
+  C -->|ยัง| D["เข้าสู่ระบบ / สมัครสมาชิก"]
+  D --> E["ถ่ายรูป + ระบุจุดที่พบ"]
+  C -->|ใช่| E
+  E --> F{"ระบบพบประกาศหายที่ตรงกัน?"}
+  F -->|ตรง| G["แจ้งเตือนเจ้าของทันที"]
+  F -->|ไม่ตรง| H["บันทึกเป็นประกาศพบสัตว์"]
+  G --> I(["เสร็จสิ้น"])
+  H --> I</pre>
+    <details class="code"><summary>ดูโค้ด Mermaid</summary>
+<pre>flowchart TD
+  A(["เปิดแอป"]) --&gt; B["กดปุ่ม แจ้งพบสัตว์"]
+  B --&gt; C{"ล็อกอินแล้ว?"}
+  C --&gt;|ยัง| D["เข้าสู่ระบบ / สมัครสมาชิก"]
+  D --&gt; E["ถ่ายรูป + ระบุจุดที่พบ"]
+  C --&gt;|ใช่| E
+  E --&gt; F{"ระบบพบประกาศหายที่ตรงกัน?"}
+  F --&gt;|ตรง| G["แจ้งเตือนเจ้าของทันที"]
+  F --&gt;|ไม่ตรง| H["บันทึกเป็นประกาศพบสัตว์"]
+  G --&gt; I(["เสร็จสิ้น"])
+  H --&gt; I</pre>
+    </details>
+  </div>
+
+  <!-- flow C: browse & contact -->
+  <div class="mer-wrap">
+    <div class="mtitle">งานที่ 3 · ค้นหา/ดูประกาศ และติดต่อเจ้าของ</div>
+    <pre class="mermaid">flowchart TD
+  A(["เปิดหน้า ค้นหา/ดูประกาศ"]) --> B["กรองตามพื้นที่และประเภทสัตว์"]
+  B --> C{"พบประกาศที่ตรงไหม?"}
+  C -->|ไม่พบ| D["ตั้งการแจ้งเตือนเมื่อมีประกาศใหม่"]
+  C -->|พบ| E["เปิดดูรายละเอียดประกาศ"]
+  E --> F{"มีเบาะแสจะแจ้งไหม?"}
+  F -->|มี| G["ส่งเบาะแส / ติดต่อเจ้าของ"]
+  F -->|ไม่มี| H["บันทึก หรือ แชร์ประกาศ"]
+  D --> I(["จบ"])
+  G --> I
+  H --> I</pre>
+    <details class="code"><summary>ดูโค้ด Mermaid</summary>
+<pre>flowchart TD
+  A(["เปิดหน้า ค้นหา/ดูประกาศ"]) --&gt; B["กรองตามพื้นที่และประเภทสัตว์"]
+  B --&gt; C{"พบประกาศที่ตรงไหม?"}
+  C --&gt;|ไม่พบ| D["ตั้งการแจ้งเตือนเมื่อมีประกาศใหม่"]
+  C --&gt;|พบ| E["เปิดดูรายละเอียดประกาศ"]
+  E --&gt; F{"มีเบาะแสจะแจ้งไหม?"}
+  F --&gt;|มี| G["ส่งเบาะแส / ติดต่อเจ้าของ"]
+  F --&gt;|ไม่มี| H["บันทึก หรือ แชร์ประกาศ"]
+  D --&gt; I(["จบ"])
+  G --&gt; I
+  H --&gt; I</pre>
+    </details>
+  </div>
+
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
+    Sitemap ตอบว่า “มีหน้าอะไรบ้างและจัดวางอย่างไร” (โครงสร้างนิ่ง) ส่วน User Flow ตอบว่า “ผู้ใช้เดินผ่านหน้าเหล่านั้นอย่างไรเพื่อทำงานให้สำเร็จ” (เส้นทางเคลื่อนไหว) ทั้งคู่ต้องสอดคล้องกัน
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>จัดเมนูตามโครงสร้างองค์กร/ฐานข้อมูล</b> แทนที่จะจัดตาม mental model ของผู้ใช้</li>
+      <li><b>ลำดับชั้นลึกเกินไป</b> ทำให้ผู้ใช้ต้องกดหลายครั้งกว่าจะถึงเป้าหมาย</li>
+      <li><b>User flow ลืมเส้นทางผิดพลาด</b> เช่น กรณีข้อมูลไม่ครบหรือยังไม่ล็อกอิน ทำให้ออกแบบไม่ครบสถานการณ์จริง</li>
+    </ul>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: จาก Sitemap สู่โครงสร้างเส้นทาง (Routes)</h4>
+  <p>Sitemap แปลงเป็นโครงสร้างเส้นทาง (routing) ของเว็บแอปได้โดยตรง ลำดับชั้นของหน้าจอสอดคล้องกับลำดับของ URL ซึ่งเป็นพื้นฐานสำคัญในวิชาการพัฒนาเว็บแอปพลิเคชัน</p>
+  <pre><span class="cm">// Sitemap → routing ของเว็บแอป (สอดคล้องลำดับชั้นหน้าจอ)</span>
+<span class="ky">const</span> routes = [
+  { path: <span class="st">"/"</span>,              page: <span class="st">"Home"</span> },
+  { path: <span class="st">"/report-lost"</span>,   page: <span class="st">"ReportLost"</span> },
+  { path: <span class="st">"/report-found"</span>,  page: <span class="st">"ReportFound"</span> },
+  { path: <span class="st">"/browse"</span>,         page: <span class="st">"Browse"</span> },
+  { path: <span class="st">"/browse/:postId"</span>, page: <span class="st">"PostDetail"</span> },   <span class="cm">// หน้าลูกของ browse</span>
+  { path: <span class="st">"/alerts"</span>,         page: <span class="st">"Alerts"</span> },
+  { path: <span class="st">"/profile"</span>,        page: <span class="st">"Profile"</span> }
+];</pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0"><b>โอกาสในการออกแบบ</b> ที่ค้นพบใน journey map ของ <b>บทที่ 5</b> (เช่น “ฟอร์มแจ้งหายสั้น”, “รวมเบาะแสไว้ที่เดียว”, “แจ้งเตือนคนใกล้เคียง”) ถูกนำมาแปลงเป็นรายการหน้าจอใน Sitemap และเส้นทางการทำงานใน User Flow ของบทนี้</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🌉</div>
+    <div>
+      <h4>สะพานสู่บทต่อไป &amp; การสอบกลางภาค</h4>
+      <p style="margin:0">Sitemap และ User Flow คือชิ้นงานสุดท้ายก่อน <b>สอบกลางภาค (สัปดาห์ที่ 8)</b> ซึ่งนักศึกษาจะนำเสนอชุดผลงาน Research + IA ทั้งหมด จากนั้นใน <b>บทที่ 7: หลักการออกแบบ UI และการจัดวาง</b> เราจะเริ่มเปลี่ยนโครงสร้างเหล่านี้ให้กลายเป็นหน้าจอที่มองเห็นได้จริง</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>3. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li><b>Information Architecture</b> คือการจัดระเบียบ ตั้งชื่อ และนำทางเนื้อหา ให้สอดคล้องกับ mental model ของผู้ใช้</li>
+    <li><b>Card Sorting</b> (เปิด/ปิด) ช่วยค้นหาว่าผู้ใช้คาดหวังให้เนื้อหาถูกจัดกลุ่มอย่างไร</li>
+    <li><b>Sitemap</b> แสดงหน้าจอทั้งหมดและลำดับชั้น เป็นพื้นฐานของระบบนำทาง</li>
+    <li><b>User Flow / Task Flow</b> แสดงเส้นทางการทำงานด้วยสัญลักษณ์ผังงาน ต้องครอบคลุมจุดตัดสินใจและเส้นทางผิดพลาด</li>
+    <li>Sitemap และ User Flow ต้องสอดคล้องกัน และต่อยอดมาจากโอกาสใน journey map โดยตรง</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>4. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">Information Architecture คืออะไร และเหตุใดจึงต้องสอดคล้องกับ mental model ของผู้ใช้</div>
+    <div class="rq">Open card sorting กับ Closed card sorting ต่างกันอย่างไร และควรใช้แบบใดในสถานการณ์ใด</div>
+    <div class="rq">Sitemap กับ User Flow ต่างกันอย่างไร และเชื่อมโยงกันอย่างไร</div>
+    <div class="rq">สัญลักษณ์ผังงานสำหรับ “จุดตัดสินใจ” คือรูปใด และเหตุใด user flow จึงต้องมีเส้นทางผิดพลาด</div>
+    <div class="rq">จงร่าง user flow ของงาน “แจ้งพบสัตว์จร” ว่าควรมีจุดตัดสินใจตรงไหนบ้าง</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>5. ขั้นตอน Workshop (2 สัปดาห์)</h2></div>
+  <p>บทนี้มี workshop 2 คาบ โดยใช้ sticky note/กระดาษหรือ FigJam/Miro ห้ามใช้เครื่องมือ AI</p>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 6 — Card Sorting &amp; Sitemap</div>
+  <ol class="steps">
+    <li><span class="t">ทบทวนโอกาสจากบทที่ 5</span> <span class="min">(15 นาที)</span><br>รวบรวมโอกาส/ฟีเจอร์ทั้งหมดจาก journey map มาเขียนลงการ์ด</li>
+    <li><span class="t">Card Sorting</span> <span class="min">(35 นาที)</span><br>ทำ open card sorting กับเพื่อนต่างกลุ่ม 3–5 คน เพื่อดูว่าผู้ใช้จัดกลุ่มอย่างไร</li>
+    <li><span class="t">สร้าง Sitemap</span> <span class="min">(40 นาที)</span><br>นำผล card sorting มาจัดเป็นแผนผังต้นไม้ กำหนดลำดับชั้นและชื่อเมนู (labeling)</li>
+    <li><span class="t">Peer Review</span> <span class="min">(20 นาที)</span><br>สลับ sitemap กับอีกกลุ่ม ตรวจว่าผู้ใช้น่าจะหาเมนูเจอหรือไม่</li>
+  </ol>
+
+  <div class="wk-tag">📅 สัปดาห์ที่ 7 — User Flow</div>
+  <ol class="steps">
+    <li><span class="t">ทบทวนสัญลักษณ์ผังงาน</span> <span class="min">(15 นาที)</span><br>ทบทวนสัญลักษณ์ผังงาน (start/end, process, decision, ทิศทาง) ร่วมกัน แล้วลองวาดสัญลักษณ์แต่ละแบบ</li>
+    <li><span class="t">เขียน User Flow งานหลัก</span> <span class="min">(40 นาที)</span><br>เขียน flow ของงาน “แจ้งสัตว์หาย” ครบจุดตัดสินใจและเส้นทางผิดพลาด</li>
+    <li><span class="t">เขียน Flow งานรอง</span> <span class="min">(30 นาที)</span><br>เลือกอีก 1 งาน (เช่น “ค้นหา/ดูประกาศ” หรือ “แจ้งพบสัตว์”) มาเขียน flow</li>
+    <li><span class="t">ตรวจความสอดคล้อง &amp; เตรียม Midterm</span> <span class="min">(25 นาที)</span><br>ตรวจว่า flow สอดคล้องกับ sitemap และรวบรวมผลงานบท 1–6 เตรียมนำเสนอสอบกลางภาค</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>6. งานที่ต้องส่ง (Assignment 6)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนเริ่มคาบสัปดาห์ที่ 8 (สอบกลางภาค)</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “Sitemap &amp; User Flow ของแอป” + รวมเล่ม Portfolio ส่วนที่ 1</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 6 ของ Design Portfolio และเป็นชุดผลงานสำหรับสอบกลางภาค ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>ผล Card Sorting</b> (ภาพถ่าย/สแกน) พร้อมสรุปรูปแบบการจัดกลุ่มที่ค้นพบ</li>
+      <li><b>Sitemap สมบูรณ์</b> แสดงหน้าจอทั้งหมดและลำดับชั้น พร้อมชื่อเมนูที่ชัดเจน</li>
+      <li><b>User Flow อย่างน้อย 2 งาน</b> (รวมงาน “แจ้งสัตว์หาย”) ครบจุดตัดสินใจและเส้นทางผิดพลาด ใช้สัญลักษณ์ผังงานถูกต้อง</li>
+      <li><b>ตารางเชื่อมโยง</b> โอกาสจาก journey map → หน้าจอใน sitemap</li>
+      <li><b>เล่มรวม Portfolio ส่วนที่ 1</b> (บท 1–6): Problem Statement, HMW, ผลวิจัย, Persona/Empathy Map, Journey Map, Sitemap/Flow</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> ความสอดคล้องกับ mental model (25%) · ความถูกต้องของ flow/สัญลักษณ์ (25%) · ความต่อเนื่องจากบทก่อน (25%) · ความสมบูรณ์ของเล่ม Portfolio (25%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>7. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">ทำ Card Sorting และสรุปรูปแบบการจัดกลุ่มที่ค้นพบ</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">Sitemap แสดงหน้าจอครบ มีลำดับชั้นและชื่อเมนูชัดเจน</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">User Flow อย่างน้อย 2 งาน รวมงาน “แจ้งสัตว์หาย”</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">Flow มีจุดตัดสินใจและเส้นทางผิดพลาด ใช้สัญลักษณ์ผังงานถูกต้อง</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">มีตารางเชื่อมโยงโอกาสจาก journey map → หน้าจอใน sitemap</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">รวมเล่ม Portfolio ส่วนที่ 1 (บท 1–6) ครบถ้วน</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">บันทึกเป็นไฟล์ PDF ตั้งชื่อตามรูปแบบ <code class="inl">A6_ชื่อกลุ่ม.pdf</code></label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">เตรียมสไลด์/ผลงานสำหรับนำเสนอสอบกลางภาค (สัปดาห์ที่ 8)</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่5_UserJourneyMap.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 5 · User Journey Map</div></div>
+      </a>
+      <a class="nav-link next" href="บทที่7_หลักการออกแบบUIและการจัดวาง.html">
+        <div class="arrow">→</div>
+        <div><div class="lbl">บทถัดไป</div><div class="nm">บทที่ 7 · หลักการออกแบบ UI และการจัดวาง</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  try{
+    mermaid.initialize({
+      startOnLoad:true,
+      theme:'base',
+      themeVariables:{
+        primaryColor:'#e2f3e8', primaryBorderColor:'#2f8f4e', primaryTextColor:'#1f2733',
+        lineColor:'#2f8f4e', fontFamily:"'Sarabun',sans-serif", fontSize:'15px'
+      },
+      flowchart:{useMaxWidth:true, htmlLabels:true}
+    });
+  }catch(e){}
+</script>
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch6_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>

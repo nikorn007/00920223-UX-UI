@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 10 — การประเมินการใช้งานได้ (Usability Evaluation) | 00921502</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== สีประจำบทที่ 10 : ม่วงพลัม (Plum) ===== */
+  :root{
+    --ch:#8a3d6b;
+    --ch-dark:#652a4e;
+    --ch-soft:#f4e2ec;
+    --ch-softer:#fbf3f7;
+    --accent:#e08a3c;
+    --ink:#1f2733;
+    --muted:#5e6b78;
+    --bg:#fcf7fa;
+    --card:#ffffff;
+    --line:#ecd2e0;
+    --ok:#2e8b57;
+    --warn:#c0492f;
+    --code-bg:#1e2633;
+    --shadow:0 2px 16px rgba(101,42,78,.10);
+    --th:'Sarabun',sans-serif;
+    --head:'Prompt',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{font-family:var(--th);font-size:1rem;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace}
+  h1,h2,h3,h4{font-family:var(--head);line-height:1.35;color:var(--ch-dark)}
+  p{margin:.5em 0}
+  a{color:var(--ch)}
+
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--ch);box-shadow:0 2px 10px rgba(101,42,78,.08)}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .toc-badge{background:var(--ch);color:#fff;font-weight:700;font-size:.85rem;padding:4px 11px;border-radius:7px;white-space:nowrap}
+  .toc nav{display:flex;gap:4px;flex-wrap:wrap}
+  .toc nav a{font-size:.92rem;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:7px;font-weight:500;transition:.15s;white-space:nowrap}
+  .toc nav a:hover{background:var(--ch-soft);color:var(--ch-dark)}
+
+  .hero{background:linear-gradient(135deg,var(--ch),var(--ch-dark));color:#fff;padding:46px 24px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-50px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hero::before{content:"";position:absolute;left:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:rgba(224,138,60,.16)}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .ch-tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;padding:5px 16px;border-radius:20px;margin-bottom:14px;letter-spacing:.5px}
+  .hero h1{font-size:2.05rem;color:#fff;margin-bottom:4px}
+  .hero .en{font-size:1.12rem;opacity:.9;font-weight:400;font-family:var(--th)}
+  .hero .lead{margin-top:14px;font-size:1.08rem;opacity:.95;max-width:680px}
+  .hero-pills{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:8px;font-size:.92rem}
+  .pill b{font-weight:700}
+
+  main{max-width:1000px;margin:0 auto;padding:30px 24px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px;margin-bottom:26px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px dashed var(--line)}
+  .sec-ic{flex-shrink:0;width:42px;height:42px;border-radius:11px;background:var(--ch-soft);color:var(--ch);display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+  .sec-head h2{font-size:1.4rem}
+  h3{font-size:1.18rem;margin:26px 0 8px;color:var(--ch-dark)}
+  h3 .nm{color:var(--accent);font-weight:700;margin-right:6px}
+  h4{font-size:1.05rem;margin:16px 0 6px;color:var(--ink)}
+
+  .part-divider{display:flex;align-items:center;gap:14px;margin:38px 0 22px}
+  .part-divider .bar{flex:1;height:3px;background:linear-gradient(90deg,var(--ch),transparent);border-radius:2px}
+  .part-divider .label{font-size:1.22rem;font-weight:700;color:var(--ch);white-space:nowrap;font-family:var(--head)}
+
+  .obj-item{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .obj-item:last-child{border-bottom:none}
+  .obj-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--ch);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95rem}
+  .obj-body{flex:1}
+  .obj-meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+  .tagm{font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:5px}
+  .tag-clo{background:var(--ch-soft);color:var(--ch-dark)}
+  .tag-plo{background:#fdeee2;color:#b5601f}
+  .tag-bloom{background:#e7f3ec;color:#2e7d4f}
+
+  .box{border-radius:11px;padding:16px 20px;margin:18px 0;border-left:5px solid}
+  .box .bh{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:var(--head)}
+  .box .ic{font-size:1.15rem}
+  .box-think{background:#f5e8f0;border-color:var(--ch)}
+  .box-think .bh{color:var(--ch-dark)}
+  .box-warn{background:#fdf2ee;border-color:var(--warn)}
+  .box-warn .bh{color:var(--warn)}
+  .box-key{background:#fffbf2;border-color:var(--accent)}
+  .box-key .bh{color:#a8631d}
+
+  .bridge{display:flex;gap:14px;align-items:flex-start;background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .bridge .ic{font-size:1.6rem;line-height:1}
+  .bridge h4{margin:0 0 3px;color:var(--ch-dark)}
+  .bridge.next{background:#fff6ef;border-color:#fbe3cf}
+  .bridge.next h4{color:#a8631d}
+
+  .gt-ex{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .gt-ex .tag{display:inline-block;background:var(--ch);color:#fff;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:5px;margin-bottom:6px;font-family:var(--head)}
+  .gt-ex .tag::before{content:"🐾 "}
+
+  .fig{margin:22px 0;text-align:center}
+  .fig svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+  .fig figcaption{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .fig figcaption b{color:var(--ch-dark)}
+
+  .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
+  thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--ch-softer)}
+  tbody th{background:var(--ch-soft);color:var(--ch-dark);text-align:left;padding:11px 14px;border-top:1px solid var(--line);font-family:var(--head);font-weight:600;white-space:nowrap}
+
+  pre{background:var(--code-bg);color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:.9rem;line-height:1.55}
+  pre .cm{color:#7d8aa3}
+  pre .ky{color:#79c0ff}
+  pre .st{color:#a5d6a4}
+  code.inl{background:var(--ch-soft);color:var(--ch-dark);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+  ul,ol{margin:.4em 0 .4em 1.4em}
+  li{margin:5px 0}
+  .lead-q{font-size:1.12rem;font-style:italic;color:var(--ch-dark);border-left:4px solid var(--ch);padding:6px 0 6px 16px;margin:14px 0}
+
+  .summary li{margin:8px 0}
+  .summary li::marker{color:var(--ch);font-weight:700}
+
+  .review{counter-reset:rq}
+  .review .rq{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .review .rq:last-child{border:none}
+  .review .rq::before{counter-increment:rq;content:"Q" counter(rq);flex-shrink:0;background:var(--ch-soft);color:var(--ch-dark);font-weight:700;font-size:.85rem;padding:3px 9px;border-radius:6px;height:fit-content;font-family:var(--head)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{position:relative;padding:12px 0 12px 50px;border-bottom:1px solid var(--line)}
+  .steps li:last-child{border:none}
+  .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:12px;width:34px;height:34px;background:var(--ch);color:#fff;border-radius:9px;font-weight:700;display:grid;place-items:center;font-family:var(--head)}
+  .steps .t{font-weight:700;color:var(--ch-dark)}
+  .steps .min{font-size:.82rem;color:var(--accent);font-weight:600}
+
+  .assign{background:var(--ch-softer);border:1px solid var(--ch-soft);border-radius:12px;padding:18px 22px}
+  .assign .due{display:inline-block;background:var(--warn);color:#fff;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:7px;margin-bottom:10px}
+
+  .checklist{list-style:none;margin-left:0}
+  .checklist li{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .checklist li:last-child{border:none}
+  .checklist input[type=checkbox]{width:21px;height:21px;margin-top:2px;flex-shrink:0;accent-color:var(--ch);cursor:pointer}
+  .checklist label{cursor:pointer}
+  .checklist input:checked + label{color:var(--muted);text-decoration:line-through}
+
+  /* ===== form documents ===== */
+  .doc-form{border:1.5px solid var(--ch-dark);border-radius:10px;margin:20px 0;overflow:hidden;background:#fff}
+  .doc-form .df-head{background:var(--ch-dark);color:#fff;padding:12px 18px}
+  .doc-form .df-head .ttl{font-family:var(--head);font-weight:700;font-size:1.05rem}
+  .doc-form .df-head .sub{font-size:.85rem;opacity:.85}
+  .doc-form .df-body{padding:16px 18px}
+  .df-row{margin:11px 0;font-size:.95rem}
+  .df-row .lb{font-weight:600;color:var(--ch-dark)}
+  .fill{border-bottom:1.4px dotted #8a93a0;min-width:120px;display:inline-block;padding:0 6px}
+  .write-lines{border:1px dashed var(--line);border-radius:8px;height:60px;margin-top:6px;background:repeating-linear-gradient(transparent,transparent 25px,var(--line) 25px,var(--line) 26px)}
+  .df-note{font-size:.85rem;color:var(--muted);margin-top:6px}
+
+  footer{background:var(--ch-dark);color:#fff;padding:34px 24px;margin-top:10px}
+  .foot-inner{max-width:1000px;margin:0 auto}
+  .nav-links{display:flex;gap:14px;flex-wrap:wrap}
+  .nav-link{flex:1;min-width:230px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:16px 22px;text-decoration:none;color:#fff;transition:.18s}
+  .nav-link:hover{background:rgba(255,255,255,.15)}
+  .nav-link .lbl{font-size:.82rem;opacity:.8}
+  .nav-link .nm{font-size:1.05rem;font-weight:700;font-family:var(--head)}
+  .nav-link .arrow{font-size:1.6rem}
+  .nav-link.next{flex-direction:row-reverse;text-align:right}
+  .foot-meta{text-align:center;margin-top:22px;font-size:.88rem;opacity:.8;line-height:1.7}
+
+  @media(max-width:640px){
+    .hero{padding:34px 18px 42px}.hero h1{font-size:1.5rem}
+    section{padding:22px 18px}.sec-head h2{font-size:1.18rem}
+    main{padding:20px 14px 40px}.toc nav{display:none}
+  }
+  @media print{
+    body{background:#fff;font-size:15px}
+    .toc{position:static;box-shadow:none}.toc nav{display:none}
+    .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .fig,.box,.bridge,table,.doc-form{break-inside:avoid}
+    footer{background:#fff;color:#000;border-top:2px solid var(--ch)}.nav-links{display:none}
+    pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOC ===================== -->
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-badge">บทที่ 10</span>
+    <nav>
+      <a href="#obj">วัตถุประสงค์</a>
+      <a href="#intro">บทนำ</a>
+      <a href="#content">เนื้อหา</a>
+      <a href="#forms">แบบฟอร์ม</a>
+      <a href="#summary">สรุป</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#assign">งานส่ง</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="ch-tag">บทที่ 10 · Chapter 10 · สัปดาห์ 14</span>
+    <h1>การประเมินการใช้งานได้</h1>
+    <div class="en">Usability Evaluation</div>
+    <p class="lead">ปิดวงจรการออกแบบด้วยการพิสูจน์ว่าต้นแบบ “ใช้งานได้จริง” หรือไม่ — เรียนรู้การประเมินด้วยผู้เชี่ยวชาญ (Heuristic Evaluation) การทดสอบกับผู้ใช้จริง (Usability Testing) การวัดผล และการจัดลำดับความรุนแรงของปัญหาเพื่อนำไปปรับปรุง</p>
+    <div class="hero-pills">
+      <span class="pill"><b>CLO8</b></span>
+      <span class="pill"><b>เวลาเรียน:</b> สัปดาห์ที่ 14 (4 ชม.)</span>
+      <span class="pill"><b>Bloom:</b> Analyze · Apply</span>
+      <span class="pill"><b>PLO:</b> PLO2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="clo-plo-box"><div style="border:1px solid var(--line);border-left:5px solid var(--ch);border-radius:12px;padding:15px 20px;background:var(--ch-softer);margin:0 0 6px"><div style="font-family:var(--head);font-weight:700;color:var(--ch-dark);font-size:1.05rem;margin-bottom:8px">🎓 ผลลัพธ์การเรียนรู้ที่บทนี้รับผิดชอบ</div><p style="margin:.35em 0"><b>CLO8</b> — วิเคราะห์และประเมินการใช้งานได้ (Usability) ด้วย Heuristic Evaluation และ Usability Testing</p><p style="margin:.35em 0"><b>PLO2</b> — วิเคราะห์ปัญหา และออกแบบงานด้านเทคโนโลยีสารสนเทศและปัญญาประดิษฐ์</p></div></section>
+
+
+<!-- ===================== วัตถุประสงค์ ===================== -->
+<section id="obj">
+  <div class="sec-head"><div class="sec-ic">🎯</div><h2>วัตถุประสงค์การเรียนรู้ประจำบท</h2></div>
+  <p>เมื่อเรียนจบบทนี้ นักศึกษาจะสามารถ:</p>
+
+  <div class="obj-item"><div class="obj-num">1</div><div class="obj-body">
+    <b>อธิบายความหมายและประเภทของการประเมิน usability</b> (formative/summative, expert-based/user-based)
+    <div class="obj-meta"><span class="tagm tag-clo">CLO8</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Understand</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">2</div><div class="obj-body">
+    <b>ประเมินส่วนติดต่อด้วย Heuristic Evaluation</b> ตามหลัก 10 ข้อของ Nielsen
+    <div class="obj-meta"><span class="tagm tag-clo">CLO8</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">3</div><div class="obj-body">
+    <b>วางแผนและดำเนินการ Usability Testing</b> ด้วยเทคนิค think-aloud พร้อมเก็บตัวชี้วัด
+    <div class="obj-meta"><span class="tagm tag-clo">CLO8</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Apply</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">4</div><div class="obj-body">
+    <b>วิเคราะห์ผลและจัดลำดับความรุนแรงของปัญหา (severity rating)</b> เพื่อกำหนดสิ่งที่ต้องแก้ก่อน
+    <div class="obj-meta"><span class="tagm tag-clo">CLO8</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+  <div class="obj-item"><div class="obj-num">5</div><div class="obj-body">
+    <b>เสนอแนวทางปรับปรุงและวนกลับสู่การออกแบบ (iterate)</b> โดยทดสอบต้นแบบของแอปค้นหาสัตว์เลี้ยงหาย
+    <div class="obj-meta"><span class="tagm tag-clo">CLO8</span><span class="tagm tag-plo">PLO2</span><span class="tagm tag-bloom">Analyze</span></div>
+  </div></div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 1 — เนื้อหาสำหรับอ่านทำความเข้าใจ</span><span class="bar"></span></div>
+
+<!-- ===================== บทนำ ===================== -->
+<section id="intro">
+  <div class="sec-head"><div class="sec-ic">📖</div><h2>1. บทนำ</h2></div>
+  <p class="lead-q">“คุณไม่ใช่ผู้ใช้ของคุณ” — สิ่งที่ทีมออกแบบคิดว่า ‘ชัดเจน’ อาจทำให้ผู้ใช้จริงสับสนได้เสมอ แล้วเราจะรู้ได้อย่างไรว่าต้นแบบของเราใช้งานง่ายจริง โดยไม่ต้องเดา?</p>
+  <p>ตลอดทั้งวิชาเราเข้าใจผู้ใช้ ออกแบบ และสร้างต้นแบบที่กดได้ในบทที่ 9 แล้ว แต่ทั้งหมดยังตั้งอยู่บน “สมมติฐาน” ของทีม บทสุดท้ายนี้คือการ <b>พิสูจน์ด้วยหลักฐาน</b> ว่าการออกแบบของเราใช้งานได้จริงหรือไม่ ผ่านการประเมิน usability ซึ่งเป็นทักษะการวิเคราะห์ (Analyze) ที่เป็นเป้าหมายสูงสุดของวิชา</p>
+  <p>การประเมินไม่ใช่ “การสอบตก” ของงานออกแบบ แต่เป็นโอกาสในการเรียนรู้และปรับปรุง ผลที่ได้จะวนกลับไปสู่การออกแบบ (iterate) ปิดวงจร Design Thinking ที่เริ่มไว้ในบทที่ 2</p>
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ชวนคิดก่อนเริ่ม</div>
+    ถ้าให้คน 5 คนลองใช้ต้นแบบ “แจ้งสัตว์หาย” แล้ว 4 คนหาปุ่มแจ้งหายไม่เจอในทันที นี่บอกอะไรเรา และเราควรแก้อะไรก่อน?
+  </div>
+</section>
+
+<!-- ===================== เนื้อหาหลัก ===================== -->
+<section id="content">
+  <div class="sec-head"><div class="sec-ic">🧠</div><h2>2. เนื้อหาหลัก</h2></div>
+
+  <!-- 2.1 -->
+  <h3><span class="nm">2.1</span> การประเมิน Usability คืออะไร และมีกี่ประเภท</h3>
+  <p><b>การประเมินการใช้งานได้ (Usability Evaluation)</b> คือกระบวนการตรวจสอบว่าผู้ใช้สามารถใช้ระบบบรรลุเป้าหมายได้อย่างมีประสิทธิผล มีประสิทธิภาพ และพึงพอใจหรือไม่ จำแนกได้ 2 มิติ</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>มิติ</th><th>ประเภท</th><th>คำอธิบาย</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2"><b>ตามช่วงเวลา</b></td><td>Formative</td><td>ประเมินระหว่างออกแบบเพื่อ “ค้นหาและแก้ปัญหา” (เน้นช่วงนี้)</td></tr>
+        <tr><td>Summative</td><td>ประเมินตอนใกล้เสร็จเพื่อ “วัดผลรวม” เทียบเป้าหมาย</td></tr>
+        <tr><td rowspan="2"><b>ตามผู้ประเมิน</b></td><td>Expert-based</td><td>ผู้เชี่ยวชาญประเมินตามหลักการ เช่น Heuristic Evaluation</td></tr>
+        <tr><td>User-based</td><td>ผู้ใช้จริงทดลองใช้ เช่น Usability Testing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.2 heuristic evaluation -->
+  <h3><span class="nm">2.2</span> Heuristic Evaluation — ประเมินด้วยหลักการ 10 ข้อของ Nielsen</h3>
+  <p><b>Heuristic Evaluation</b> เป็นวิธีประเมินที่ผู้เชี่ยวชาญ (หรือนักศึกษาที่ได้รับการฝึก) ตรวจสอบส่วนติดต่อทีละหน้าจอเทียบกับ “หลักการใช้งานได้” (heuristics) 10 ข้อของ Jakob Nielsen เป็นวิธีที่เร็วและประหยัด ใช้ค้นปัญหาเบื้องต้นก่อนทดสอบกับผู้ใช้จริง</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>หลักการ (Heuristic)</th><th>ตัวอย่างในแอปค้นหาสัตว์เลี้ยงหาย</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>มองเห็นสถานะของระบบ</b><br>Visibility of system status</td><td>กดแจ้งหายแล้วแสดง “กำลังส่ง...” และ “แจ้งสำเร็จ”</td></tr>
+        <tr><td>2</td><td><b>ตรงกับโลกจริง</b><br>Match system &amp; real world</td><td>ใช้คำว่า “แจ้งสัตว์หาย” แทนศัพท์เทคนิค</td></tr>
+        <tr><td>3</td><td><b>ผู้ใช้ควบคุมได้</b><br>User control &amp; freedom</td><td>มีปุ่มยกเลิก/ย้อนกลับระหว่างกรอกฟอร์ม</td></tr>
+        <tr><td>4</td><td><b>สม่ำเสมอและมีมาตรฐาน</b><br>Consistency &amp; standards</td><td>ปุ่มหลักสีและตำแหน่งเหมือนกันทุกหน้า</td></tr>
+        <tr><td>5</td><td><b>ป้องกันข้อผิดพลาด</b><br>Error prevention</td><td>ตรวจรูปแบบเบอร์โทรก่อนส่ง</td></tr>
+        <tr><td>6</td><td><b>ให้จำได้ดีกว่าให้นึกเอง</b><br>Recognition over recall</td><td>แสดงตัวเลือกประเภทสัตว์ให้เลือก ไม่ต้องพิมพ์เอง</td></tr>
+        <tr><td>7</td><td><b>ยืดหยุ่นและมีประสิทธิภาพ</b><br>Flexibility &amp; efficiency</td><td>มีทางลัด “แจ้งซ้ำ” จากประกาศเดิม</td></tr>
+        <tr><td>8</td><td><b>เรียบง่าย สวยงาม</b><br>Aesthetic &amp; minimalist</td><td>แสดงเฉพาะข้อมูลจำเป็นในแต่ละหน้า</td></tr>
+        <tr><td>9</td><td><b>ช่วยกู้คืนจากข้อผิดพลาด</b><br>Help recover from errors</td><td>ข้อความ error บอกชัดว่าผิดตรงไหนและแก้อย่างไร</td></tr>
+        <tr><td>10</td><td><b>มีความช่วยเหลือ/คู่มือ</b><br>Help &amp; documentation</td><td>มี FAQ และวิธีแจ้งหายแบบทีละขั้น</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.3 usability testing -->
+  <h3><span class="nm">2.3</span> Usability Testing — ทดสอบกับผู้ใช้จริง</h3>
+  <p><b>Usability Testing</b> คือการให้ผู้ใช้จริงทำ “ภารกิจ (task)” บนต้นแบบ ขณะที่ผู้สังเกตบันทึกพฤติกรรมและปัญหา เทคนิคที่นิยมคือ <b>Think-aloud</b> — ให้ผู้ใช้พูดสิ่งที่คิดออกมาดัง ๆ ขณะใช้งาน ทำให้เราเข้าใจ “เหตุผล” เบื้องหลังการกระทำ การทดสอบแบ่งเป็น <b>moderated</b> (มีผู้ดำเนินการนำ) และ <b>unmoderated</b> (ผู้ใช้ทำเอง)</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="กระบวนการทดสอบ usability">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle">
+        <g>
+          <rect x="14" y="40" width="104" height="54" rx="10" fill="#f4e2ec" stroke="#8a3d6b" stroke-width="1.8"/><text x="66" y="64" font-size="13" font-weight="700" fill="#652a4e">1. วางแผน</text><text x="66" y="82" font-size="11" fill="#5e6b78">task + เกณฑ์</text>
+          <rect x="148" y="40" width="104" height="54" rx="10" fill="#f4e2ec" stroke="#8a3d6b" stroke-width="1.8"/><text x="200" y="64" font-size="13" font-weight="700" fill="#652a4e">2. หาผู้ใช้</text><text x="200" y="82" font-size="11" fill="#5e6b78">~5 คน</text>
+          <rect x="282" y="40" width="104" height="54" rx="10" fill="#f4e2ec" stroke="#8a3d6b" stroke-width="1.8"/><text x="334" y="64" font-size="13" font-weight="700" fill="#652a4e">3. ทดสอบ</text><text x="334" y="82" font-size="11" fill="#5e6b78">think-aloud</text>
+          <rect x="416" y="40" width="104" height="54" rx="10" fill="#f4e2ec" stroke="#8a3d6b" stroke-width="1.8"/><text x="468" y="64" font-size="13" font-weight="700" fill="#652a4e">4. วิเคราะห์</text><text x="468" y="82" font-size="11" fill="#5e6b78">+ severity</text>
+          <rect x="550" y="40" width="80" height="54" rx="10" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.8"/><text x="590" y="64" font-size="13" font-weight="700" fill="#a8631d">5. ปรับ</text><text x="590" y="82" font-size="11" fill="#5e6b78">iterate</text>
+        </g>
+        <g stroke="#8a3d6b" stroke-width="2" fill="none">
+          <path d="M118 67 L146 67" marker-end="url(#a)"/><path d="M252 67 L280 67" marker-end="url(#a)"/><path d="M386 67 L414 67" marker-end="url(#a)"/><path d="M520 67 L548 67" marker-end="url(#a)"/>
+        </g>
+        <path d="M590 94 Q590 130 334 130 Q66 130 66 96" fill="none" stroke="#e08a3c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#a2)"/>
+        <text x="334" y="126" font-size="11" fill="#a8631d">วนกลับไปปรับปรุงและทดสอบซ้ำ</text>
+      </g>
+      <defs>
+        <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#8a3d6b"/></marker>
+        <marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#e08a3c"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>ภาพที่ 10.1</b> กระบวนการทดสอบ usability 5 ขั้น ที่วนซ้ำเพื่อปรับปรุงต่อเนื่อง</figcaption>
+  </figure>
+
+  <h4>ทำไมแค่ ~5 คนก็พอ</h4>
+  <p>งานวิจัยของ Nielsen พบว่าการทดสอบกับผู้ใช้เพียง <b>5 คน</b> ก็ค้นพบปัญหา usability ได้ราว <b>85%</b> การเพิ่มคนหลังจากนั้นพบปัญหาใหม่น้อยลงมาก จึงคุ้มกว่าที่จะทดสอบกลุ่มเล็กหลายรอบ (ปรับแล้วทดสอบใหม่) มากกว่าทดสอบกลุ่มใหญ่รอบเดียว</p>
+  <figure class="fig">
+    <svg viewBox="0 0 480 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="กราฟจำนวนผู้ใช้กับปัญหาที่พบ">
+      <g font-family="'Sarabun',sans-serif">
+        <line x1="50" y1="190" x2="450" y2="190" stroke="#9aa7b3" stroke-width="1.5"/>
+        <line x1="50" y1="30" x2="50" y2="190" stroke="#9aa7b3" stroke-width="1.5"/>
+        <text x="250" y="218" text-anchor="middle" font-size="12" fill="#5e6b78">จำนวนผู้ใช้ที่ทดสอบ</text>
+        <text x="20" y="110" font-size="12" fill="#5e6b78" transform="rotate(-90 20,110)">% ปัญหาที่พบ</text>
+        <!-- curve -->
+        <path d="M50 188 C120 90 200 55 290 48 C360 44 420 42 450 41" fill="none" stroke="#8a3d6b" stroke-width="3"/>
+        <!-- 5 users marker -->
+        <line x1="190" y1="60" x2="190" y2="190" stroke="#e08a3c" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <circle cx="190" cy="60" r="6" fill="#e08a3c"/>
+        <text x="196" y="52" font-size="12" font-weight="700" fill="#a8631d">5 คน ≈ 85%</text>
+        <text x="60" y="186" font-size="10.5" fill="#9aa7b3">0</text>
+        <text x="186" y="204" font-size="10.5" fill="#5e6b78">5</text>
+        <text x="446" y="204" font-size="10.5" fill="#5e6b78">15</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 10.2</b> ความสัมพันธ์ระหว่างจำนวนผู้ใช้กับสัดส่วนปัญหาที่ค้นพบ (แนวคิดของ Nielsen)</figcaption>
+  </figure>
+
+  <!-- 2.4 metrics -->
+  <h3><span class="nm">2.4</span> ตัวชี้วัด usability</h3>
+  <p>เราวัดผลการทดสอบได้ทั้งเชิงปริมาณและเชิงคุณภาพ ตัวชี้วัดที่ใช้บ่อยได้แก่</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ตัวชี้วัด</th><th>วัดอะไร</th><th>ตัวอย่าง</th></tr></thead>
+      <tbody>
+        <tr><td><b>Success rate</b><br>อัตราทำสำเร็จ</td><td>ผู้ใช้ทำภารกิจสำเร็จกี่ %</td><td>4 ใน 5 คนแจ้งหายสำเร็จ = 80%</td></tr>
+        <tr><td><b>Time on task</b><br>เวลาที่ใช้</td><td>ใช้เวลาทำภารกิจนานเท่าใด</td><td>เฉลี่ย 45 วินาทีต่อการแจ้งหาย</td></tr>
+        <tr><td><b>Error rate</b><br>อัตราข้อผิดพลาด</td><td>เกิดข้อผิดพลาดกี่ครั้ง</td><td>กดผิดปุ่มเฉลี่ย 1.2 ครั้ง</td></tr>
+        <tr><td><b>Satisfaction</b><br>ความพึงพอใจ</td><td>แบบสอบถาม เช่น SUS (0–100)</td><td>คะแนน SUS เฉลี่ย 78</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box box-key">
+    <div class="bh"><span class="ic">🔑</span> รู้จัก SUS</div>
+    <b>System Usability Scale (SUS)</b> เป็นแบบสอบถาม 10 ข้อมาตรฐาน ให้คะแนนรวม 0–100 ใช้วัดความพึงพอใจต่อการใช้งานอย่างรวดเร็ว โดยทั่วไปคะแนน ≥ 68 ถือว่าอยู่ในเกณฑ์ดี
+  </div>
+
+  <!-- 2.5 severity -->
+  <h3><span class="nm">2.5</span> การจัดลำดับความรุนแรงของปัญหา (Severity Rating)</h3>
+  <p>เมื่อพบปัญหาจำนวนมาก เราไม่สามารถแก้ทุกอย่างพร้อมกันได้ จึงต้องจัด <b>ลำดับความรุนแรง</b> เพื่อตัดสินใจว่าจะแก้อะไรก่อน โดยพิจารณาจากความถี่ ผลกระทบ และความต่อเนื่องของปัญหา Nielsen เสนอสเกล 0–4</p>
+  <figure class="fig">
+    <svg viewBox="0 0 620 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="สเกลความรุนแรง 0 ถึง 4">
+      <g font-family="'Sarabun',sans-serif" text-anchor="middle" font-size="11.5">
+        <rect x="20" y="30" width="116" height="34" rx="7" fill="#e7eef3"/><text x="78" y="52" fill="#41505c">0 · ไม่ใช่ปัญหา</text>
+        <rect x="140" y="30" width="116" height="34" rx="7" fill="#fdeccf"/><text x="198" y="52" fill="#a8631d">1 · ผิวเผิน</text>
+        <rect x="260" y="30" width="116" height="34" rx="7" fill="#fbd9b0"/><text x="318" y="52" fill="#a8631d">2 · เล็กน้อย</text>
+        <rect x="380" y="30" width="116" height="34" rx="7" fill="#f3b0a0"/><text x="438" y="52" fill="#7d2236">3 · รุนแรง</text>
+        <rect x="500" y="30" width="116" height="34" rx="7" fill="#e88a8a"/><text x="558" y="52" fill="#7d2236">4 · วิกฤต</text>
+        <text x="320" y="20" font-size="12.5" font-weight="700" fill="#652a4e">สเกลความรุนแรงของปัญหา (Severity)</text>
+        <text x="78" y="80" fill="#9aa7b3">แก้ทีหลัง</text>
+        <text x="558" y="80" fill="#c0492f" font-weight="700">แก้ก่อนเป็นอันดับแรก</text>
+      </g>
+    </svg>
+    <figcaption><b>ภาพที่ 10.3</b> สเกลความรุนแรง 0–4 ช่วยจัดลำดับว่าปัญหาใดต้องแก้ก่อน</figcaption>
+  </figure>
+
+  <!-- 2.6 iterate -->
+  <h3><span class="nm">2.6</span> การปรับปรุงและวนซ้ำ (Iterate)</h3>
+  <p>ผลการประเมินจะถูกแปลงเป็น “สิ่งที่ต้องแก้” โดยเริ่มจากปัญหารุนแรงที่สุด เมื่อแก้แล้วควรทดสอบซ้ำเพื่อยืนยันว่าปัญหาหายไปจริง นี่คือการ <b>ปิดวงจร Design Thinking</b> (Empathize → ... → Test → กลับไป Empathize/Define ใหม่) ที่เริ่มไว้ในบทที่ 2</p>
+  <div class="gt-ex">
+    <span class="tag">กรณีศึกษา: ผลทดสอบต้นแบบแอป</span>
+    <p style="margin:0">ทดสอบกับผู้ใช้ 5 คน พบว่า 4 คนหาปุ่ม “แจ้งหาย” ไม่เจอทันที (ความรุนแรงระดับ 4 = วิกฤต เพราะขัดงานหลัก) → แก้โดยขยายปุ่มและย้ายขึ้นบนสุด → ทดสอบซ้ำ 5 คนใหม่ ทุกคนเจอทันที</p>
+  </div>
+
+  <div class="box box-warn">
+    <div class="bh"><span class="ic">⚠️</span> ข้อผิดพลาดที่พบบ่อย</div>
+    <ul style="margin-bottom:0">
+      <li><b>ชี้นำผู้ทดสอบ</b> เช่น “ลองกดปุ่มสีส้มสิ” ทำให้ผลไม่สะท้อนความจริง</li>
+      <li><b>ถามความเห็นแทนการสังเกตพฤติกรรม</b> — ดูสิ่งที่เขา “ทำ” สำคัญกว่าสิ่งที่เขา “พูดว่าชอบ”</li>
+      <li><b>เก็บปัญหาแต่ไม่จัดลำดับความรุนแรง</b> ทำให้ไม่รู้ว่าควรแก้อะไรก่อน</li>
+      <li><b>ทดสอบครั้งเดียวจบ</b> — usability ที่ดีต้องวนทดสอบหลายรอบ</li>
+    </ul>
+  </div>
+
+  <!-- connection to web dev -->
+  <h4>เชื่อมโยงสู่การพัฒนาเว็บ: วัด usability ในระบบจริงด้วย analytics</h4>
+  <p>เมื่อเว็บถูกพัฒนาและใช้งานจริง เราวัด usability ต่อเนื่องได้ด้วยการเก็บข้อมูลพฤติกรรม (event tracking) เช่น อัตราการทำสำเร็จและจุดที่ผู้ใช้เลิกกลางคัน ซึ่งต่อยอดจากตัวชี้วัดในห้องเรียน</p>
+  <pre><span class="cm">// เก็บ event เพื่อวัด success rate / drop-off ในระบบจริง</span>
+track(<span class="st">'report_lost_started'</span>);   <span class="cm">// ผู้ใช้เริ่มกรอกฟอร์มแจ้งหาย</span>
+track(<span class="st">'report_lost_submitted'</span>); <span class="cm">// ส่งสำเร็จ → คำนวณ success rate ได้</span>
+<span class="cm">// ถ้าเริ่มเยอะแต่ส่งสำเร็จน้อย = มีปัญหา usability ในฟอร์ม</span></pre>
+
+  <!-- bridges -->
+  <div class="bridge">
+    <div class="ic">🧵</div>
+    <div>
+      <h4>เชื่อมจากบทก่อนหน้า</h4>
+      <p style="margin:0"><b>Interactive Prototype</b> ที่สร้างใน <b>บทที่ 9</b> คือสิ่งที่นำมาทดสอบในบทนี้ — ผู้ใช้กดเล่นจริงเพื่อทำภารกิจ ทำให้เราพบปัญหา usability ก่อนพัฒนาเป็นระบบสมบูรณ์</p>
+    </div>
+  </div>
+  <div class="bridge next">
+    <div class="ic">🏁</div>
+    <div>
+      <h4>สู่การสอบปลายภาค (สัปดาห์ที่ 15)</h4>
+      <p style="margin:0">ผลการประเมินและการปรับปรุงในบทนี้ เป็นชิ้นงานสุดท้ายที่เติมเต็ม <b>Design Portfolio</b> ให้สมบูรณ์ตั้งแต่ Research → Prototype → Evaluation พร้อมนำเสนอในการสอบปลายภาค ปิดวงจรการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลางทั้งกระบวนการ</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== แบบฟอร์ม ===================== -->
+<section id="forms">
+  <div class="sec-head"><div class="sec-ic">📋</div><h2>3. แบบฟอร์มสำหรับการทดสอบ Usability</h2></div>
+  <p>นักศึกษาพิมพ์แบบฟอร์มต่อไปนี้ไปใช้จริงในการวางแผนและบันทึกผลการทดสอบได้ (ใช้ฟังก์ชันพิมพ์ของเบราว์เซอร์)</p>
+
+  <!-- form 1: test plan -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 1 · แผนการทดสอบ (Usability Test Plan)</div><div class="sub">โครงการแอปค้นหาสัตว์เลี้ยงหาย</div></div>
+    <div class="df-body">
+      <div class="df-row"><span class="lb">เป้าหมายการทดสอบ:</span> <span class="fill" style="min-width:300px">&nbsp;</span></div>
+      <div class="df-row"><span class="lb">กลุ่มผู้ทดสอบ (จำนวน/ลักษณะ):</span> <span class="fill" style="min-width:240px">&nbsp;</span></div>
+      <div class="df-row"><span class="lb">ภารกิจที่ให้ทำ (Tasks):</span>
+        <div class="write-lines"></div>
+      </div>
+      <div class="df-row"><span class="lb">ตัวชี้วัดที่เก็บ:</span>
+        &nbsp;☐ Success rate &nbsp;☐ Time on task &nbsp;☐ Error rate &nbsp;☐ SUS/ความพึงพอใจ</div>
+      <div class="df-note">* เขียนภารกิจเป็น “สถานการณ์” ไม่บอกขั้นตอน เช่น “สมมติว่าสุนัขของคุณหาย จงแจ้งหายผ่านแอปนี้”</div>
+    </div>
+  </div>
+
+  <!-- form 2: task & observation -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 2 · ใบบันทึกการทดสอบรายคน</div><div class="sub">Task &amp; Observation Sheet</div></div>
+    <div class="df-body">
+      <div class="df-row"><span class="lb">รหัสผู้ทดสอบ:</span> <span class="fill">P-____</span> &nbsp; <span class="lb">วันที่:</span> <span class="fill" style="min-width:110px">&nbsp;</span> &nbsp; <span class="lb">ผู้สังเกต:</span> <span class="fill" style="min-width:120px">&nbsp;</span></div>
+      <div class="table-wrap" style="margin-top:8px">
+        <table>
+          <thead><tr><th style="width:34%">ภารกิจ</th><th>สำเร็จ?</th><th>เวลา (วินาที)</th><th>ข้อสังเกต/จุดติดขัด</th></tr></thead>
+          <tbody>
+            <tr><td style="height:40px">แจ้งสัตว์หาย</td><td>☐ ใช่ ☐ ไม่</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>ค้นหา/ดูประกาศ</td><td>☐ ใช่ ☐ ไม่</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>ส่งเบาะแส</td><td>☐ ใช่ ☐ ไม่</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="df-note">* บันทึก “สิ่งที่ผู้ใช้ทำและพูด” (think-aloud) ไม่ใช่การตีความ และห้ามชี้นำระหว่างทดสอบ</div>
+    </div>
+  </div>
+
+  <!-- form 3: findings & severity -->
+  <div class="doc-form">
+    <div class="df-head"><div class="ttl">แบบฟอร์มที่ 3 · ตารางสรุปปัญหาและความรุนแรง</div><div class="sub">Findings &amp; Severity</div></div>
+    <div class="df-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ปัญหาที่พบ</th><th>พบกี่คน</th><th>Heuristic ที่เกี่ยว</th><th>ความรุนแรง (0–4)</th><th>แนวทางแก้ไข</th></tr></thead>
+          <tbody>
+            <tr><td style="height:40px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td style="height:40px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td style="height:40px">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="df-note">* เรียงลำดับปัญหาตามความรุนแรงจากมากไปน้อย เพื่อกำหนดสิ่งที่ต้องแก้ก่อน</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== สรุป ===================== -->
+<section id="summary">
+  <div class="sec-head"><div class="sec-ic">📌</div><h2>4. สรุปท้ายบท</h2></div>
+  <ul class="summary">
+    <li>การประเมิน usability จำแนกตามช่วงเวลา (<b>formative/summative</b>) และผู้ประเมิน (<b>expert/user</b>)</li>
+    <li><b>Heuristic Evaluation</b> ใช้หลัก 10 ข้อของ Nielsen ประเมินเร็วและประหยัด ก่อนทดสอบกับผู้ใช้</li>
+    <li><b>Usability Testing</b> ให้ผู้ใช้จริงทำภารกิจด้วยเทคนิค think-aloud — ทดสอบ ~5 คนพบปัญหา ~85%</li>
+    <li>วัดผลด้วย <b>success rate, time on task, error rate, satisfaction (SUS)</b></li>
+    <li>จัด <b>ลำดับความรุนแรง (0–4)</b> เพื่อตัดสินใจแก้ปัญหารุนแรงก่อน แล้ว <b>วนทดสอบซ้ำ (iterate)</b></li>
+    <li>การประเมินปิดวงจร Design Thinking และเติมเต็ม Design Portfolio สำหรับการสอบปลายภาค</li>
+  </ul>
+</section>
+
+<!-- ===================== คำถามทบทวน ===================== -->
+<section id="review">
+  <div class="sec-head"><div class="sec-ic">❓</div><h2>5. คำถามทบทวน <span style="font-size:.8rem;color:var(--muted);font-weight:400;font-family:var(--th)">(ไม่เก็บคะแนน)</span></h2></div>
+  <div class="review">
+    <div class="rq">Heuristic Evaluation กับ Usability Testing ต่างกันอย่างไร และควรใช้คู่กันอย่างไร</div>
+    <div class="rq">ยกหลักการ 3 ข้อจาก 10 ข้อของ Nielsen พร้อมตัวอย่างการนำไปตรวจสอบแอปค้นหาสัตว์เลี้ยงหาย</div>
+    <div class="rq">เหตุใดการทดสอบกับผู้ใช้เพียง 5 คนจึงมักเพียงพอ และเหตุใดจึงควรทดสอบหลายรอบ</div>
+    <div class="rq">เทคนิค think-aloud คืออะไร และทำไมการ “สังเกตพฤติกรรม” จึงสำคัญกว่าการถามความเห็น</div>
+    <div class="rq">severity rating มีประโยชน์อย่างไร และปัญหาแบบใดควรได้ระดับ 4 (วิกฤต)</div>
+    <div class="rq">การประเมินในบทนี้ปิดวงจร Design Thinking (บทที่ 2) อย่างไร</div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<div class="part-divider"><span class="label">▶ ส่วนที่ 2 — กิจกรรมและงานในคาบ</span><span class="bar"></span></div>
+
+<!-- ===================== Workshop ===================== -->
+<section id="workshop">
+  <div class="sec-head"><div class="sec-ic">🛠️</div><h2>6. ขั้นตอน Workshop ในคาบ</h2></div>
+  <p>กิจกรรมในคาบ (ปฏิบัติ 2 ชั่วโมง) ใช้ต้นแบบจากบทที่ 9 และแบบฟอร์มในหัวข้อ 3 ห้ามใช้เครื่องมือ AI</p>
+  <ol class="steps">
+    <li><span class="t">วอร์มอัป: “จับผิดด้วย Heuristic”</span> <span class="min">(10 นาที)</span><br>พิจารณาหน้าจอที่มีปัญหาที่กำหนดให้ แล้วช่วยกันในกลุ่มจับคู่ปัญหากับ heuristic ของ Nielsen</li>
+    <li><span class="t">ทบทวนแนวคิดหลักร่วมกัน</span> <span class="min">(15 นาที)</span><br>ทบทวน heuristic evaluation, usability testing, ตัวชี้วัด และ severity แล้วจดประเด็นที่จะนำไปใช้</li>
+    <li><span class="t">Heuristic Evaluation</span> <span class="min">(20 นาที)</span><br>แต่ละกลุ่มประเมินต้นแบบของตนเองด้วยหลัก 10 ข้อ บันทึกปัญหาที่พบ</li>
+    <li><span class="t">เตรียมแผนทดสอบ</span> <span class="min">(15 นาที)</span><br>กรอกแบบฟอร์มที่ 1: กำหนดภารกิจและตัวชี้วัด</li>
+    <li><span class="t">Usability Testing</span> <span class="min">(35 นาที)</span><br>สลับกลุ่มทำหน้าที่ผู้ทดสอบ/ผู้สังเกต ทดสอบต้นแบบด้วย think-aloud พร้อมบันทึกในแบบฟอร์มที่ 2</li>
+    <li><span class="t">วิเคราะห์และจัดลำดับความรุนแรง</span> <span class="min">(20 นาที)</span><br>รวมปัญหา กรอกแบบฟอร์มที่ 3 และจัดลำดับความรุนแรง</li>
+    <li><span class="t">เสนอแนวทางปรับปรุง &amp; สรุป</span> <span class="min">(15 นาที)</span><br>ระบุ 3 ปัญหาที่ต้องแก้ก่อน แล้วร่วมสรุปบทเรียนและทบทวนโจทย์งานที่ต้องส่ง/แนวทางการสอบปลายภาค</li>
+  </ol>
+</section>
+
+<!-- ===================== งานส่ง ===================== -->
+<section id="assign">
+  <div class="sec-head"><div class="sec-ic">📤</div><h2>7. งานที่ต้องส่ง (Assignment 10 + Final Portfolio)</h2></div>
+  <div class="assign">
+    <span class="due">⏰ กำหนดส่ง: ก่อนการสอบปลายภาค (สัปดาห์ที่ 15)</span>
+    <h4 style="margin-top:0">ชิ้นงาน: “รายงานผลการประเมิน Usability + แผนปรับปรุง” และรวมเล่ม Design Portfolio</h4>
+    <p>เป็นชิ้นงานชิ้นที่ 10 (ชิ้นสุดท้าย) ของ Design Portfolio ส่งเป็นไฟล์ PDF ประกอบด้วย:</p>
+    <ol>
+      <li><b>ผล Heuristic Evaluation</b> ระบุปัญหาที่พบและ heuristic ที่เกี่ยวข้องอย่างน้อย 5 ข้อ</li>
+      <li><b>แผนและผล Usability Testing</b> กับผู้ใช้อย่างน้อย 3 คน พร้อมตัวชี้วัด (success rate/time/ฯลฯ)</li>
+      <li><b>ตารางสรุปปัญหา + severity rating</b> เรียงตามความรุนแรง</li>
+      <li><b>แผนปรับปรุง</b> ระบุ 3 สิ่งที่ต้องแก้ก่อน พร้อมภาพ before/after (ถ้าแก้แล้ว)</li>
+      <li><b>เล่มรวม Design Portfolio สมบูรณ์</b> (บท 1–10): Research → Persona/Journey → IA/Flow → UI/Style → Prototype → Evaluation</li>
+      <li><b>สะท้อนคิด (Reflection)</b> สิ่งที่ได้เรียนรู้ตลอดกระบวนการออกแบบที่ยึดผู้ใช้เป็นศูนย์กลาง</li>
+    </ol>
+    <p style="margin-bottom:0"><b>เกณฑ์ประเมิน:</b> คุณภาพการประเมิน/วิเคราะห์ (30%) · การจัดลำดับความรุนแรงและแผนปรับปรุง (25%) · ความสมบูรณ์ของ Portfolio (25%) · การนำเสนอและสะท้อนคิด (20%)</p>
+  </div>
+</section>
+
+<!-- ===================== Checklist ===================== -->
+<section id="checklist">
+  <div class="sec-head"><div class="sec-ic">✅</div><h2>8. Checklist ก่อนส่งงาน</h2></div>
+  <p style="color:var(--muted);font-size:.95rem">ติ๊กให้ครบทุกข้อก่อนส่ง (สถานะจะถูกบันทึกไว้ในเครื่องของนักศึกษา)</p>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">ทำ Heuristic Evaluation ระบุปัญหาและ heuristic ที่เกี่ยวข้องอย่างน้อย 5 ข้อ</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">วางแผนและทดสอบกับผู้ใช้จริงอย่างน้อย 3 คน (ไม่ชี้นำ)</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">เก็บตัวชี้วัดอย่างน้อย 2 อย่าง (เช่น success rate, time on task)</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">ทำตารางสรุปปัญหา + จัดลำดับความรุนแรง (0–4)</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">เสนอแผนปรับปรุง 3 สิ่งที่ต้องแก้ก่อน</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">รวมเล่ม Design Portfolio บท 1–10 ครบถ้วน</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">เขียนสะท้อนคิดภาพรวมของกระบวนการ</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">เตรียมสไลด์/ผลงานสำหรับนำเสนอสอบปลายภาค (สัปดาห์ที่ 15)</label></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-inner">
+    <div class="nav-links">
+      <a class="nav-link prev" href="บทที่9_WireframeและPrototype.html">
+        <div class="arrow">←</div>
+        <div><div class="lbl">บทก่อนหน้า</div><div class="nm">บทที่ 9 · Wireframe และ Prototype</div></div>
+      </a>
+      <a class="nav-link next" href="แผนการสอน_00921502_UXUI.html">
+        <div class="arrow">🏁</div>
+        <div><div class="lbl">สอบปลายภาค / ภาพรวมหลักสูตร</div><div class="nm">แผนการสอน &amp; Design Portfolio</div></div>
+      </a>
+    </div>
+    <div class="foot-meta">
+      เอกสารประกอบการเรียน รายวิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้<br>
+      คณะเทคโนโลยีสารสนเทศ มหาวิทยาลัยอีสเทิร์นเอเชีย · ปีการศึกษา 2569
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    try{
+      var boxes = document.querySelectorAll('.checklist input[type=checkbox]');
+      boxes.forEach(function(b){
+        var key = 'ch10_'+b.id;
+        if(localStorage.getItem(key)==='1') b.checked = true;
+        b.addEventListener('change', function(){ localStorage.setItem(key, b.checked ? '1':'0'); });
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>
