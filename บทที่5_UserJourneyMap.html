@@ -372,7 +372,7 @@
   </div>
 
   <figure class="fig">
-    <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Journey Map ของพิม แบบแผนภาพพร้อมเส้นกราฟอารมณ์">
+    <svg viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Journey Map ของพิม แบบแผนภาพพร้อมเส้นกราฟอารมณ์ touchpoints และจุดเด่นที่อารมณ์ต่ำสุด">
       <g font-family="'Sarabun',sans-serif">
         <text x="350" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#0a5b78">Journey Map ของ “พิม” — ตามหาสุนัขที่หาย</text>
         <!-- stage headers -->
@@ -383,50 +383,71 @@
           <rect x="445" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="500" y="59">รอเบาะแส</text>
           <rect x="565" y="38" width="110" height="34" rx="6" fill="#e0f1f7" stroke="#0e7fa6"/><text x="620" y="59">พบ &amp; ได้คืน</text>
         </g>
+        <!-- touchpoints (เพิ่มใหม่ — สั้นพอไม่รบกวนเส้นกราฟ) -->
+        <g text-anchor="middle" font-size="9.7" fill="#5e6b78">
+          <text x="140" y="90">—</text>
+          <text x="260" y="90">📱 มือถือ</text>
+          <text x="380" y="90">📢 โซเชียล/ป้าย</text>
+          <text x="500" y="90">🔔 แจ้งเตือน</text>
+          <text x="620" y="90">📞 โทร/แผนที่</text>
+        </g>
         <!-- row labels -->
         <g font-size="11.5" font-weight="600" fill="#0a5b78">
-          <text x="10" y="100">การกระทำ</text>
-          <text x="10" y="205">อารมณ์</text>
-          <text x="10" y="330" fill="#c0492f">pain points</text>
+          <text x="10" y="124">การกระทำ</text>
+          <text x="10" y="229">อารมณ์</text>
+          <text x="10" y="354" fill="#c0492f">pain points</text>
         </g>
         <!-- actions -->
         <g text-anchor="middle" font-size="11" fill="#5e6b78">
-          <text x="140" y="100">พบประตูเปิด</text>
-          <text x="260" y="100">เดินหา/ถ่ายรูป</text>
-          <text x="380" y="100">โพสต์/ติดป้าย</text>
-          <text x="500" y="100">เช็กคอมเมนต์</text>
-          <text x="620" y="100">ไปรับน้องหมา</text>
+          <text x="140" y="124">พบประตูเปิด</text>
+          <text x="260" y="124">เดินหา/ถ่ายรูป</text>
+          <text x="380" y="124">โพสต์/ติดป้าย</text>
+          <text x="500" y="124">เช็กคอมเมนต์</text>
+          <text x="620" y="124">ไปรับน้องหมา</text>
         </g>
         <!-- grid dividers -->
         <g stroke="#cfe6ef" stroke-width="1">
-          <line x1="80" y1="80" x2="80" y2="345"/><line x1="200" y1="80" x2="200" y2="345"/><line x1="320" y1="80" x2="320" y2="345"/>
-          <line x1="440" y1="80" x2="440" y2="345"/><line x1="560" y1="80" x2="560" y2="345"/><line x1="680" y1="80" x2="680" y2="345"/>
-          <line x1="80" y1="120" x2="680" y2="120"/><line x1="80" y1="290" x2="680" y2="290"/>
+          <line x1="80" y1="104" x2="80" y2="369"/><line x1="200" y1="104" x2="200" y2="369"/><line x1="320" y1="104" x2="320" y2="369"/>
+          <line x1="440" y1="104" x2="440" y2="369"/><line x1="560" y1="104" x2="560" y2="369"/><line x1="680" y1="104" x2="680" y2="369"/>
+          <line x1="80" y1="144" x2="680" y2="144"/><line x1="80" y1="314" x2="680" y2="314"/>
         </g>
         <!-- neutral baseline -->
-        <line x1="80" y1="200" x2="680" y2="200" stroke="#9cc3d4" stroke-width="1" stroke-dasharray="5 4"/>
-        <text x="686" y="203" font-size="10" fill="#9cb0bb"> </text>
+        <line x1="80" y1="224" x2="680" y2="224" stroke="#9cc3d4" stroke-width="1" stroke-dasharray="5 4"/>
         <!-- emotion curve -->
-        <polyline points="140,208 260,224 380,236 500,250 620,152" fill="none" stroke="#e08a3c" stroke-width="3"/>
-        <g fill="#e08a3c"><circle cx="140" cy="208" r="6"/><circle cx="260" cy="224" r="6"/><circle cx="380" cy="236" r="6"/><circle cx="500" cy="250" r="6"/><circle cx="620" cy="152" r="6"/></g>
+        <polyline points="140,232 260,248 380,260 500,274 620,176" fill="none" stroke="#e08a3c" stroke-width="3"/>
+        <g fill="#e08a3c"><circle cx="140" cy="232" r="6"/><circle cx="260" cy="248" r="6"/><circle cx="380" cy="260" r="6"/><circle cx="500" cy="274" r="6"/><circle cx="620" cy="176" r="6"/></g>
         <!-- emoji -->
         <g text-anchor="middle" font-size="18">
-          <text x="140" y="192">😱</text><text x="260" y="210">😟</text><text x="380" y="222">😣</text><text x="500" y="238">😞</text><text x="620" y="138">😄</text>
+          <text x="140" y="216">😱</text><text x="260" y="234">😟</text><text x="380" y="246">😣</text><text x="500" y="262">😞</text><text x="620" y="162">😄</text>
         </g>
         <!-- lowest marker -->
-        <text x="500" y="276" text-anchor="middle" font-size="10.5" fill="#c0492f" font-weight="600">↑ ต่ำสุด</text>
+        <text x="500" y="300" text-anchor="middle" font-size="10.5" fill="#c0492f" font-weight="600">↑ ต่ำสุด</text>
         <!-- pain points -->
         <g text-anchor="middle" font-size="11" fill="#c0492f">
-          <text x="140" y="320">ตกใจ</text>
-          <text x="260" y="320">ไม่รู้เริ่มตรงไหน</text>
-          <text x="380" y="320">ต้องโพสต์ซ้ำ</text>
-          <text x="500" y="320">ข่าวกระจายช้า</text>
-          <text x="620" y="320" fill="#2e8b57">—</text>
+          <text x="140" y="344">ตกใจ</text>
+          <text x="260" y="344">ไม่รู้เริ่มตรงไหน</text>
+          <text x="380" y="344">ต้องโพสต์ซ้ำ</text>
+          <text x="500" y="344">ข่าวกระจายช้า</text>
+          <text x="620" y="344" fill="#2e8b57">—</text>
+        </g>
+        <!-- spotlight (เพิ่มใหม่): quote + โอกาสออกแบบ เฉพาะจุดอารมณ์ต่ำสุด -->
+        <line x1="500" y1="369" x2="500" y2="382" stroke="#e08a3c" stroke-width="1.6" stroke-dasharray="3 3"/>
+        <rect x="390" y="382" width="220" height="96" rx="10" fill="#fff6e9" stroke="#e08a3c" stroke-width="1.6"/>
+        <g text-anchor="middle">
+          <text x="500" y="402" font-size="11" font-weight="700" fill="#a8631d">จุดอารมณ์ต่ำสุด · รอเบาะแส</text>
+          <text x="500" y="424" font-size="10.5" fill="#5e6b78">💬 “ทำไมไม่มีใครเห็นเลย”</text>
+          <text x="500" y="446" font-size="10.5" font-weight="600" fill="#a8631d">💡 รวมเบาะแส +</text>
+          <text x="500" y="464" font-size="10.5" font-weight="600" fill="#a8631d">แจ้งเตือนคนใกล้เคียง</text>
         </g>
       </g>
     </svg>
-    <figcaption><b>ภาพที่ 5.3</b> Journey Map ของ “พิม” ในรูปแบบแผนภาพ — เส้นกราฟอารมณ์ดิ่งต่ำสุดช่วง “รอเบาะแส” แล้วพุ่งขึ้นเมื่อได้สัตว์เลี้ยงคืน</figcaption>
+    <figcaption><b>ภาพที่ 5.3</b> Journey Map ของ “พิม” ในรูปแบบแผนภาพ — เพิ่ม touchpoints สั้น ๆ ใต้หัวข้อแต่ละช่วง และจุดเด่น (คำพูด + โอกาสออกแบบ) เฉพาะช่วงที่อารมณ์ต่ำสุด ส่วนรายละเอียดครบทุกมิติดูได้จากตารางด้านบน</figcaption>
   </figure>
+
+  <div class="box box-think">
+    <div class="bh"><span class="ic">💭</span> ทำไมแผนภาพนี้ไม่มีครบทุกมิติเหมือนตาราง</div>
+    ตารางด้านบนคือ “ข้อมูลฉบับสมบูรณ์” ที่ต้องมีครบทั้ง 6 มิติเสมอ (ใช้อ้างอิงและให้คะแนนความครบถ้วน) ส่วนแผนภาพนี้คือ “ภาพสรุปสำหรับนำเสนอ” ที่จงใจเน้นเส้นกราฟอารมณ์เป็นหลัก เพราะเป็นสิ่งสำคัญที่สุดของ Journey Map จึงเพิ่มตัวช่วยอ่านเข้ามาแค่พอประมาณ — touchpoints สั้น ๆ ต่อช่วง และคำพูด/โอกาสออกแบบเฉพาะจุดที่อารมณ์ต่ำสุดเท่านั้น — โดยไม่ยัดทุกมิติลงไปจนกลบเส้นกราฟที่ควรเด่นที่สุด หากต้องการดูความคิด/คำพูดหรือโอกาสออกแบบของทุกช่วงแบบครบถ้วน ให้ดูจากตารางด้านบนแทน
+  </div>
 
   <div class="box box-key">
     <div class="bh"><span class="ic">🔑</span> จุดที่ต้องเข้าใจ</div>
