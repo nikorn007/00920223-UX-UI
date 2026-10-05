@@ -120,6 +120,8 @@
 
   /* ===== Tables ===== */
   .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);margin:18px 0}
+  .tbl-cap{font-size:.98rem;color:var(--ch-dark);margin:20px 0 -8px;line-height:1.5}
+  .tbl-cap b{font-family:var(--head);margin-right:6px}
   table{width:100%;border-collapse:collapse;font-size:1rem;min-width:520px}
   thead th{background:var(--ch-dark);color:#fff;font-weight:600;padding:11px 14px;text-align:left;font-family:var(--head)}
   tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
@@ -188,6 +190,7 @@
     .hero{background:var(--ch)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
     .fig,.box,.bridge,table{break-inside:avoid}
+    .tbl-cap{break-after:avoid}
     footer{background:#fff;color:#000;border-top:2px solid var(--ch)}
     .nav-links{display:none}
     pre{background:#f0f2f5;color:#000;border:1px solid #ccc}
@@ -345,15 +348,16 @@
     <figcaption><b>ภาพที่ 2.1</b> Design Thinking 5 ขั้นตอน ตามโมเดล Stanford d.school — เป็นกระบวนการวนซ้ำ ไม่ใช่เส้นตรง</figcaption>
   </figure>
 
+  <p class="tbl-cap"><b>ตารางที่ 2.1</b> อธิบาย Design Thinking 5 ขั้นตอน</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>ขั้นตอน</th><th>เป้าหมาย</th><th>กิจกรรม/เครื่องมือหลัก</th></tr></thead>
+      <thead><tr><th>ขั้นตอน</th><th>เป้าหมาย</th><th>กิจกรรม/เครื่องมือหลัก</th><th>ปัญหาหากข้ามไป</th></tr></thead>
       <tbody>
-        <tr><td><b>1.Empathize</b><br>เข้าใจผู้ใช้</td><td>ทำความเข้าใจความต้องการ ความรู้สึก และบริบทของผู้ใช้อย่างลึกซึ้ง</td><td>สัมภาษณ์, สังเกตการณ์, Empathy Map</td></tr>
-        <tr><td><b>2.Define</b><br>นิยามปัญหา</td><td>สังเคราะห์ข้อมูลเป็นปัญหาที่ชัดเจน ยึดผู้ใช้เป็นศูนย์กลาง</td><td>Point of View (POV), Problem Statement</td></tr>
-        <tr><td><b>3.Ideate</b><br>ระดมไอเดีย</td><td>คิดทางแก้ให้ได้มากและหลากหลายที่สุดโดยยังไม่ตัดสิน</td><td>Brainstorming, How Might We, Crazy 8s</td></tr>
-        <tr><td><b>4.Prototype</b><br>สร้างต้นแบบ</td><td>เปลี่ยนไอเดียเป็นต้นแบบที่จับต้องได้ด้วยต้นทุนต่ำ</td><td>Paper prototype, Wireframe</td></tr>
-        <tr><td><b>5.Test</b><br>ทดสอบ</td><td>นำต้นแบบไปทดสอบกับผู้ใช้จริงเพื่อเรียนรู้และปรับปรุง</td><td>Usability testing, สัมภาษณ์ผู้ใช้</td></tr>
+        <tr><td><b>1.Empathize</b><br>เข้าใจผู้ใช้</td><td>ทำความเข้าใจความต้องการ ความรู้สึก และบริบทของผู้ใช้อย่างลึกซึ้ง</td><td>สัมภาษณ์, สังเกตการณ์, Empathy Map</td><td>ออกแบบจากการเดาและสมมติฐานของทีม ได้ผลิตภัณฑ์ที่ไม่ตรงกับความต้องการจริงของผู้ใช้<br><span style="color:var(--muted);font-size:.9rem">เช่น สร้างฟีเจอร์ให้คะแนนสัตว์เลี้ยง ทั้งที่เจ้าของต้องการเพียงแจ้งข่าวให้เร็วที่สุด</span></td></tr>
+        <tr><td><b>2.Define</b><br>นิยามปัญหา</td><td>สังเคราะห์ข้อมูลเป็นปัญหาที่ชัดเจน ยึดผู้ใช้เป็นศูนย์กลาง</td><td>Point of View (POV), Problem Statement</td><td>ทีมเข้าใจปัญหาไม่ตรงกัน แก้ปัญหาผิดจุดหรือกว้างเกินไป มีข้อมูลมากแต่ไม่รู้ว่าควรเริ่มแก้เรื่องใด<br><span style="color:var(--muted);font-size:.9rem">เช่น พยายามแก้ทุกเรื่องพร้อมกัน ทั้งแจ้งหาย ชุมชน และการรับเลี้ยง จนแอปไม่โดดเด่นสักด้าน</span></td></tr>
+        <tr><td><b>3.Ideate</b><br>ระดมไอเดีย</td><td>คิดทางแก้ให้ได้มากและหลากหลายที่สุดโดยยังไม่ตัดสิน</td><td>Brainstorming, How Might We, Crazy 8s</td><td>ยึดติดกับทางแก้แรกที่นึกออก ซึ่งอาจไม่ใช่ทางที่ดีที่สุด และพลาดไอเดียที่สร้างสรรค์หรือทำได้จริงกว่า<br><span style="color:var(--muted);font-size:.9rem">เช่น ทำเพียงแอปโพสต์ประกาศ โดยไม่เคยพิจารณาการแจ้งเตือนตามพื้นที่</span></td></tr>
+        <tr><td><b>4.Prototype</b><br>สร้างต้นแบบ</td><td>เปลี่ยนไอเดียเป็นต้นแบบที่จับต้องได้ด้วยต้นทุนต่ำ</td><td>Paper prototype, Wireframe</td><td>ต้องลงทุนเขียนโค้ดเต็มรูปแบบก่อนรู้ว่าไอเดียใช้ได้หรือไม่ สิ้นเปลืองเวลาและต้นทุน และไม่มีสิ่งใดให้ผู้ใช้ทดลอง<br><span style="color:var(--muted);font-size:.9rem">เช่น พัฒนาระบบแผนที่ทั้งระบบเสร็จแล้วจึงพบว่าผู้ใช้ไม่เข้าใจหน้าจอ</span></td></tr>
+        <tr><td><b>5.Test</b><br>ทดสอบ</td><td>นำต้นแบบไปทดสอบกับผู้ใช้จริงเพื่อเรียนรู้และปรับปรุง</td><td>Usability testing, สัมภาษณ์ผู้ใช้</td><td>ไม่ทราบว่าผู้ใช้ใช้งานได้จริงหรือไม่ ปัญหาการใช้งานหลุดไปถึงผู้ใช้จริงหลังเปิดตัว ต้องแก้ไขในต้นทุนที่สูงกว่า<br><span style="color:var(--muted);font-size:.9rem">เช่น ปุ่มแจ้งหายซ่อนอยู่ในเมนู ผู้ใช้ที่กำลังตื่นตระหนกหาไม่เจอ</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -376,8 +380,9 @@
 
   <div class="box box-think">
     <div class="bh"><span class="ic">📍</span> เครื่องมือแต่ละขั้นอธิบายไว้ที่บทใดบ้าง</div>
-    เครื่องมือ/กิจกรรมหลักของ 5 ขั้นตอนในตารางข้างต้น ถูกอธิบายอย่างละเอียดกระจายอยู่ในหลายบทของหนังสือเล่มนี้ ตามตารางด้านล่าง เพื่อให้นักศึกษาย้อนกลับไปทบทวนได้ง่ายเมื่อต้องใช้งานจริง
+    เครื่องมือ/กิจกรรมหลักของ 5 ขั้นตอนใน<b>ตารางที่ 2.1</b> ถูกอธิบายอย่างละเอียดกระจายอยู่ในหลายบทของหนังสือเล่มนี้ ตาม<b>ตารางที่ 2.2</b> เพื่อให้นักศึกษาย้อนกลับไปทบทวนได้ง่ายเมื่อต้องใช้งานจริง
   </div>
+  <p class="tbl-cap"><b>ตารางที่ 2.2</b> เครื่องมือในแต่ละขั้นตอนของ Design Thinking และบทที่อธิบายรายละเอียด</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>ขั้นตอน</th><th>เครื่องมือ/กิจกรรม</th><th>อธิบายละเอียดที่</th></tr></thead>
@@ -430,6 +435,7 @@
   </figure>
 
   <p>ลองไล่ทั้ง 4 ช่วงของ Double Diamond กับกรณีศึกษาของเรา จะเห็นว่าแต่ละช่วงสลับระหว่างการ “เปิดกว้าง” และ “คัดเลือก” อย่างชัดเจน</p>
+  <p class="tbl-cap"><b>ตารางที่ 2.3</b> การประยุกต์ใช้ Double Diamond กับกรณีศึกษาแอปค้นหาสัตว์เลี้ยงหาย</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>ช่วง (โหมดการคิด)</th><th>สิ่งที่ทีมทำกับ “แอปค้นหาสัตว์เลี้ยงหาย”</th></tr></thead>
@@ -508,6 +514,7 @@
   <h4>Problem Statement กับ POV ต่างกันอย่างไร</h4>
   <p><b>Problem Statement</b> คือการตั้งกรอบปัญหาแบบกว้าง ๆ ที่เขียนได้ตั้งแต่ต้นโปรเจกต์ จากโจทย์ที่ได้รับหรือสมมติฐานเบื้องต้น โดยไม่จำเป็นต้องผ่านการเก็บข้อมูลผู้ใช้จริงมาก่อน ส่วน <b>POV</b> เป็นการ “กลั่น” ปัญหานั้นให้แหลมคมและเจาะจงขึ้น โดยต้องเขียนหลังจากทำ Empathize แล้วเท่านั้น เพราะต้องอ้างอิง <i>insight</i> ที่มาจากการสัมภาษณ์หรือสังเกตการณ์ผู้ใช้จริง ไม่ใช่การคาดเดา</p>
 
+  <p class="tbl-cap"><b>ตารางที่ 2.4</b> เปรียบเทียบ Problem Statement กับ Point of View (POV)</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>ประเด็น</th><th>Problem Statement</th><th>Point of View (POV)</th></tr></thead>
@@ -546,6 +553,7 @@
   </div>
 
   <h4>มุมมองที่ 1 — เจ้าของสัตว์ที่ทำสัตว์หาย</h4>
+  <p class="tbl-cap"><b>ตารางที่ 2.5</b> ตัวอย่างมุมมองที่ 1: เจ้าของสัตว์ที่ทำสัตว์หาย (Problem Statement, Empathize, POV, HMW)</p>
   <div class="table-wrap">
     <table>
       <tbody>
@@ -558,6 +566,7 @@
   </div>
 
   <h4>มุมมองที่ 2 — ผู้พบเห็นสัตว์หลงทาง</h4>
+  <p class="tbl-cap"><b>ตารางที่ 2.6</b> ตัวอย่างมุมมองที่ 2: ผู้พบเห็นสัตว์หลงทาง (Problem Statement, Empathize, POV, HMW)</p>
   <div class="table-wrap">
     <table>
       <tbody>
@@ -570,6 +579,7 @@
   </div>
 
   <h4>มุมมองที่ 3 — มูลนิธิและอาสาสมัครช่วยเหลือสัตว์</h4>
+  <p class="tbl-cap"><b>ตารางที่ 2.7</b> ตัวอย่างมุมมองที่ 3: มูลนิธิและอาสาสมัครช่วยเหลือสัตว์ (Problem Statement, Empathize, POV, HMW)</p>
   <div class="table-wrap">
     <table>
       <tbody>
@@ -619,6 +629,7 @@
   <h4>ขอบเขตการใช้งาน: Crazy 8s ไม่ได้จำกัดอยู่แค่การออกแบบหน้าจอ</h4>
   <p>ในงานพัฒนาแอปพลิเคชันจริง หลายคนเข้าใจว่า Crazy 8s ใช้ได้เฉพาะการร่างหน้าตาหน้าจอ (UI) เท่านั้น แต่แท้จริงแล้วแก่นของเทคนิคนี้คือ <b>“การบังคับความเร็วในการคิดเพื่อระดมทางเลือกให้หลากหลาย”</b> (8 ไอเดียใน 8 นาที) ซึ่งนำไปใช้ได้กับโจทย์แทบทุกประเภทในขั้น Ideate ตราบใดที่โจทย์นั้นต้องการทางเลือกก่อนตัดสินใจ ไม่ว่าผลลัพธ์ที่ร่างออกมาจะเป็นภาพหน้าจอ ผังขั้นตอน ข้อความ หรือแนวคิดเชิงกลยุทธ์ก็ตาม ดังตัวอย่างต่อไปนี้ (ต่อยอดจากกรณีศึกษาแอปค้นหาสัตว์เลี้ยงหาย)</p>
 
+  <p class="tbl-cap"><b>ตารางที่ 2.8</b> การประยุกต์ใช้ Crazy 8s กับงานพัฒนาแอปพลิเคชันด้านต่าง ๆ</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>การนำไปใช้</th><th>โจทย์ตั้งต้น (8 นาที)</th><th>ตัวอย่างไอเดียที่ได้</th></tr></thead>
