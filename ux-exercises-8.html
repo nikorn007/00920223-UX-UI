@@ -167,12 +167,14 @@ summary{cursor:pointer;font-weight:600}
 footer{padding:10px 0 40px;color:var(--muted);font-size:13.5px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{.nav,.pager,.btn{display:none!important}body{background:#fff}}
+.themebar{display:flex;justify-content:flex-end;padding-top:14px}
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header class="hero">
+    <div class="themebar"><button class="btn sm" id="themeBtn" type="button" aria-label="เปลี่ยนธีมสีของหน้า">ธีม: ตามเครื่อง</button></div>
     <p class="course">วิชา 00921502 การออกแบบประสบการณ์และส่วนติดต่อผู้ใช้</p>
     <h1>แบบฝึกหัด UX 8 ข้อ กับแอปที่นักศึกษาเลือกเอง</h1>
     <p class="lead">เลือกโจทย์แอป 1 ข้อจาก 20 ข้อ แล้วใช้โจทย์เดียวกันทำแบบฝึกหัด UX-1 ถึง UX-8 ต่อเนื่องกัน ผลงานทุกข้อต่อกันเป็นสายเดียวด้วยรหัสบอกที่มา</p>
@@ -509,6 +511,26 @@ elTabs.addEventListener('keydown',function(ev){
 });
 
 render();
+})();
+</script>
+<script>
+(function(){
+  var KEYT='uxui-theme',root=document.documentElement,modes=['auto','light','dark'];
+  var labels={auto:'ธีม: ตามเครื่อง',light:'ธีม: สว่าง',dark:'ธีม: มืด'};
+  var m='auto';
+  try{m=localStorage.getItem(KEYT)||'auto';}catch(e){}
+  if(modes.indexOf(m)<0){m='auto';}
+  function apply(){
+    if(m==='auto'){root.removeAttribute('data-theme');}else{root.setAttribute('data-theme',m);}
+    var b=document.getElementById('themeBtn');if(b){b.textContent=labels[m];}
+  }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest('#themeBtn');if(!b){return;}
+    m=modes[(modes.indexOf(m)+1)%modes.length];
+    try{localStorage.setItem(KEYT,m);}catch(e){}
+    apply();
+  });
+  apply();
 })();
 </script>
 </body>
